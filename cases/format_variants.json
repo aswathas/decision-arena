@@ -1,0 +1,86 @@
+{
+  "description": "Format friction battery - the SAME content in three shapes. No labels needed: we measure how far the probability MOVES when only the serialisation changes. This is the cheapest experiment in the field and it needs no outcome data. 'flat' is a one-level JSON object of strings; 'nested' has a nested object.",
+  "cases": [
+    {
+      "id": "fmt-001-refund",
+      "group": "format",
+      "class": "format-variant",
+      "variants": {
+        "prose": "I was charged twice for my subscription this month. Please refund the extra charge.",
+        "flat": {
+          "message": "I was charged twice for my subscription this month. Please refund the extra charge.",
+          "subject": "Double charge"
+        },
+        "nested": {
+          "email": {
+            "body": "I was charged twice for my subscription this month. Please refund the extra charge.",
+            "subject": "Double charge",
+            "headers": {"from": "customer@example.com"}
+          }
+        }
+      },
+      "questions": {
+        "is_urgent": {"type": "noul", "instructions": "Does this request require action within the next hour?"},
+        "is_refund": {"type": "noul", "instructions": "Is the customer explicitly asking for money back?"},
+        "team": {
+          "type": "choice",
+          "instructions": "Which team should handle this request?",
+          "criteria": {
+            "billing": "Charges, invoices, subscriptions and refunds",
+            "technical": "Errors, outages, integrations and configuration",
+            "sales": "Plans, pricing, upgrades and procurement",
+            "other": "None of the above - needs human triage"
+          }
+        }
+      }
+    },
+    {
+      "id": "fmt-002-outage",
+      "group": "format",
+      "class": "format-variant",
+      "variants": {
+        "prose": "The API returns 502 for every request since 14:00 UTC. Our production pipeline is down.",
+        "flat": {
+          "message": "The API returns 502 for every request since 14:00 UTC. Our production pipeline is down.",
+          "subject": "API down"
+        },
+        "nested": {
+          "ticket": {
+            "body": "The API returns 502 for every request since 14:00 UTC. Our production pipeline is down.",
+            "subject": "API down",
+            "meta": {"created": "2026-10-24T14:05:00Z", "source": "status-page"}
+          }
+        }
+      },
+      "questions": {
+        "is_urgent": {"type": "noul", "instructions": "Does this request require action within the next hour?"},
+        "is_outage": {"type": "noul", "instructions": "Is this a production outage affecting all requests?"},
+        "severity": {"type": "score", "instructions": "How severe is the customer impact?", "criteria": ["No impact", "Minor", "Major", "Critical"]}
+      }
+    },
+    {
+      "id": "fmt-003-sales",
+      "group": "format",
+      "class": "format-variant",
+      "variants": {
+        "prose": "Can you quote for 400 seats on the business plan, and is there volume pricing?",
+        "flat": {
+          "message": "Can you quote for 400 seats on the business plan, and is there volume pricing?",
+          "subject": "Bulk pricing"
+        },
+        "nested": {
+          "lead": {
+            "body": "Can you quote for 400 seats on the business plan, and is there volume pricing?",
+            "subject": "Bulk pricing",
+            "company": {"name": "Acme", "size": "enterprise"}
+          }
+        }
+      },
+      "questions": {
+        "is_urgent": {"type": "noul", "instructions": "Does this request require action within the next hour?"},
+        "is_sales": {"type": "noul", "instructions": "Is this a new purchase, upgrade or pricing enquiry?"},
+        "severity": {"type": "score", "instructions": "How severe is the customer impact?", "criteria": ["No impact", "Minor", "Major", "Critical"]}
+      }
+    }
+  ]
+}

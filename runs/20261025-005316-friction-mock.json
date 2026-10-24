@@ -1,0 +1,128 @@
+{
+  "run_id": "20261025-005316-friction-mock",
+  "provider": "mock",
+  "cases": 3,
+  "questions_measured": 9,
+  "mean_spread": 0.0,
+  "max_spread": 0.0,
+  "flips_at_0.5": 0,
+  "rows": [
+    {
+      "run_id": "20261025-005316-friction-mock",
+      "case_id": "fmt-001-refund",
+      "question": "is_urgent",
+      "kind": "noul",
+      "values": {
+        "prose": 1.0,
+        "flat": 1.0,
+        "nested": 1.0
+      },
+      "spread": 0.0,
+      "flips_at_0.5": false
+    },
+    {
+      "run_id": "20261025-005316-friction-mock",
+      "case_id": "fmt-001-refund",
+      "question": "is_refund",
+      "kind": "noul",
+      "values": {
+        "prose": 1.0,
+        "flat": 1.0,
+        "nested": 1.0
+      },
+      "spread": 0.0,
+      "flips_at_0.5": false
+    },
+    {
+      "run_id": "20261025-005316-friction-mock",
+      "case_id": "fmt-001-refund",
+      "question": "team",
+      "kind": "choice",
+      "values": {
+        "prose": 0.4545,
+        "flat": 0.4545,
+        "nested": 0.4545
+      },
+      "spread": 0.0,
+      "flips_at_0.5": false
+    },
+    {
+      "run_id": "20261025-005316-friction-mock",
+      "case_id": "fmt-002-outage",
+      "question": "is_urgent",
+      "kind": "noul",
+      "values": {
+        "prose": 1.0,
+        "flat": 1.0,
+        "nested": 1.0
+      },
+      "spread": 0.0,
+      "flips_at_0.5": false
+    },
+    {
+      "run_id": "20261025-005316-friction-mock",
+      "case_id": "fmt-002-outage",
+      "question": "is_outage",
+      "kind": "noul",
+      "values": {
+        "prose": 1.0,
+        "flat": 1.0,
+        "nested": 1.0
+      },
+      "spread": 0.0,
+      "flips_at_0.5": false
+    },
+    {
+      "run_id": "20261025-005316-friction-mock",
+      "case_id": "fmt-002-outage",
+      "question": "severity",
+      "kind": "score",
+      "values": {
+        "prose": 0.9,
+        "flat": 0.9,
+        "nested": 0.9
+      },
+      "spread": 0.0,
+      "flips_at_0.5": false
+    },
+    {
+      "run_id": "20261025-005316-friction-mock",
+      "case_id": "fmt-003-sales",
+      "question": "is_urgent",
+      "kind": "noul",
+      "values": {
+        "prose": 1.0,
+        "flat": 1.0,
+        "nested": 1.0
+      },
+      "spread": 0.0,
+      "flips_at_0.5": false
+    },
+    {
+      "run_id": "20261025-005316-friction-mock",
+      "case_id": "fmt-003-sales",
+      "question": "is_sales",
+      "kind": "noul",
+      "values": {
+        "prose": 1.0,
+        "flat": 1.0,
+        "nested": 1.0
+      },
+      "spread": 0.0,
+      "flips_at_0.5": false
+    },
+    {
+      "run_id": "20261025-005316-friction-mock",
+      "case_id": "fmt-003-sales",
+      "question": "severity",
+      "kind": "score",
+      "values": {
+        "prose": 0.9,
+        "flat": 0.9,
+        "nested": 0.9
+      },
+      "spread": 0.0,
+      "flips_at_0.5": false
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "run_id": "20261025-005431-mock",
+  "provider": "mock",
+  "price_per_mtok": 0.042,
+  "cases": 8,
+  "repeats": 2,
+  "battery_hash": "11406facccc8",
+  "dry_run": false,
+  "started_at": "2026-10-25T00:54:31",
+  "finished_at": "2026-10-25T00:54:31",
+  "duration_s": 0.0,
+  "cost_usd": 0.00010399,
+  "spend_cap_usd": 0.25,
+  "uuid": "b194b420-7396-4110-a877-3d94f03d4cf2"
+}

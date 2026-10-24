@@ -1,0 +1,115 @@
+{
+  "description": "Routing battery - realistic support tickets with gold labels. Swap these for your own tickets to get a real workload measurement.",
+  "cases": [
+    {
+      "id": "routing-001",
+      "group": "routing",
+      "class": "clear-cut",
+      "state": "Hi, I was charged twice for my subscription this month. Please refund the extra charge and confirm when it lands.",
+      "questions": {
+        "is_billing": {"type": "noul", "instructions": "Is this message about a payment, invoice or refund?"},
+        "team": {
+          "type": "choice",
+          "instructions": "Which team should handle this request?",
+          "criteria": {
+            "billing": "Charges, invoices, subscriptions and refunds",
+            "technical": "Errors, outages, integrations and configuration",
+            "sales": "Plans, pricing, upgrades and procurement",
+            "other": "None of the above - needs human triage"
+          }
+        },
+        "severity": {"type": "score", "instructions": "How severe is the customer impact?", "criteria": ["No impact", "Minor", "Major", "Critical"]}
+      },
+      "gold": {"is_billing": true, "team": "billing", "severity": 1},
+      "thresholds": {"is_billing": 0.5, "team": 0.6, "severity": 0.5}
+    },
+    {
+      "id": "routing-002",
+      "group": "routing",
+      "class": "clear-cut",
+      "state": "The API returns 502 for every request since 14:00 UTC. Our production pipeline is down.",
+      "questions": {
+        "is_billing": {"type": "noul", "instructions": "Is this message about a payment, invoice or refund?"},
+        "team": {
+          "type": "choice",
+          "instructions": "Which team should handle this request?",
+          "criteria": {
+            "billing": "Charges, invoices, subscriptions and refunds",
+            "technical": "Errors, outages, integrations and configuration",
+            "sales": "Plans, pricing, upgrades and procurement",
+            "other": "None of the above - needs human triage"
+          }
+        },
+        "severity": {"type": "score", "instructions": "How severe is the customer impact?", "criteria": ["No impact", "Minor", "Major", "Critical"]}
+      },
+      "gold": {"is_billing": false, "team": "technical", "severity": 3},
+      "thresholds": {"is_billing": 0.5, "team": 0.6, "severity": 0.5}
+    },
+    {
+      "id": "routing-003",
+      "group": "routing",
+      "class": "clear-cut",
+      "state": "Can you quote for 400 seats on the business plan, and is there volume pricing?",
+      "questions": {
+        "is_billing": {"type": "noul", "instructions": "Is this message about a payment, invoice or refund?"},
+        "team": {
+          "type": "choice",
+          "instructions": "Which team should handle this request?",
+          "criteria": {
+            "billing": "Charges, invoices, subscriptions and refunds",
+            "technical": "Errors, outages, integrations and configuration",
+            "sales": "Plans, pricing, upgrades and procurement",
+            "other": "None of the above - needs human triage"
+          }
+        },
+        "severity": {"type": "score", "instructions": "How severe is the customer impact?", "criteria": ["No impact", "Minor", "Major", "Critical"]}
+      },
+      "gold": {"is_billing": false, "team": "sales", "severity": 0},
+      "thresholds": {"is_billing": 0.5, "team": 0.6, "severity": 0.5}
+    },
+    {
+      "id": "routing-004",
+      "group": "routing",
+      "class": "borderline",
+      "state": "I want to cancel my plan and get last month refunded. Also, how do I move the invoice to a different company name?",
+      "questions": {
+        "is_billing": {"type": "noul", "instructions": "Is this message about a payment, invoice or refund?"},
+        "team": {
+          "type": "choice",
+          "instructions": "Which team should handle this request?",
+          "criteria": {
+            "billing": "Charges, invoices, subscriptions and refunds",
+            "technical": "Errors, outages, integrations and configuration",
+            "sales": "Plans, pricing, upgrades and procurement",
+            "other": "None of the above - needs human triage"
+          }
+        },
+        "severity": {"type": "score", "instructions": "How severe is the customer impact?", "criteria": ["No impact", "Minor", "Major", "Critical"]}
+      },
+      "gold": {"is_billing": true, "team": "billing", "severity": 1},
+      "thresholds": {"is_billing": 0.5, "team": 0.6, "severity": 0.5}
+    },
+    {
+      "id": "routing-005",
+      "group": "routing",
+      "class": "spam",
+      "state": "URGENT!!! You have won 1,000,000 dollars!!! Click here now to claim your prize!!!",
+      "questions": {
+        "is_billing": {"type": "noul", "instructions": "Is this message about a payment, invoice or refund?"},
+        "team": {
+          "type": "choice",
+          "instructions": "Which team should handle this request?",
+          "criteria": {
+            "billing": "Charges, invoices, subscriptions and refunds",
+            "technical": "Errors, outages, integrations and configuration",
+            "sales": "Plans, pricing, upgrades and procurement",
+            "other": "None of the above - needs human triage"
+          }
+        },
+        "severity": {"type": "score", "instructions": "How severe is the customer impact?", "criteria": ["No impact", "Minor", "Major", "Critical"]}
+      },
+      "gold": {"is_billing": false, "team": "other", "severity": 0},
+      "thresholds": {"is_billing": 0.5, "team": 0.6, "severity": 0.5}
+    }
+  ]
+}
