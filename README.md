@@ -4,6 +4,18 @@ An open, neutral harness for measuring **decision models** (TypeSafe Jev, Cloudf
 
 The point: every vendor published a benchmark table where they win, and the two headline tables disagree with each other. This repo exists so a third party can run the comparison.
 
+## Start here
+
+| File | What it is |
+|---|---|
+| [`AGENTS.md`](AGENTS.md) | The rules for this repo — for humans and for other AI agents |
+| [`AI-CONTEXT.md`](AI-CONTEXT.md) | Machine-readable current state: what exists, what is verified, what is blocked |
+| [`LEARNING.md`](LEARNING.md) | The 15-day curriculum this repo teaches, day by day |
+| [`docs/architecture-graph.md`](docs/architecture-graph.md) | The code graph — 188 nodes, 9 communities, with the interactive version alongside |
+| [`docs/decision-log.md`](docs/decision-log.md) | Every decision that shaped this repo, and what it cost |
+| [`examples/README.md`](examples/README.md) | The learning path: five runnable scripts that teach the maths |
+
+
 ## Zero-install
 
 Pure Python standard library. No `pip install`, no virtualenv, no dependencies.

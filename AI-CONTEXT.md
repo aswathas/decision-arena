@@ -58,11 +58,15 @@ verified_facts:
     evidence: "C:/Users/aswat/.minimax/skills/learn-by-doing/SKILL.md"
     verified_on: 2026-10-25
   - id: vault-graph
-    claim: "The vault knowledge graph builds: 380 nodes, 444 edges, 28 labelled communities (baseline, pre-restructure)."
+    claim: "The vault knowledge graph builds: post-restructure 458 nodes, 587 edges, 35 labelled communities; baseline (pre-restructure) 380 nodes, 444 edges, 28 communities."
     evidence: "docs/architecture-graph.md"
     verified_on: 2026-10-25
   - id: repo-graph
     claim: "The repo AST graph builds: 188 nodes, 358 edges, 9 communities across 16 Python files."
+    evidence: "docs/architecture-graph.md"
+    verified_on: 2026-10-25
+  - id: graphify-query
+    claim: "graphify query answers codebase questions from the graph: 'where is the swap safety metric computed' returns action_change_rate() at decisionarena/metrics.py:136 and cmd_swap() at decisionarena/cli.py:89."
     evidence: "docs/architecture-graph.md"
     verified_on: 2026-10-25
 
@@ -73,9 +77,6 @@ in_progress:
   - id: day-2-learning
     what: "Aswath works through examples/00 .. examples/04 himself."
     state: "scaffolds exist; the learning pass has not happened yet"
-  - id: vault-graph-run-b
-    what: "Post-restructure verification graph of the vault."
-    state: "extraction dispatched"
 
 next_actions:
   - "Day 2: work through examples/01_softmax.py and 02_temperature.py, quiz, log."

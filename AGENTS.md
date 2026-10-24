@@ -73,13 +73,20 @@ python -m decisionarena swap --provider a=jev --provider b=clef:clef-flash
 The repo and the Obsidian vault are indexed by **graphify** into a knowledge graph.
 Before guessing where something lives, *query the graph*:
 
-```bash
-cd C:\Users\aswat\Downloads\Projects\graphify-vault
+```powershell
+# the code graph (AST: modules, functions, call edges)
+cd C:\Users\aswat\Downloads\Projects\graphify-repo
 graphify query "where is the swap safety metric computed"
+
+# the vault graph (concepts, evidence, themes)
+cd C:\Users\aswat\Downloads\Projects\graphify-vault-b
+graphify query "what connects the format-sensitivity finding to the open model zoo"
 ```
 
-The graph skill lives at `C:\Users\aswat\.claude\skills\graphify\SKILL.md`.
-Graph output for the code lives in `docs/architecture-graph.md`.
+Both graphs are built with the graphify interpreter recorded in each working
+directory's `graphify-out/.graphify_python`. The skill lives at
+`C:\Users\aswat\.claude\skills\graphify\SKILL.md`. The code graph's rendered form is
+`docs/architecture-graph.md`; the vault's lives in `Learning/Graph/` in the vault.
 
 ## The learning loop
 
