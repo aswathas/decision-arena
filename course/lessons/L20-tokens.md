@@ -52,6 +52,27 @@ number of tokens it can hold in mind at once. Anything past the window is not
 "old context the model skimmed" - it is gone. The model cannot use it, and it
 does not even know it is gone.
 
+## The story
+
+Imagine a print shop that turns one long customer message into a strip of stubs.
+A clerk feeds the ticket through a cutter. The cutter does not read words; it
+snaps the ticket at the seams of the stock it was printed on. So "charged" may
+come out as one stub, and the same word on another ticket may come out as three,
+depending on how that run was cut.
+
+Each stub then gets a number from a drawer of cards, and the drawer is finite:
+there is a highest card. The clerk can only pull cards that exist, so anything
+odd - a typo, a product name nobody stocks, a half word glued to its neighbour -
+gets split into pieces that do exist.
+
+A number on a stub means nothing by itself. It is a position in that one
+drawer's catalogue. The counter across the street runs a different catalogue, so
+the same word carries a different number there. Neither is wrong.
+
+The stubs then go into a hopper feeding a reader, and the reader has a fixed
+throat: it takes eight thousand stubs and no more. Hand it twelve thousand and
+the front four thousand slide off the belt, out of sight, without a sound.
+
 ## The real thing
 
 Three names, one pipeline.

@@ -68,6 +68,18 @@ inaccurate (it says 50% and is right 50% of the time - useless, but honest).
 You need both numbers. The harness reports both: `score_case()` returns
 `accuracy`, `brier` and `ece` together.
 
+## The story
+
+A weather forecaster who says "90% chance of rain" on the radio. You keep a notebook. Every time the forecaster says 90%, you write down whether it actually rained. After a month you look: of the days when the forecaster said 90%, it rained on about six in ten.
+
+Six in ten, against a promise of nine in ten. That forecaster is overconfident, and the gap - about thirty percentage points - is the danger. A rule that trusts the 90% calls is wrong four times in ten, and the wrong ones are the ones announced most firmly.
+
+Now the twist. Move the forecaster to a different coast and the notebook changes, even though the forecaster and the arithmetic - none of it - changed. The coast has different weather. A forecaster can be honest on the hills they trained on and wrong on the messy tickets that actually reach them.
+
+So the notebook is a table, not a single number: for each confidence band, what was promised against what happened. Each band's gap is weighted by how many days landed in it, so a band with three days counts for much less than a band with three hundred.
+
+The cheapest repair is a dial on the forecaster's desk: soften the numbers without changing which forecast they give.
+
 ## The real thing
 
 **Calibration** is the property that the model's stated probability matches

@@ -1,0 +1,137 @@
+---
+/* L30 - cross-entropy: the penalty on a confident mistake is unbounded. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L30.jpg`}
+      alt="A line drawing of two lever balances: on the left a heavy block on a steeply tilted beam with a tall stack of coins beside the pivot, and on the right a level beam holding only a few low coins."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L30-fig-title L30-fig-desc"
+    >
+      <title id="L30-fig-title">The penalty for a confident mistake has no ceiling</title>
+      <desc id="L30-fig-desc">
+        A plot of loss against the probability the model gave the true answer,
+        with the horizontal axis on a log scale from 0.001 to 1 and the vertical
+        axis from 0 to 7 nats. Two curves are drawn. The cross-entropy curve
+        starts near seven nats at probability 0.001, passes two and a third
+        nats at 0.1 and just under one nat at 0.5, and falls to almost nothing
+        at 1; three labelled points mark 6.908, 2.303 and 0.693 on it. The
+        squared-error curve, drawn as a dashed line, stays below one nat
+        everywhere on the plot, so the two curves separate sharply on the left.
+      </desc>
+
+      <!-- the axes -->
+      <g class="fig-axis">
+        <path d="M64 300 H616 M64 300 V40" />
+      </g>
+      <text x="26" y="44" class="fig-text fig-text--dim">6</text>
+      <text x="26" y="155" class="fig-text fig-text--dim">4</text>
+      <text x="26" y="229" class="fig-text fig-text--dim">2</text>
+      <text x="26" y="304" class="fig-text fig-text--dim">0</text>
+      <text x="56" y="320" class="fig-text fig-text--dim">0.001</text>
+      <text x="234" y="320" class="fig-text fig-text--dim">0.01</text>
+      <text x="420" y="320" class="fig-text fig-text--dim">0.1</text>
+      <text x="550" y="320" class="fig-text fig-text--dim">0.5</text>
+      <text x="592" y="320" class="fig-text fig-text--dim">1</text>
+      <text x="252" y="336" class="fig-label">probability p, log scale</text>
+
+      <!-- the squared error curve: flat, capped at one nat -->
+      <g class="fig-curve fig-curve--weak">
+        <path d="M64 263 C 140 263, 300 266, 432 270 C 500 273, 570 290, 616 300" />
+      </g>
+      <text x="300" y="290" class="fig-text fig-text--dim">(1 - p)^2</text>
+
+      <!-- the cross-entropy curve: no ceiling -->
+      <g class="m-draw fig-curve fig-curve--ink" style="--m-length: 700; --m-duration: 2.4s">
+        <path d="M64 44 C 90 62, 150 92, 248 129 C 320 165, 380 190, 432 215 C 480 236, 530 260, 560 274 C 585 285, 605 295, 616 300" />
+      </g>
+
+      <!-- the labelled points -->
+      <g class="fig-point">
+        <circle cx="64" cy="44" r="4" />
+        <circle cx="432" cy="215" r="4" />
+        <circle cx="560" cy="274" r="4" />
+      </g>
+      <text x="78" y="38" class="fig-text fig-text--num fig-text--ink">6.908</text>
+      <text x="444" y="208" class="fig-text fig-text--num fig-text--ink">2.303</text>
+      <text x="500" y="292" class="fig-text fig-text--num fig-text--ink">0.693</text>
+
+      <!-- the legend, in the empty upper right -->
+      <g>
+        <rect x="288" y="50" width="132" height="42" class="fig-panel" />
+        <text x="300" y="68" class="fig-text fig-text--ink">-log(p)</text>
+        <text x="300" y="84" class="fig-text fig-text--dim">nats, unbounded</text>
+      </g>
+      <text x="520" y="238" class="fig-text fig-text--dim">at p = 0.9: 0.105</text>
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L30</span>
+    <span class="fig__caption-text">Cross-entropy charges nearly seven nats for a confident mistake and has no ceiling, while squared error stays under one nat everywhere on the plot.</span>
+  </figcaption>
+</figure>
+
+<style>
+  .fig-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    fill: var(--color-ink-45);
+  }
+
+  .fig-text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--color-ink-70);
+  }
+
+  .fig-text--ink {
+    fill: var(--color-ink);
+  }
+
+  .fig-text--dim {
+    fill: var(--color-ink-45);
+  }
+
+  .fig-text--num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fig-axis path {
+    fill: none;
+    stroke: var(--color-rule);
+    stroke-width: 1;
+  }
+
+  .fig-curve path {
+    fill: none;
+    stroke-width: 1;
+  }
+
+  .fig-curve--ink path {
+    stroke: var(--color-ink);
+  }
+
+  .fig-curve--weak path {
+    stroke: var(--color-ink-45);
+    stroke-dasharray: 4 3;
+  }
+
+  .fig-point circle {
+    fill: var(--color-prussian);
+  }
+
+  .fig-panel {
+    fill: none;
+    stroke: var(--color-rule-soft);
+    stroke-width: 1;
+  }
+</style>

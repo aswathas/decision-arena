@@ -1,0 +1,203 @@
+---
+/* L24 - from logits to a decision: temperature moves the shares, the threshold decides. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L24.jpg`}
+      alt="A line drawing of three identical weighing scales standing in a row, each holding round weights stacked differently, with a dashed chalk line drawn across the wall behind them that the tallest stack on the first scale rises past and the last one falls short of."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L24-fig-title L24-fig-desc"
+    >
+      <title id="L24-fig-title">The same ranking at three temperatures, and one threshold</title>
+      <desc id="L24-fig-desc">
+        Three bar groups side by side, one per temperature: 0.1, 1.0 and 5.0.
+        Each group has three bars for billing, technical and other, and billing
+        is the tallest bar in all three groups, so the ranking never changes.
+        A horizontal dashed line at 0.6 is the action threshold. At temperature
+        0.1 the billing bar stands at 0.9999, well above the line; at 1.0 it
+        stands at 0.6285 and clears the line narrowly; at 5.0 it has fallen to
+        0.3907, below the line, and the verdict reads did not act. A marker
+        travels down from the height the billing bar had at temperature 1.0 to
+        the height it has at 5.0, crossing the threshold on the way.
+      </desc>
+
+      <!-- the axes -->
+      <g class="fig-axis">
+        <path d="M56 300 H616 M56 300 V50" />
+      </g>
+      <text x="22" y="54" class="fig-text fig-text--dim">1.0</text>
+      <text x="22" y="158" class="fig-text fig-text--dim">0.6</text>
+      <text x="22" y="304" class="fig-text fig-text--dim">0.0</text>
+
+      <!-- the action threshold -->
+      <g class="fig-threshold">
+        <path d="M56 154 H616" />
+      </g>
+      <text x="56" y="148" class="fig-text fig-text--ink">threshold 0.6</text>
+
+      <!-- group 1: T = 0.1 -->
+      <g>
+        <text x="86" y="36" class="fig-label">T = 0.1</text>
+        <rect class="fig-bar fig-bar--ink" x="86" y="56" width="34" height="244" />
+        <rect class="fig-bar fig-bar--weak" x="126" y="299" width="34" height="1" />
+        <rect class="fig-bar fig-bar--weak" x="166" y="299" width="34" height="1" />
+        <text x="88" y="72" class="fig-text fig-text--num fig-text--on">0.9999</text>
+        <text x="76" y="316" class="fig-text fig-text--dim">billing</text>
+        <text x="122" y="316" class="fig-text fig-text--dim">tech</text>
+        <text x="168" y="316" class="fig-text fig-text--dim">other</text>
+        <text x="76" y="332" class="fig-text fig-text--dim">both others below 0.0001</text>
+        <text x="86" y="238" class="fig-text fig-text--on fig-text--num">acted</text>
+      </g>
+
+      <!-- group 2: T = 1.0 -->
+      <g>
+        <text x="266" y="36" class="fig-label">T = 1.0</text>
+        <rect class="fig-bar fig-bar--ink" x="266" y="147" width="34" height="153" />
+        <rect class="fig-bar fig-bar--mid" x="306" y="244" width="34" height="56" />
+        <rect class="fig-bar fig-bar--weak" x="346" y="266" width="34" height="34" />
+        <text x="268" y="163" class="fig-text fig-text--num fig-text--on">0.6285</text>
+        <text x="256" y="316" class="fig-text fig-text--dim">billing</text>
+        <text x="302" y="316" class="fig-text fig-text--dim">tech</text>
+        <text x="348" y="316" class="fig-text fig-text--dim">other</text>
+        <text x="256" y="332" class="fig-text fig-text--dim">0.2312 / 0.1402</text>
+        <text x="266" y="238" class="fig-text fig-text--on fig-text--num">acted</text>
+      </g>
+
+      <!-- group 3: T = 5.0 -->
+      <g>
+        <text x="446" y="36" class="fig-label">T = 5.0</text>
+        <rect class="fig-bar fig-bar--ink" x="446" y="205" width="34" height="95" />
+        <rect class="fig-bar fig-bar--mid" x="486" y="222" width="34" height="78" />
+        <rect class="fig-bar fig-bar--weak" x="526" y="229" width="34" height="71" />
+        <text x="448" y="221" class="fig-text fig-text--num fig-text--on">0.3907</text>
+        <text x="436" y="316" class="fig-text fig-text--dim">billing</text>
+        <text x="482" y="316" class="fig-text fig-text--dim">tech</text>
+        <text x="528" y="316" class="fig-text fig-text--dim">other</text>
+        <text x="436" y="332" class="fig-text fig-text--dim">0.3199 / 0.2894</text>
+        <text x="446" y="238" class="fig-text fig-text--ink fig-text--num">did not act</text>
+      </g>
+
+      <!-- where billing stood at T = 1.0, and the drop to T = 5.0 -->
+      <g class="fig-ref">
+        <path d="M436 147 H612" />
+      </g>
+      <text x="436" y="142" class="fig-text fig-text--dim">billing at T = 1.0</text>
+      <g class="m-draw fig-drop" style="--m-length: 210; --m-duration: 1.6s">
+        <path d="M496 147 V205 M490 147 H502 M490 205 H502" />
+      </g>
+      <g class="m-drop fig-marker">
+        <circle cx="496" cy="147" r="4" />
+      </g>
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L24</span>
+    <span class="fig__caption-text">Raising the temperature flattens the shares without reordering the options, and at temperature 5.0 the top option has fallen below the 0.6 action threshold.</span>
+  </figcaption>
+</figure>
+
+<style>
+  .fig-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    fill: var(--color-ink-45);
+  }
+
+  .fig-text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--color-ink-70);
+  }
+
+  .fig-text--ink {
+    fill: var(--color-ink);
+  }
+
+  .fig-text--dim {
+    fill: var(--color-ink-45);
+  }
+
+  .fig-text--num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fig-text--on {
+    fill: var(--color-ground);
+  }
+
+  .fig-axis path {
+    fill: none;
+    stroke: var(--color-rule);
+    stroke-width: 1;
+  }
+
+  .fig-threshold path {
+    fill: none;
+    stroke: var(--color-prussian);
+    stroke-width: 1;
+    stroke-dasharray: 5 4;
+  }
+
+  .fig-ref path {
+    fill: none;
+    stroke: var(--color-rule);
+    stroke-width: 1;
+    stroke-dasharray: 2 3;
+  }
+
+  .fig-bar {
+    stroke: none;
+  }
+
+  .fig-bar--ink {
+    fill: var(--color-prussian);
+  }
+
+  .fig-bar--mid {
+    fill: var(--color-prussian-tint);
+  }
+
+  .fig-bar--weak {
+    fill: var(--color-rule);
+  }
+
+  .fig-drop path {
+    fill: none;
+    stroke: var(--color-ink);
+    stroke-width: 1;
+  }
+
+  .fig-marker circle {
+    fill: var(--color-ink);
+  }
+
+  /* the one idea of motion: the marker travels down through the threshold */
+  @keyframes l24-drop {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(58px);
+    }
+  }
+
+  .fig-marker {
+    animation: l24-drop 1.8s ease-in-out 0.5s both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fig-marker {
+      animation: none !important;
+      transform: none;
+    }
+  }
+</style>

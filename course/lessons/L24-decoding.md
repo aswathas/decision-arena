@@ -57,6 +57,20 @@ you listed in the question - and returns a distribution over exactly those,
 once. The decision model's "decoding" is not a loop; it is a single softmax
 over your options.
 
+## The story
+
+At the end of a shift the cook has a row of dishes scored on a slate: 2.0, 1.0, 0.5. Those scores are not answers. They are raw numbers, not shares of anything.
+
+The slate goes through an oven that turns scores into shares adding up to one. Nothing is thrown away. The top dish gets the biggest share, but the other two still get some - and that leftover is information you would have lost if the oven simply announced the winner.
+
+Two people serve from the same slate. The first always points at the top dish: same ticket, same answer, always. The second reaches in with a spinner and takes in proportion to the shares, so the top dish comes up about 72% of the time and the second about 18%.
+
+One dial sits on the oven. Turn it and the shares sharpen or spread out. The order never changes, but the sizes move.
+
+A rule is written by the door: a dish is served only if its share clears a line. Spread the shares enough and the top dish no longer clears it. Same slate, same cook, same shift - and nothing goes out.
+
+A chat model is that oven in a loop: it serves one word, writes it down, and runs the oven again.
+
 ## The real thing
 
 **Decoding** is the step that turns logits into output. There are two

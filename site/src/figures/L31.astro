@@ -1,0 +1,168 @@
+---
+/* L31 - the gradient: a direction of steepest ascent, and a factor that vanishes. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L31.jpg`}
+      alt="A line drawing of a walker in thick fog feeling the ground ahead with a walking stick, standing in a bowl-shaped hollow, and beside him a bell-shaped curve on plain paper with a dotted line through its peak, tapering to nothing at both ends."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L31-fig-title L31-fig-desc"
+    >
+      <title id="L31-fig-title">The gradient points uphill, and the factor that sets the step size vanishes</title>
+      <desc id="L31-fig-desc">
+        On the left, a bowl-shaped loss surface drawn as a curve, with a marked
+        point on its left flank. A short arrow pointing up the slope is
+        labelled the gradient, the direction of steepest ascent, and a second
+        arrow pointing down the slope is labelled the update. On the right, a
+        plot of the step-size factor p times one minus p against p, drawn as a
+        bell-shaped curve that peaks at one quarter when p is one half and
+        collapses to almost nothing as p approaches zero or one; the values
+        0.25 and 0.0099 are labelled.
+      </desc>
+
+      <!-- the bowl -->
+      <text x="24" y="32" class="fig-label">the loss surface</text>
+      <g class="fig-axis">
+        <path d="M40 300 H320 M40 300 V52" />
+      </g>
+      <g class="fig-curve">
+        <path d="M52 88 C 110 250, 190 262, 308 252" />
+      </g>
+      <text x="52" y="60" class="fig-text fig-text--dim">loss</text>
+
+      <!-- the point on the flank -->
+      <circle cx="96" cy="200" r="4" class="fig-point-dot" />
+      <text x="66" y="222" class="fig-text fig-text--dim">here</text>
+
+      <!-- the gradient, uphill -->
+      <g class="fig-arrow">
+        <path d="M96 196 L142 120" />
+        <path d="M142 120 l-9 5 l7 6 z" class="fig-arrow-head" />
+      </g>
+      <text x="148" y="112" class="fig-text fig-text--ink">gradient</text>
+      <text x="148" y="126" class="fig-text fig-text--dim">steepest ascent</text>
+
+      <!-- the update, downhill -->
+      <g class="fig-arrow fig-arrow--down">
+        <path d="M92 204 L58 276" />
+        <path d="M58 276 l9 -5 l-7 -6 z" class="fig-arrow-head" />
+      </g>
+      <text x="150" y="292" class="fig-text fig-text--ink">update</text>
+      <text x="150" y="306" class="fig-text fig-text--dim">walk against it</text>
+
+      <!-- the factor -->
+      <text x="360" y="32" class="fig-label">step size: p(1 - p)</text>
+      <g class="fig-axis">
+        <path d="M376 300 H616 M376 300 V52" />
+      </g>
+      <g class="m-draw fig-curve fig-curve--ink" style="--m-length: 460; --m-duration: 2s">
+        <path d="M380 288 C 400 160, 430 118, 496 118 C 562 118, 592 160, 612 288" />
+      </g>
+      <circle cx="496" cy="118" r="4" class="fig-point-dot" />
+      <text x="452" y="108" class="fig-text fig-text--num fig-text--ink">0.25</text>
+      <text x="466" y="134" class="fig-text fig-text--dim">p = 0.5</text>
+      <circle cx="600" cy="270" r="4" class="fig-point-dot" />
+      <text x="520" y="272" class="fig-text fig-text--num fig-text--ink">0.0099</text>
+      <text x="520" y="288" class="fig-text fig-text--dim">p = 0.99</text>
+      <text x="376" y="320" class="fig-text fig-text--dim">0</text>
+      <text x="486" y="320" class="fig-text fig-text--dim">p</text>
+      <text x="604" y="320" class="fig-text fig-text--dim">1</text>
+
+      <!-- the consequence -->
+      <g>
+        <rect x="24" y="188" width="292" height="72" class="fig-panel fig-panel--ink" />
+        <text x="36" y="210" class="fig-text fig-text--ink">a confident mistake</text>
+        <text x="36" y="228" class="fig-text fig-text--dim">has the right direction</text>
+        <text x="36" y="246" class="fig-text fig-text--dim">and almost no push</text>
+      </g>
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L31</span>
+    <span class="fig__caption-text">The gradient points up the slope and training walks the other way, but the factor that sets the step size collapses to almost nothing once the model is confident.</span>
+  </figcaption>
+</figure>
+
+<style>
+  .fig-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    fill: var(--color-ink-45);
+  }
+
+  .fig-text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--color-ink-70);
+  }
+
+  .fig-text--ink {
+    fill: var(--color-ink);
+  }
+
+  .fig-text--dim {
+    fill: var(--color-ink-45);
+  }
+
+  .fig-text--num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fig-axis path {
+    fill: none;
+    stroke: var(--color-rule);
+    stroke-width: 1;
+  }
+
+  .fig-curve path {
+    fill: none;
+    stroke: var(--color-ink);
+    stroke-width: 1;
+  }
+
+  .fig-curve--ink path {
+    stroke: var(--color-prussian);
+  }
+
+  .fig-arrow path {
+    fill: none;
+    stroke: var(--color-ink);
+    stroke-width: 1;
+  }
+
+  .fig-arrow--down path {
+    stroke: var(--color-prussian);
+  }
+
+  .fig-arrow .fig-arrow-head {
+    fill: var(--color-ink);
+    stroke: none;
+  }
+
+  .fig-arrow--down .fig-arrow-head {
+    fill: var(--color-prussian);
+  }
+
+  .fig-point-dot {
+    fill: var(--color-prussian);
+  }
+
+  .fig-panel {
+    fill: none;
+    stroke: var(--color-rule-soft);
+    stroke-width: 1;
+  }
+
+  .fig-panel--ink {
+    stroke: var(--color-ink);
+  }
+</style>

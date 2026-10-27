@@ -58,6 +58,16 @@ model says `p = 0` for the right answer, any loss that uses `1 - p` says
 an infinitely confident mistake, and it should be punished infinitely
 harder. Only a loss with a logarithm can express that.
 
+## The story
+
+A betting shop where the price of information is printed on the wall. You ask the shopkeeper which of three horses will win, and he names one, and then he charges you for the answer.
+
+If he names the favourite and gives it 90% of the odds, the answer costs almost nothing - about 0.105 nats. You barely learned anything; you already believed it. But if he names a horse and gives it one chance in a thousand, and that horse loses, the answer was worth about 6.9 nats. You had to pay to hear something that rewrote what you knew.
+
+So the price is not the mistake, it is the surprise. A wrong tip you were already suspicious of is cheap. A wrong tip you were certain of is the most expensive thing in the shop, and the price climbs without limit as the odds approach zero - a shopkeeper who is completely certain and completely wrong charges you more than you have.
+
+Another shop down the road charges differently: the distance between what you were told and what was true. A percentage, never more than one, easy to read. But it cannot tell a shopkeeper who was slightly wrong from one who was spectacularly wrong.
+
 ## The real thing
 
 **Cross-entropy** measures the **surprise** of the truth under the model's

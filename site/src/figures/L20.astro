@@ -1,0 +1,227 @@
+---
+/* L20 - tokens: a ticket cut into pieces, and the window that cuts it again. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L20.jpg`}
+      alt="A line drawing of a paper tape running through a cutting machine that snaps it into short stubs of uneven length, the stubs falling into an open tray while the tape runs on into a narrow reading slot and the leading stubs fall away off the front edge."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L20-fig-title L20-fig-desc"
+    >
+      <title id="L20-fig-title">A ticket cut into tokens, and a window that cuts it again</title>
+      <desc id="L20-fig-desc">
+        A long ticket is shown as a strip of unequal-length pieces labelled
+        with the words I, was, charged, twice, for and my, and beneath them a
+        second strip carries the id numbers 40, 317, 8821, 1902, 51 and 9 that
+        stand for them. Below, a vocabulary panel shows a finite row of cards
+        ending at a highest id. To the right, an attention window is drawn as a
+        bracket over part of a longer strip of pieces; the pieces outside the
+        bracket slide away and fade at the front end, labelled dropped from the
+        front.
+      </desc>
+
+      <!-- axis labels -->
+      <text x="24" y="40" class="fig-label">text</text>
+      <text x="24" y="132" class="fig-label">token ids</text>
+      <text x="404" y="40" class="fig-label">attention window</text>
+
+      <!-- the ticket, cut into pieces -->
+      <g class="fig-line">
+        <path d="M24 56 H372" />
+      </g>
+      <g>
+        <rect x="24" y="48" width="44" height="26" class="fig-box" />
+        <rect x="68" y="48" width="62" height="26" class="fig-box" />
+        <rect x="130" y="48" width="98" height="26" class="fig-box fig-box--ink" />
+        <rect x="228" y="48" width="52" height="26" class="fig-box fig-box--ink" />
+        <rect x="280" y="48" width="34" height="26" class="fig-box" />
+        <rect x="314" y="48" width="58" height="26" class="fig-box" />
+      </g>
+      <text x="30" y="66" class="fig-text">I</text>
+      <text x="73" y="66" class="fig-text">was</text>
+      <text x="136" y="66" class="fig-text fig-text--ink">charged</text>
+      <text x="233" y="66" class="fig-text fig-text--ink">twice</text>
+      <text x="284" y="66" class="fig-text">for</text>
+      <text x="319" y="66" class="fig-text">my</text>
+
+      <!-- the ids -->
+      <g>
+        <rect x="24" y="112" width="44" height="26" class="fig-box" />
+        <rect x="68" y="112" width="62" height="26" class="fig-box" />
+        <rect x="130" y="112" width="98" height="26" class="fig-box fig-box--ink" />
+        <rect x="228" y="112" width="52" height="26" class="fig-box fig-box--ink" />
+        <rect x="280" y="112" width="34" height="26" class="fig-box" />
+        <rect x="314" y="112" width="58" height="26" class="fig-box" />
+      </g>
+      <text x="36" y="130" class="fig-text fig-text--num">40</text>
+      <text x="86" y="130" class="fig-text fig-text--num">317</text>
+      <text x="165" y="130" class="fig-text fig-text--num fig-text--ink">8821</text>
+      <text x="240" y="130" class="fig-text fig-text--num fig-text--ink">1902</text>
+      <text x="286" y="130" class="fig-text fig-text--num">51</text>
+      <text x="330" y="130" class="fig-text fig-text--num">9</text>
+
+      <!-- the vocabulary list, finite -->
+      <g>
+        <rect x="24" y="176" width="348" height="46" class="fig-panel" />
+        <text x="36" y="196" class="fig-text">vocabulary</text>
+        <g class="fig-tick">
+          <rect x="120" y="186" width="10" height="10" />
+          <rect x="136" y="186" width="10" height="10" />
+          <rect x="152" y="186" width="10" height="10" />
+          <rect x="168" y="186" width="10" height="10" />
+          <rect x="184" y="186" width="10" height="10" />
+          <rect x="200" y="186" width="10" height="10" />
+          <rect x="216" y="186" width="10" height="10" />
+          <rect x="232" y="186" width="10" height="10" />
+        </g>
+        <text x="258" y="196" class="fig-text fig-text--num">... 32768</text>
+        <text x="36" y="214" class="fig-text fig-text--dim">the highest id is the last card in the drawer</text>
+      </g>
+
+      <!-- the attention window -->
+      <g>
+        <rect x="404" y="48" width="212" height="26" class="fig-box fig-box--fill" />
+        <rect x="404" y="48" width="60" height="26" class="fig-box fig-box--ink" />
+        <rect x="464" y="48" width="54" height="26" class="fig-box fig-box--ink" />
+        <rect x="518" y="48" width="42" height="26" class="fig-box" />
+        <rect x="560" y="48" width="56" height="26" class="fig-box" />
+      </g>
+      <g class="fig-line fig-line--rule">
+        <path d="M404 88 H616" />
+        <path d="M404 88 V74 M616 88 V74" />
+      </g>
+      <text x="404" y="106" class="fig-text fig-text--dim">8,000 tokens held</text>
+
+      <!-- the overflow falling off the front -->
+      <g class="m-drop">
+        <rect x="316" y="48" width="60" height="26" class="fig-box fig-box--drop" />
+        <rect x="256" y="48" width="60" height="26" class="fig-box fig-box--drop" />
+        <path d="M330 40 L300 24 M290 40 L260 24" class="fig-arrow" />
+      </g>
+      <text x="222" y="20" class="fig-text fig-text--drop">dropped from the front</text>
+
+      <!-- the count -->
+      <g>
+        <rect x="404" y="176" width="212" height="46" class="fig-panel" />
+        <text x="416" y="196" class="fig-text">tokens in: 12,000</text>
+        <text x="416" y="214" class="fig-text fig-text--num">cost = tok * price / 1e6</text>
+      </g>
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L20</span>
+    <span class="fig__caption-text">A ticket is cut into unequal tokens, each given a number from a finite vocabulary, and the tokens that fall outside the attention window are dropped from the front.</span>
+  </figcaption>
+</figure>
+
+<style>
+  .fig-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    fill: var(--color-ink-45);
+  }
+
+  .fig-text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--color-ink-70);
+  }
+
+  .fig-text--ink {
+    fill: var(--color-ink);
+  }
+
+  .fig-text--dim {
+    fill: var(--color-ink-45);
+  }
+
+  .fig-text--drop {
+    fill: var(--color-prussian);
+  }
+
+  .fig-text--num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fig-box {
+    fill: var(--color-ground);
+    stroke: var(--color-rule);
+    stroke-width: 1;
+  }
+
+  .fig-box--ink {
+    stroke: var(--color-ink);
+  }
+
+  .fig-box--fill {
+    fill: var(--color-prussian-tint);
+    stroke: var(--color-rule);
+  }
+
+  .fig-box--drop {
+    fill: var(--color-ground-deep);
+    stroke: var(--color-prussian);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+  }
+
+  .fig-panel {
+    fill: none;
+    stroke: var(--color-rule-soft);
+    stroke-width: 1;
+  }
+
+  .fig-tick rect {
+    fill: var(--color-rule);
+    stroke: none;
+  }
+
+  .fig-arrow {
+    fill: none;
+    stroke: var(--color-prussian);
+    stroke-width: 1;
+  }
+
+  .fig-line path {
+    fill: none;
+    stroke: var(--color-ink);
+    stroke-width: 1;
+  }
+
+  .fig-line--rule path {
+    stroke: var(--color-ink-70);
+  }
+
+  /* the one idea of motion: the overflow slides off the front of the window */
+  @keyframes l20-drop {
+    from {
+      transform: translate(0, 0);
+      opacity: 1;
+    }
+    to {
+      transform: translate(-26px, 16px);
+      opacity: 0;
+    }
+  }
+
+  .m-drop {
+    animation: l20-drop 2.2s ease-in 0.9s forwards;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .m-drop {
+      animation: none !important;
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

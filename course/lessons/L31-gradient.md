@@ -91,6 +91,16 @@ loss on `z` instead - a loss that is linear in `z` - the factor disappears
 by cancellation. That is exactly why real models do not use a plain sigmoid
 plus a plain log loss at the output.
 
+## The story
+
+You are on a hillside in thick fog and you cannot see the slope. But you can feel the ground. Put a foot slightly forward, back, a little to the left. Each time, note how much the ground rose. The direction in which the ground rises fastest is the gradient. To go downhill, walk the other way.
+
+Now make the hill harder. There is a slope for every stone on it - one number for each weight the model owns. Move only one stone, feel how the hill changed under that stone alone, and that single reading is one partial derivative. One reading per stone, gathered together, is the gradient.
+
+You could feel each stone separately, but that is two walks per stone, and a model has far too many stones. The chain rule is the shortcut: the loss touches the score, the score goes through the squashing, and only then does the weight matter, so the answer is the three local readings multiplied together.
+
+And there is the catch. One of the three factors, the squashing's own sensitivity, is large only in the middle. Near zero or near one it shrinks to almost nothing. So the model that is certain and wrong gets almost no push. The direction is right. The push is missing.
+
 ## The real thing
 
 **The chain rule, concretely.** We want `dL/dw_i` for the chain

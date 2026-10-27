@@ -1,0 +1,129 @@
+---
+/* L14 - argmax: the ranking survives every scale change. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L14.jpg`}
+      alt="A line drawing of a scoreboard wall in two rows, each row carrying three unmarked raised blocks of decreasing height, with a stagehand's long pointer touching the tallest block in the upper row while the lower row's tallest block stands in the same position."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L14-fig-title L14-fig-desc"
+    >
+      <title id="L14-fig-title">The ranking survives every change of scale</title>
+      <desc id="L14-fig-desc">
+        Across the top, four boxes are joined by arrows: logits, scaled logits,
+        probabilities and a label, with the steps divide by T, softmax and
+        argmax written above the arrows. Below, the raw scores 8, 5 and 4 are
+        listed in rank order on the left and repeated in the same order on the
+        right, joined by two arrows labelled multiply every logit by 3 and add
+        100 to every logit. On the far right, a note says that argmax returns
+        a position and not a value, and that a tie goes to the lower index.
+      </desc>
+
+      <defs>
+        <marker id="L14-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-ink-45)" />
+        </marker>
+        <marker id="L14-arrow-prussian" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-prussian)" />
+        </marker>
+      </defs>
+
+      <!-- the chain -->
+      <text x="181" y="44" class="fig-text fig-text--dim" text-anchor="middle">÷ T</text>
+      <text x="341" y="44" class="fig-text fig-text--dim" text-anchor="middle">softmax</text>
+      <text x="501" y="44" class="fig-text fig-text--dim" text-anchor="middle">argmax</text>
+
+      <rect x="40" y="50" width="125" height="58" class="fig-box" />
+      <text x="52" y="74" class="fig-text fig-text--ink">logits</text>
+      <text x="52" y="94" class="fig-text fig-text--dim">raw scores</text>
+
+      <path d="M 167 79 L 196 79" fill="none" stroke="var(--color-ink-45)" stroke-width="1" marker-end="url(#L14-arrow)" />
+
+      <rect x="200" y="50" width="125" height="58" class="fig-box" />
+      <text x="212" y="74" class="fig-text fig-text--ink">scaled logits</text>
+      <text x="212" y="94" class="fig-text fig-text--dim">z / T</text>
+
+      <path d="M 327 79 L 356 79" fill="none" stroke="var(--color-ink-45)" stroke-width="1" marker-end="url(#L14-arrow)" />
+
+      <rect x="360" y="50" width="125" height="58" class="fig-box" />
+      <text x="372" y="74" class="fig-text fig-text--ink">probabilities</text>
+      <text x="372" y="94" class="fig-text fig-text--dim">sum to 1</text>
+
+      <path d="M 487 79 L 516 79" fill="none" stroke="var(--color-ink-45)" stroke-width="1" marker-end="url(#L14-arrow)" />
+
+      <rect x="520" y="50" width="85" height="58" class="fig-box" />
+      <text x="532" y="74" class="fig-text fig-text--ink">label</text>
+      <text x="532" y="94" class="fig-text fig-text--dim">top position</text>
+
+      <!-- the ranking, before and after -->
+      <text x="40" y="160" class="fig-text fig-text--dim">the raw scores</text>
+      <text x="320" y="160" class="fig-text fig-text--dim">the same order</text>
+
+      <text x="40" y="192" class="fig-text fig-text--dim">1</text>
+      <text x="76" y="192" class="fig-text fig-text--num" fill="var(--color-prussian)">8</text>
+      <text x="40" y="227" class="fig-text fig-text--dim">2</text>
+      <text x="76" y="227" class="fig-text fig-text--num fig-text--ink">5</text>
+      <text x="40" y="262" class="fig-text fig-text--dim">3</text>
+      <text x="76" y="262" class="fig-text fig-text--num fig-text--ink">4</text>
+
+      <text x="150" y="180" class="fig-text fig-text--dim">× 3 on every logit</text>
+      <path class="m-draw" style="--m-length: 145; --m-duration: 1.2s;" d="M 150 192 L 290 192" fill="none" stroke="var(--color-prussian)" stroke-width="1" marker-end="url(#L14-arrow-prussian)" />
+
+      <text x="150" y="250" class="fig-text fig-text--dim">+ 100 on every logit</text>
+      <path class="m-draw" style="--m-length: 145; --m-duration: 1.2s; --m-delay: 0.35s;" d="M 150 262 L 290 262" fill="none" stroke="var(--color-prussian)" stroke-width="1" marker-end="url(#L14-arrow-prussian)" />
+
+      <text x="320" y="192" class="fig-text fig-text--dim">1</text>
+      <text x="356" y="192" class="fig-text fig-text--num" fill="var(--color-prussian)">8</text>
+      <text x="320" y="227" class="fig-text fig-text--dim">2</text>
+      <text x="356" y="227" class="fig-text fig-text--num fig-text--ink">5</text>
+      <text x="320" y="262" class="fig-text fig-text--dim">3</text>
+      <text x="356" y="262" class="fig-text fig-text--num fig-text--ink">4</text>
+
+      <!-- what argmax actually gives you -->
+      <text x="470" y="180" class="fig-text fig-text--ink">argmax returns a position</text>
+      <text x="470" y="198" class="fig-text fig-text--dim">not a value - index the same list</text>
+      <text x="470" y="228" class="fig-text fig-text--ink">a tie goes to the lower index</text>
+      <text x="470" y="246" class="fig-text fig-text--num fig-text--dim">argmax([1.0, 3.0, 3.0]) is 1</text>
+
+      <text x="40" y="300" class="fig-text fig-text--dim">multiplying every logit by 3 sharpens the probabilities; adding 100 changes nothing at all</text>
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L14</span>
+    <span class="fig__caption-text">Multiplying every logit by 3 or adding 100 to all of them leaves the ranking unchanged, so argmax keeps returning the same position.</span>
+  </figcaption>
+</figure>
+
+<style>
+  .fig-text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--color-ink-70);
+  }
+
+  .fig-text--ink {
+    fill: var(--color-ink);
+  }
+
+  .fig-text--dim {
+    fill: var(--color-ink-45);
+    font-size: 10px;
+  }
+
+  .fig-text--num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fig-box {
+    fill: none;
+    stroke: var(--color-rule);
+    stroke-width: 1;
+  }
+</style>

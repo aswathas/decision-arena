@@ -1,0 +1,145 @@
+---
+/* L32 - the loss curve is the diagnostic: converging, oscillating, exploding. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L32.jpg`}
+      alt="A line drawing of three chalk strokes on a wall: a smooth line that descends and flattens onto a ledge, a jagged line bouncing around it, and a third line shooting steeply up and off the top of the frame."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L32-fig-title L32-fig-desc"
+    >
+      <title id="L32-fig-title">Three loss curves: converging, oscillating, exploding</title>
+      <desc id="L32-fig-desc">
+        One plot with the step number on the horizontal axis and the loss on
+        the vertical axis, holding three curves. The first curve falls
+        smoothly from 0.693 and flattens low, labelled converging. The second
+        bounces up and down around a floor that gets slightly lower, labelled
+        oscillating. The third climbs steeply and leaves the top of the plot,
+        labelled exploding. A note at the side reads that a loss column ending
+        in nan means the step was far too large.
+      </desc>
+
+      <!-- the axes -->
+      <g class="fig-axis">
+        <path d="M56 300 H612 M56 300 V44" />
+      </g>
+      <text x="24" y="48" class="fig-text fig-text--dim">0.7</text>
+      <text x="24" y="304" class="fig-text fig-text--dim">0</text>
+      <text x="56" y="320" class="fig-text fig-text--dim">0</text>
+      <text x="316" y="320" class="fig-text fig-text--dim">1000</text>
+      <text x="588" y="320" class="fig-text fig-text--dim">2000</text>
+      <text x="240" y="336" class="fig-label">step</text>
+
+      <!-- the converging curve -->
+      <g class="m-draw fig-curve fig-curve--ok" style="--m-length: 630; --m-duration: 2.2s">
+        <path d="M56 92 C 140 200, 220 262, 320 278 C 420 291, 520 294, 600 295" />
+      </g>
+      <text x="392" y="272" class="fig-text fig-text--ink">converging</text>
+
+      <!-- the oscillating curve -->
+      <g class="fig-curve fig-curve--warn">
+        <path d="M56 92 C 80 200, 100 120, 130 230 C 160 140, 190 250, 220 160 C 250 260, 280 175, 310 268 C 340 190, 370 272, 400 210 C 430 274, 460 225, 490 276 C 520 240, 550 277, 600 262" />
+      </g>
+      <text x="392" y="238" class="fig-text fig-text--ink">oscillating</text>
+
+      <!-- the exploding curve -->
+      <g class="fig-curve fig-curve--bad">
+        <path d="M56 92 C 120 60, 190 30, 260 4" />
+      </g>
+      <text x="278" y="26" class="fig-text fig-text--ink">exploding</text>
+
+      <!-- the start value -->
+      <g>
+        <path d="M56 92 L44 92" class="fig-tick" />
+        <text x="12" y="96" class="fig-text fig-text--num fig-text--dim">0.693</text>
+      </g>
+
+      <!-- the reading of the column -->
+      <g>
+        <rect x="392" y="52" width="204" height="52" class="fig-panel fig-panel--ink" />
+        <text x="404" y="72" class="fig-text fig-text--ink">a loss column ending</text>
+        <text x="404" y="88" class="fig-text fig-text--ink">in nan: the step was</text>
+        <text x="404" y="100" class="fig-text fig-text--dim">far too large</text>
+      </g>
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L32</span>
+    <span class="fig__caption-text">The shape of the loss curve tells you what the learning rate did: it converges, it oscillates around a floor, or it climbs away and ends in nan.</span>
+  </figcaption>
+</figure>
+
+<style>
+  .fig-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    fill: var(--color-ink-45);
+  }
+
+  .fig-text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--color-ink-70);
+  }
+
+  .fig-text--ink {
+    fill: var(--color-ink);
+  }
+
+  .fig-text--dim {
+    fill: var(--color-ink-45);
+  }
+
+  .fig-text--num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fig-axis path {
+    fill: none;
+    stroke: var(--color-rule);
+    stroke-width: 1;
+  }
+
+  .fig-curve path {
+    fill: none;
+    stroke-width: 1;
+  }
+
+  .fig-curve--ok {
+    stroke: var(--color-ink);
+  }
+
+  .fig-curve--warn {
+    stroke: var(--color-ink-45);
+    stroke-dasharray: 4 3;
+  }
+
+  .fig-curve--bad {
+    stroke: var(--color-prussian);
+  }
+
+  .fig-tick {
+    fill: none;
+    stroke: var(--color-ink-45);
+    stroke-width: 1;
+  }
+
+  .fig-panel {
+    fill: none;
+    stroke: var(--color-rule-soft);
+    stroke-width: 1;
+  }
+
+  .fig-panel--ink {
+    stroke: var(--color-ink);
+  }
+</style>

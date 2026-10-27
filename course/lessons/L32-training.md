@@ -65,6 +65,18 @@ only outcome. You should be able to recognise, from the curve alone:
 A run that produces `nan` has usually taken a step so large it jumped off
 the landscape entirely.
 
+## The story
+
+A watchman on a dark hillside with a lamp he cannot switch on. Every minute he does the same four things: feel out a prediction, hear how surprised the answer was, work out which way is downhill, take one short step that way. Then he starts again. Thousands of times.
+
+One thing is his to choose: how long the step is. Too short and he is still walking when the sun comes up, barely lower than when he started. Too long and he leaps past the bottom, lands on the far side, and swings wider each time, until his notebook says `nan`.
+
+So the notebook is the diagnosis, not just a record. Numbers that fall and then flatten: a run that worked. Numbers that bounce around a floor: a step slightly too long. Numbers that climb, and climb further: a step far too long, and the first thing he changes is the step length, not the hill.
+
+Before each step he listens to the whole hillside, not one rock. One rock can point somewhere useless; the average points somewhere real. That is also why more examples do not make him march faster.
+
+At the end the notebook shows a small number. It does not show that his sense of direction is calibrated on hills he has never walked.
+
 ## The real thing
 
 The training loop, in full:

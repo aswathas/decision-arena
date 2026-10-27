@@ -65,6 +65,30 @@ to a change in the scores. So the standard fix is to divide every score by
 `sqrt(d_k)` before the softmax, which pulls the scores back into the range
 where the softmax still has room to move.
 
+## The story
+
+A classroom of readers, one per word on a page. Each reader carries two
+questionnaires. One asks "what am I looking for?" The other asks "what do I
+have to offer?" A reader walks the room and compares their two questionnaires
+against everyone else's.
+
+The comparison is a multiplication of matching numbers and an addition - and
+the result comes out raw. It can be negative. It can be huge. It is not yet a
+share of anything.
+
+So the reader does arithmetic on it. Every score along their row becomes a
+fraction, and the fractions in one row add up to one. That row is now the
+reader's attention: how much of each other reader they take in.
+
+Then the reader writes a sentence that is a weighted mixture of what the
+readers they chose actually carried. A reader who stood near "bank" comes out
+holding some of the river; a reader who stood near "money" comes out holding
+some of the vault. The same word, rewritten by its neighbours.
+
+One warning the classroom learned the hard way: if the raw comparisons come out
+too far apart, one fraction swallows the rest and the others round to nothing.
+The row becomes a wall instead of a mixture, and a wall teaches nobody anything.
+
 ## The real thing
 
 **Scaled dot-product attention**, one head, four steps:

@@ -1,0 +1,124 @@
+---
+/* L13 - temperature: the top probability falls, the label does not move. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L13.jpg`}
+      alt="A line drawing of three judges seated behind a long desk holding score cards, with one judge's hand turning a large dial and three columns of stacked coins beside the desk changing height."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L13-fig-title L13-fig-desc"
+    >
+      <title id="L13-fig-title">The top probability falls past the threshold, the label does not</title>
+      <desc id="L13-fig-desc">
+        A horizontal probability axis carries three dots: 0.41 for T = 4.0,
+        0.63 for T = 1.0 and 0.98 for T = 0.25, each labelled underneath. A
+        dashed vertical line marks the threshold 0.6. A prussian ring travels
+        from 0.98 down to 0.41 along the axis, crossing the threshold on the
+        way, while the note says that billing is top at every temperature.
+      </desc>
+
+      <text x="80" y="60" class="fig-text fig-text--ink">probability of the top option</text>
+      <text x="440" y="62" class="fig-text fig-text--ink">the ranking never changes</text>
+      <text x="440" y="80" class="fig-text fig-text--dim">billing is top at every T</text>
+
+      <!-- the axis -->
+      <line x1="80" y1="250" x2="560" y2="250" class="fig-axis-line" />
+      <g class="fig-tick">
+        <line x1="80" y1="250" x2="80" y2="257" />
+        <line x1="176" y1="250" x2="176" y2="257" />
+        <line x1="272" y1="250" x2="272" y2="257" />
+        <line x1="368" y1="250" x2="368" y2="257" />
+        <line x1="464" y1="250" x2="464" y2="257" />
+        <line x1="560" y1="250" x2="560" y2="257" />
+      </g>
+
+      <!-- the threshold -->
+      <line x1="368" y1="250" x2="368" y2="70" stroke="var(--color-prussian)" stroke-width="1" stroke-dasharray="5 4" />
+      <text x="368" y="62" class="fig-text" fill="var(--color-prussian)" text-anchor="middle">threshold 0.6</text>
+
+      <!-- the three probabilities -->
+      <circle cx="277" cy="250" r="4.5" fill="var(--color-ink)" />
+      <circle cx="382" cy="250" r="4.5" fill="var(--color-ink)" />
+      <circle cx="550" cy="250" r="4.5" fill="var(--color-ink)" />
+
+      <text x="277" y="270" class="fig-text fig-text--num fig-text--ink" text-anchor="middle">0.41</text>
+      <text x="382" y="270" class="fig-text fig-text--num fig-text--ink" text-anchor="middle">0.63</text>
+      <text x="550" y="270" class="fig-text fig-text--num fig-text--ink" text-anchor="middle">0.98</text>
+
+      <text x="277" y="288" class="fig-text fig-text--num fig-text--dim" text-anchor="middle">T = 4.0</text>
+      <text x="382" y="288" class="fig-text fig-text--num fig-text--dim" text-anchor="middle">T = 1.0</text>
+      <text x="550" y="288" class="fig-text fig-text--num fig-text--dim" text-anchor="middle">T = 0.25</text>
+
+      <!-- the travelling marker: the one idea of motion -->
+      <g class="L13-travel">
+        <circle cx="550" cy="250" r="7" fill="none" stroke="var(--color-prussian)" stroke-width="2" />
+        <text x="550" y="230" class="fig-text" fill="var(--color-prussian)" text-anchor="middle">p_top</text>
+      </g>
+
+      <text x="80" y="312" class="fig-text fig-text--dim">entropy: 0 when one-hot, log(3) is about 1.0986 when uniform</text>
+      <text x="410" y="312" class="fig-text fig-text--dim">T = 0 is forbidden</text>
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L13</span>
+    <span class="fig__caption-text">As the temperature rises the top option's probability falls from 0.98 to 0.41 and crosses the 0.6 threshold, so the action changes while the top label does not.</span>
+  </figcaption>
+</figure>
+
+<style>
+  .fig-text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--color-ink-70);
+  }
+
+  .fig-text--ink {
+    fill: var(--color-ink);
+  }
+
+  .fig-text--dim {
+    fill: var(--color-ink-45);
+    font-size: 10px;
+  }
+
+  .fig-text--num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fig-axis-line {
+    stroke: var(--color-rule);
+    stroke-width: 1;
+  }
+
+  .fig-tick line {
+    stroke: var(--color-rule);
+    stroke-width: 1;
+  }
+
+  /* the one idea of motion: the top probability travelling down the axis */
+  @keyframes L13-travel {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-273px);
+    }
+  }
+
+  .L13-travel {
+    animation: L13-travel 2.4s ease-in-out both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .L13-travel {
+      animation: none;
+    }
+  }
+</style>

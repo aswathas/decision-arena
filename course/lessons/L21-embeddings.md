@@ -55,6 +55,25 @@ animals". The geometry is distributed. This is why people draw embeddings in
 2-D for teaching: the picture is a simplification, but the *idea* - near means
 similar - survives.
 
+## The story
+
+A town planner draws a chart of the whole district on one sheet of paper.
+Nothing on the chart is a name. The planner works backwards from the traffic:
+the grocer's van and the bakery's van run the same route every morning, so their
+pins go on top of each other, and the bus depot ends up on the far side of the
+river from them. Ask the planner what a pin means and they shrug - they never
+decided where the pins went, only which journeys shared a road.
+
+Two offices draw two charts, and the same shop can carry a different address on
+each. The number is the pin's address on that one sheet, and nothing more.
+
+Now the practical difficulty. The clerk at the desk cannot measure nearness by
+eye and report "close". They need a rule they can do with a calculator:
+multiply matching coordinates and add them up. That number grows when two pins
+point the same way, however far apart they sit - it measures direction, not
+distance. Divide by the length of each pin and only the direction survives,
+which is the number they actually want: how aligned are these two things?
+
 ## The real thing
 
 An **embedding** of a piece of text is a **vector**: an ordered list of

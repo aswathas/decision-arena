@@ -61,6 +61,31 @@ this repo you can also *lose* them: `round(0.99995, 4)` becomes `1.0`, so two
 different probabilities can become the same printed number. Decide with the
 full-precision value; round only on the way out.
 
+## The story
+
+Imagine a scale in a print shop. It weighs a sheet of paper, and its needle
+hangs between the marks, never quite on one. You cannot build a machine that
+lands exactly on every mark, because the marks are not evenly spaced in the
+machine's own units.
+
+So the shop does two things. It never asks "is this needle exactly on 0.3?"
+- it asks "is this needle within a hair of 0.3?", and it decides beforehand
+what a hair is worth: a loose hair for a printed weight, a tight one for a
+total that must come out exact.
+
+And it rounds only for the customer. The weight on the invoice is clean and
+short. The weight the shop compares is not cleaned up first, because rounding
+before comparing invents differences that were never there, and can hide
+differences that were.
+
+Two sheets of the same weight do not give the same reading, because each
+reading is a hair off in its own direction. Add 0.1 grams of ink to 0.2 grams
+of ink and the scale says 0.30000000000000004 - not because the ink was
+mismeasured, but because 0.1 and 0.2 cannot both be held exactly at once.
+
+So the rule is short: compare with a tolerance chosen on purpose, and round
+only when writing the number down.
+
 ## The real thing
 
 **The tolerance idiom.** Two numbers are "the same" when the distance between

@@ -1,0 +1,154 @@
+---
+/* L23 - the transformer block: normalise, attend, keep, think, keep. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L23.jpg`}
+      alt="A line drawing of an assembly line of identical small workbenches on a conveyor, each holding a sheet of paper, with a thick curved pipe looping under the belt and back up into the next bench, and a small side room with a blackboard attached to every other bench."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L23-fig-title L23-fig-desc"
+    >
+      <title id="L23-fig-title">One transformer block: normalise, attend, keep, think, keep</title>
+      <desc id="L23-fig-desc">
+        A horizontal flow diagram. The input vector x enters a layer norm box,
+        then an attention box, then reaches a plus sign where a curved residual
+        path brings the original x back around from below. The result enters a
+        second layer norm box, then an MLP box, then reaches a second plus sign
+        with a second curved residual path returning to it, and the block output
+        leaves to the right. Both plus signs are drawn as circles with a cross
+        inside.
+      </desc>
+
+      <!-- the flow line -->
+      <g class="fig-flow">
+        <path d="M24 128 H616" />
+      </g>
+
+      <!-- the boxes -->
+      <g class="fig-box">
+        <rect x="34" y="98" width="76" height="60" />
+        <rect x="152" y="98" width="76" height="60" />
+        <rect x="368" y="98" width="76" height="60" />
+        <rect x="486" y="98" width="76" height="60" />
+      </g>
+      <text x="52" y="124" class="fig-text fig-text--ink">layer</text>
+      <text x="48" y="140" class="fig-text fig-text--ink">norm</text>
+      <text x="164" y="124" class="fig-text fig-text--ink">attend</text>
+      <text x="160" y="140" class="fig-text fig-text--dim">q . k / sqrt(d_k)</text>
+      <text x="380" y="124" class="fig-text fig-text--ink">layer</text>
+      <text x="376" y="140" class="fig-text fig-text--ink">norm</text>
+      <text x="496" y="124" class="fig-text fig-text--ink">mlp</text>
+      <text x="494" y="140" class="fig-text fig-text--dim">4 x d_model</text>
+
+      <!-- the adds -->
+      <g class="fig-add">
+        <circle cx="278" cy="128" r="18" />
+        <circle cx="424" cy="128" r="18" />
+      </g>
+      <path d="M270 120 L286 136 M286 120 L270 136" class="fig-add-cross" />
+      <path d="M416 120 L432 136 M432 120 L416 136" class="fig-add-cross" />
+
+      <!-- the residual highways -->
+      <g class="m-draw fig-residual" style="--m-length: 460; --m-duration: 1.6s; animation-delay: 0.5s">
+        <path d="M24 128 V232 H278 V150" />
+        <path d="M278 128 V232 H424 V150" />
+      </g>
+      <text x="60" y="252" class="fig-text fig-text--dim">residual: the input rides around the side</text>
+
+      <!-- the input and the output -->
+      <text x="24" y="82" class="fig-label">x</text>
+      <text x="596" y="82" class="fig-label">out</text>
+      <g class="fig-flow">
+        <path d="M596 92 V98" />
+        <path d="M596 98 l-3 -6 h6 z" class="fig-flow-head" />
+      </g>
+
+      <!-- the shape rule -->
+      <g>
+        <rect x="24" y="272" width="592" height="44" class="fig-panel" />
+        <text x="38" y="290" class="fig-text fig-text--ink">every box keeps the shape n x d_model</text>
+        <text x="38" y="308" class="fig-text fig-text--num">n tokens in, n tokens out, width unchanged</text>
+      </g>
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L23</span>
+    <span class="fig__caption-text">A transformer block normalises the vector, attends, adds the original back, then does the same around the MLP, and every stage returns a vector of the same shape.</span>
+  </figcaption>
+</figure>
+
+<style>
+  .fig-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    fill: var(--color-ink-45);
+  }
+
+  .fig-text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--color-ink-70);
+  }
+
+  .fig-text--ink {
+    fill: var(--color-ink);
+  }
+
+  .fig-text--dim {
+    fill: var(--color-ink-45);
+  }
+
+  .fig-text--num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fig-flow path {
+    fill: none;
+    stroke: var(--color-ink-45);
+    stroke-width: 1;
+  }
+
+  .fig-flow .fig-flow-head {
+    fill: var(--color-ink-45);
+    stroke: none;
+  }
+
+  .fig-box rect {
+    fill: var(--color-ground);
+    stroke: var(--color-ink);
+    stroke-width: 1;
+  }
+
+  .fig-add circle {
+    fill: var(--color-ground);
+    stroke: var(--color-ink);
+    stroke-width: 1;
+  }
+
+  .fig-add-cross {
+    fill: none;
+    stroke: var(--color-ink);
+    stroke-width: 1;
+  }
+
+  .fig-residual path {
+    fill: none;
+    stroke: var(--color-prussian);
+    stroke-width: 1;
+  }
+
+  .fig-panel {
+    fill: none;
+    stroke: var(--color-rule-soft);
+    stroke-width: 1;
+  }
+</style>

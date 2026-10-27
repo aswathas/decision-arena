@@ -1,0 +1,241 @@
+---
+/* L22 - attention: query-key scores become a row of fractions that sums to one. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L22.jpg`}
+      alt="A line drawing of a square grid of small cells with the three cells in the top row shaded pale blue to solid dark blue, and beneath it three horizontal bars of different lengths with a small disc travelling along the top bar."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L22-fig-title L22-fig-desc"
+    >
+      <title id="L22-fig-title">From raw scores to a row of fractions that sums to one</title>
+      <desc id="L22-fig-desc">
+        Three steps left to right. First, a matrix of raw query-key scores whose
+        cells are labelled with positive and negative numbers. Second, the same
+        matrix after dividing by the square root of the key dimension, with the
+        gap between the top score and the runner-up visibly narrowed. Third,
+        the first row of the matrix after the softmax, holding the fractions
+        0.2, 0.3 and 0.5, which sum to one, with the strongest cell shaded.
+      </desc>
+
+      <!-- step 1 -->
+      <text x="24" y="32" class="fig-label">1 raw scores</text>
+      <g class="fig-grid">
+        <rect x="24" y="48" width="128" height="128" />
+      </g>
+      <g class="fig-cell fig-cell--neg">
+        <rect x="24" y="48" width="42" height="42" />
+        <rect x="67" y="91" width="42" height="42" />
+      </g>
+      <g class="fig-cell fig-cell--pos">
+        <rect x="110" y="134" width="42" height="42" />
+        <rect x="67" y="134" width="42" height="42" />
+      </g>
+      <text x="34" y="74" class="fig-text fig-text--num">-2</text>
+      <text x="77" y="117" class="fig-text fig-text--num">-1</text>
+      <text x="120" y="160" class="fig-text fig-text--num">6</text>
+      <text x="77" y="160" class="fig-text fig-text--num">4</text>
+      <text x="24" y="192" class="fig-text fig-text--dim">raw, can be negative</text>
+
+      <!-- step 2 -->
+      <text x="196" y="32" class="fig-label">2 scaled by 1/sqrt(d_k)</text>
+      <g class="fig-grid">
+        <rect x="196" y="48" width="128" height="128" />
+      </g>
+      <g class="fig-cell fig-cell--neg">
+        <rect x="196" y="48" width="42" height="42" />
+        <rect x="239" y="91" width="42" height="42" />
+      </g>
+      <g class="fig-cell fig-cell--pos">
+        <rect x="282" y="134" width="42" height="42" />
+        <rect x="239" y="134" width="42" height="42" />
+      </g>
+      <text x="206" y="74" class="fig-text fig-text--num">-1.0</text>
+      <text x="249" y="117" class="fig-text fig-text--num">-0.5</text>
+      <text x="292" y="160" class="fig-text fig-text--num">3.0</text>
+      <text x="249" y="160" class="fig-text fig-text--num">2.0</text>
+      <text x="196" y="192" class="fig-text fig-text--dim">gaps narrowed, still not fractions</text>
+
+      <!-- step 3 -->
+      <text x="368" y="32" class="fig-label">3 softmax, row-wise</text>
+      <g class="fig-grid">
+        <rect x="368" y="48" width="128" height="128" />
+      </g>
+      <g class="fig-cell fig-cell--weight-soft">
+        <rect x="368" y="48" width="42" height="42" />
+        <rect x="411" y="48" width="42" height="42" />
+      </g>
+      <g class="fig-cell fig-cell--weight">
+        <rect x="454" y="48" width="42" height="42" />
+      </g>
+      <text x="376" y="74" class="fig-text fig-text--num">0.2</text>
+      <text x="419" y="74" class="fig-text fig-text--num">0.3</text>
+      <text x="462" y="74" class="fig-text fig-text--num">0.5</text>
+      <text x="368" y="192" class="fig-text fig-text--num fig-text--ink">row 0 sums to 1.0</text>
+
+      <!-- the arrows between the steps -->
+      <g class="fig-step-arrow">
+        <path d="M158 112 H190" />
+        <path d="M190 112 l-6 -3 v6 z" class="fig-step-head" />
+        <path d="M330 112 H362" />
+        <path d="M362 112 l-6 -3 v6 z" class="fig-step-head" />
+      </g>
+
+      <!-- row 0 read over the tokens -->
+      <g>
+        <rect x="24" y="212" width="472" height="94" class="fig-panel" />
+        <text x="38" y="234" class="fig-text fig-text--ink">row 0 reads over the tokens</text>
+        <text x="38" y="256" class="fig-text">the</text>
+        <text x="150" y="256" class="fig-text">cat</text>
+        <text x="250" y="256" class="fig-text">dog</text>
+        <rect
+          class="fig-bar fig-bar--weak"
+          x="38" y="264" width="38" height="14"
+          style="transform-origin: 38px 264px; animation-delay: 0s"
+        />
+        <rect
+          class="fig-bar fig-bar--weak"
+          x="150" y="264" width="56" height="14"
+          style="transform-origin: 150px 264px; animation-delay: 0.15s"
+        />
+        <rect
+          class="fig-bar fig-bar--strong"
+          x="250" y="264" width="94" height="14"
+          style="transform-origin: 250px 264px; animation-delay: 0.3s"
+        />
+        <text x="38" y="296" class="fig-text fig-text--num">0.2</text>
+        <text x="150" y="296" class="fig-text fig-text--num">0.3</text>
+        <text x="250" y="296" class="fig-text fig-text--num">0.5</text>
+        <text x="360" y="296" class="fig-text fig-text--dim">the dog gets the most</text>
+      </g>
+
+      <!-- the scaling warning -->
+      <g>
+        <rect x="510" y="212" width="106" height="94" class="fig-panel fig-panel--ink" />
+        <text x="522" y="234" class="fig-text fig-text--ink">without</text>
+        <text x="522" y="250" class="fig-text fig-text--ink">the scale</text>
+        <text x="522" y="274" class="fig-text fig-text--dim">one cell</text>
+        <text x="522" y="290" class="fig-text fig-text--dim">takes it all</text>
+      </g>
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L22</span>
+    <span class="fig__caption-text">Raw query-key scores are scaled, then softmaxed row by row, so each reader ends up holding a set of fractions over the tokens that sums to one.</span>
+  </figcaption>
+</figure>
+
+<style>
+  .fig-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    fill: var(--color-ink-45);
+  }
+
+  .fig-text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--color-ink-70);
+  }
+
+  .fig-text--ink {
+    fill: var(--color-ink);
+  }
+
+  .fig-text--dim {
+    fill: var(--color-ink-45);
+  }
+
+  .fig-text--num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fig-grid rect {
+    fill: none;
+    stroke: var(--color-rule);
+    stroke-width: 1;
+  }
+
+  .fig-cell rect {
+    stroke: none;
+  }
+
+  .fig-cell--neg rect {
+    fill: var(--color-ground-deep);
+  }
+
+  .fig-cell--pos rect {
+    fill: var(--color-prussian-tint);
+  }
+
+  .fig-cell--weight rect {
+    fill: var(--color-prussian);
+  }
+
+  .fig-cell--weight-soft rect {
+    fill: var(--color-prussian-tint);
+  }
+
+  .fig-step-arrow path {
+    fill: none;
+    stroke: var(--color-ink-45);
+    stroke-width: 1;
+  }
+
+  .fig-step-arrow .fig-step-head {
+    fill: var(--color-ink-45);
+    stroke: none;
+  }
+
+  .fig-panel {
+    fill: none;
+    stroke: var(--color-rule-soft);
+    stroke-width: 1;
+  }
+
+  .fig-panel--ink {
+    stroke: var(--color-ink);
+  }
+
+  .fig-bar {
+    stroke: none;
+  }
+
+  .fig-bar--weak {
+    fill: var(--color-prussian-tint);
+  }
+
+  .fig-bar--strong {
+    fill: var(--color-prussian);
+  }
+
+  /* the one idea of motion: the attention row fills in as fractions */
+  @keyframes l22-fill {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  .fig-bar {
+    animation: l22-fill 0.9s ease-out both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fig-bar {
+      animation: none !important;
+      transform: none;
+    }
+  }
+</style>

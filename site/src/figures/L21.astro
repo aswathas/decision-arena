@@ -1,0 +1,151 @@
+---
+/* L21 - embeddings: a map of meaning, and the difference between direction and distance. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L21.jpg`}
+      alt="A line drawing of a map on a table with four round pins, two standing close together in the upper left and two close together in the lower right, a ruler laid diagonally across the chart, and beside it two wooden pointers of very different lengths pointing in exactly the same direction."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L21-fig-title L21-fig-desc"
+    >
+      <title id="L21-fig-title">A map of meaning, and two ways of measuring closeness</title>
+      <desc id="L21-fig-desc">
+        On the left, a two-axis plot with four labelled points: cat and dog sit
+        close together in the upper left, billing and technical sit close
+        together in the lower right, and a long diagonal separates the two
+        pairs. On the right, two arrows of different lengths point the same way
+        from a common origin; the caption reads dot product 1000, cosine 1.00,
+        showing that the dot product grows with length while cosine similarity
+        depends only on direction.
+      </desc>
+
+      <!-- the map -->
+      <text x="24" y="32" class="fig-label">the map</text>
+      <g class="fig-axis">
+        <path d="M56 300 H330 M56 300 V52" />
+      </g>
+      <text x="338" y="304" class="fig-text fig-text--dim">billing-ish</text>
+      <text x="24" y="48" class="fig-text fig-text--dim">cat-ish</text>
+
+      <!-- the near pair -->
+      <path d="M84 96 L110 118" class="fig-near" />
+      <circle cx="84" cy="96" r="5" class="fig-dot fig-dot--ink" />
+      <circle cx="110" cy="118" r="5" class="fig-dot fig-dot--ink" />
+      <text x="62" y="86" class="fig-text fig-text--ink">cat</text>
+      <text x="118" y="134" class="fig-text fig-text--ink">dog</text>
+      <text x="30" y="146" class="fig-text fig-text--num">0.141</text>
+
+      <!-- the far pair -->
+      <path d="M248 232 L280 208" class="fig-near" />
+      <circle cx="248" cy="232" r="5" class="fig-dot fig-dot--ink" />
+      <circle cx="280" cy="208" r="5" class="fig-dot fig-dot--ink" />
+      <text x="256" y="252" class="fig-text fig-text--ink">billing</text>
+      <text x="288" y="200" class="fig-text fig-text--ink">technical</text>
+      <text x="286" y="276" class="fig-text fig-text--num">0.224</text>
+
+      <!-- the far distance -->
+      <path d="M84 96 L248 232" class="fig-far" />
+      <text x="120" y="188" class="fig-text fig-text--num fig-text--dim">1.414</text>
+
+      <!-- two arrows, same direction, different length -->
+      <text x="392" y="32" class="fig-label">same direction</text>
+      <g class="fig-axis">
+        <path d="M420 270 H604 M420 270 V52" />
+      </g>
+      <g class="m-draw fig-arrow-long" style="--m-length: 60; --m-duration: 1.2s">
+        <path d="M420 246 L470 246" />
+      </g>
+      <g class="m-draw fig-arrow-long fig-arrow-long--long" style="--m-length: 150; --m-duration: 1.4s; animation-delay: 0.25s">
+        <path d="M420 270 L566 270" />
+      </g>
+      <circle cx="420" cy="270" r="3" class="fig-dot" />
+      <text x="476" y="240" class="fig-text fig-text--num">[10, 0]</text>
+      <text x="572" y="264" class="fig-text fig-text--num">[100, 0]</text>
+      <text x="420" y="296" class="fig-text fig-text--num">dot = 1000</text>
+      <text x="520" y="296" class="fig-text fig-text--num">cos = 1.00</text>
+      <text x="392" y="64" class="fig-text fig-text--dim">length is ignored</text>
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L21</span>
+    <span class="fig__caption-text">Meanings sit near each other on a learned map, and cosine similarity measures the direction of two points while the dot product also counts how far out they lie.</span>
+  </figcaption>
+</figure>
+
+<style>
+  .fig-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    fill: var(--color-ink-45);
+  }
+
+  .fig-text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--color-ink-70);
+  }
+
+  .fig-text--ink {
+    fill: var(--color-ink);
+  }
+
+  .fig-text--dim {
+    fill: var(--color-ink-45);
+  }
+
+  .fig-text--num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fig-axis path {
+    fill: none;
+    stroke: var(--color-rule);
+    stroke-width: 1;
+  }
+
+  .fig-dot {
+    fill: var(--color-prussian);
+  }
+
+  .fig-dot--ink {
+    fill: var(--color-ink);
+  }
+
+  .fig-near {
+    fill: none;
+    stroke: var(--color-prussian);
+    stroke-width: 1;
+  }
+
+  .fig-far {
+    fill: none;
+    stroke: var(--color-rule);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+  }
+
+  .fig-arrow-long {
+    fill: none;
+    stroke: var(--color-prussian);
+    stroke-width: 1;
+  }
+
+  .fig-arrow-long path {
+    fill: none;
+    stroke: var(--color-prussian);
+    stroke-width: 1;
+  }
+
+  .fig-arrow-long--long path {
+    stroke: var(--color-ink);
+  }
+</style>

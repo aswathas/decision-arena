@@ -1,0 +1,110 @@
+---
+/* L11 - the 0.1 + 0.2 trap: compare with a tolerance, round only for printing. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L11.jpg`}
+      alt="A line drawing of a mechanical weighing scale with a many-marked dial and a single needle, a pair of calipers held beside the dial, and a blank sheet of paper resting on the platform above."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L11-fig-title L11-fig-desc"
+    >
+      <title id="L11-fig-title">A hair of difference, and the window that swallows it</title>
+      <desc id="L11-fig-desc">
+        A magnified number line carries a tick at 0.3 and, a hair to its right, a
+        prussian tick at 0.30000000000000004. Both sit inside a pale band, the
+        tolerance window, and a bracket closes over the gap between them. Below,
+        three pairs show a value beside its four-decimal rounding:
+        0.30000000000000004 becomes 0.3, 0.99995 becomes 1.0, and 0.72 against
+        0.70 gives a relative error of 0.028.
+      </desc>
+
+      <!-- the tolerance window and the number line -->
+      <text x="60" y="58" class="fig-text fig-text--ink">compare with a tolerance</text>
+      <text x="60" y="78" class="fig-text fig-text--dim">abs(a - b) &lt; 1e-9 for probabilities, 1e-12 for sums</text>
+
+      <rect x="150" y="111" width="200" height="28" fill="var(--color-prussian-tint)" />
+      <text x="155" y="104" class="fig-text fig-text--dim">the window</text>
+      <line x1="60" y1="125" x2="580" y2="125" class="fig-axis-line" />
+
+      <line x1="250" y1="107" x2="250" y2="143" stroke="var(--color-ink)" stroke-width="1" />
+      <line x1="257" y1="113" x2="257" y2="137" stroke="var(--color-prussian)" stroke-width="1" />
+
+      <path
+        class="m-draw"
+        style="--m-length: 40; --m-duration: 1.2s;"
+        d="M 246 107 L 246 99 L 264 99 L 264 107"
+        fill="none"
+        stroke="var(--color-prussian)"
+        stroke-width="1"
+      />
+      <text x="255" y="92" class="fig-text fig-text--dim">the gap</text>
+
+      <text x="250" y="158" class="fig-text fig-text--num fig-text--ink" text-anchor="middle">0.3</text>
+      <text x="268" y="158" class="fig-text fig-text--num" fill="var(--color-prussian)">0.30000000000000004</text>
+      <text x="400" y="129" class="fig-text fig-text--dim">magnified</text>
+
+      <!-- rounding is for printing -->
+      <text x="60" y="196" class="fig-text fig-text--ink">round for printing, never for deciding</text>
+
+      <defs>
+        <marker id="L11-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-ink-45)" />
+        </marker>
+      </defs>
+
+      <text x="60" y="226" class="fig-text fig-text--num fig-text--dim">0.30000000000000004</text>
+      <path d="M 96 234 L 96 252" fill="none" stroke="var(--color-ink-45)" stroke-width="1" marker-end="url(#L11-arrow)" />
+      <text x="96" y="270" class="fig-text fig-text--num fig-text--ink" text-anchor="middle">0.3</text>
+      <text x="60" y="292" class="fig-text fig-text--dim">round to 4 places</text>
+      <text x="60" y="308" class="fig-text fig-text--dim">printing only</text>
+
+      <text x="230" y="226" class="fig-text fig-text--num fig-text--dim">0.99995</text>
+      <path d="M 266 234 L 266 252" fill="none" stroke="var(--color-ink-45)" stroke-width="1" marker-end="url(#L11-arrow)" />
+      <text x="266" y="270" class="fig-text fig-text--num fig-text--ink" text-anchor="middle">1.0</text>
+      <text x="230" y="292" class="fig-text fig-text--dim">an option can vanish</text>
+
+      <text x="420" y="226" class="fig-text fig-text--num fig-text--dim">0.72 vs 0.70</text>
+      <path d="M 456 234 L 456 252" fill="none" stroke="var(--color-ink-45)" stroke-width="1" marker-end="url(#L11-arrow)" />
+      <text x="456" y="270" class="fig-text fig-text--num fig-text--ink" text-anchor="middle">0.028</text>
+      <text x="420" y="292" class="fig-text fig-text--dim">relative error</text>
+      <text x="420" y="308" class="fig-text fig-text--dim">|a-b| / max(|a|,|b|)</text>
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L11</span>
+    <span class="fig__caption-text">A hair of difference separates 0.3 from 0.30000000000000004, and it sits well inside the tolerance window, so the comparison survives it while the rounding is kept for printing.</span>
+  </figcaption>
+</figure>
+
+<style>
+  .fig-text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--color-ink-70);
+  }
+
+  .fig-text--ink {
+    fill: var(--color-ink);
+  }
+
+  .fig-text--dim {
+    fill: var(--color-ink-45);
+    font-size: 10px;
+  }
+
+  .fig-text--num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fig-axis-line {
+    stroke: var(--color-rule);
+    stroke-width: 1;
+  }
+</style>

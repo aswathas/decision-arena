@@ -68,6 +68,31 @@ softmax sees scores that are wildly spread out - which is exactly the
 saturated-softmax problem from L22, and the exact reason the `1/sqrt(d_k)`
 scaling existed in the first place. Layer norm is the correction.
 
+## The story
+
+Picture an office where a document is passed down a row of desks. Every desk
+does the same four things, in the same order, to the paper in front of it.
+
+First the clerk tidies the sheet: the numbers on it get rescaled so none of
+them is wildly out of proportion. The pencil marks that carry the meaning stay
+where they were; only the size is tamed.
+
+Second the clerk reads around the desk - the papers that matter for this one -
+and takes notes.
+
+Third the clerk writes their conclusion on a sticky note and lays it on top of
+the original sheet. The original is never thrown away. That sticky note is the
+residual connection, and it is also why a note from desk number one can still
+reach desk number one after a hundred desks: the signal has a straight path
+back.
+
+Fourth the clerk goes into a side room with a blackboard and works the problem
+out properly. Reading around the desk can only mix what is already on the desk;
+the side room is where something new gets computed. That is the MLP.
+
+Then the sticky note again, and the sheet goes to the next desk. A hundred
+desks in a row, each one handing on a sheet of exactly the same shape.
+
 ## The real thing
 
 One transformer block, in the order the operations actually happen:

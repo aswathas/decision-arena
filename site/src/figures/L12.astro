@@ -1,0 +1,105 @@
+---
+/* L12 - softmax: the shift that changes nothing, and the guard that stops exp() overflowing. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L12.jpg`}
+      alt="A line drawing of three contestants standing on podiums of different heights on a stage, while a hand above hands out tickets in proportion to the height of each podium."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L12-fig-title L12-fig-desc"
+    >
+      <title id="L12-fig-title">Raise every score by the same amount and the order does not move</title>
+      <desc id="L12-fig-desc">
+        On the left, three bars of heights 2, 1 and 0.5 are divided by the total
+        3.5 into shares of 0.57, 0.29 and 0.14, and a note warns that dividing
+        is not scale-free. On the right, the same three scores each rise by 5
+        along an upward arrow, from 2 to 7, from 1 to 6 and from 0.5 to 5.5,
+        and a note says that subtracting the maximum leaves every exponent at
+        or below 1, so exp(1000) could not overflow.
+      </desc>
+
+      <!-- panel A: the gut answer -->
+      <text x="40" y="58" class="fig-text fig-text--ink">the gut answer</text>
+      <text x="40" y="76" class="fig-text fig-text--dim">divide by the total</text>
+
+      <rect x="70" y="120" width="44" height="130" fill="var(--color-prussian-tint)" stroke="var(--color-rule)" stroke-width="1" />
+      <rect x="140" y="185" width="44" height="65" fill="var(--color-prussian-tint)" stroke="var(--color-rule)" stroke-width="1" />
+      <rect x="210" y="218" width="44" height="32" fill="var(--color-prussian-tint)" stroke="var(--color-rule)" stroke-width="1" />
+      <line x1="60" y1="250" x2="270" y2="250" class="fig-axis-line" />
+
+      <text x="92" y="110" class="fig-text fig-text--num fig-text--ink" text-anchor="middle">2</text>
+      <text x="162" y="175" class="fig-text fig-text--num fig-text--ink" text-anchor="middle">1</text>
+      <text x="232" y="208" class="fig-text fig-text--num fig-text--ink" text-anchor="middle">0.5</text>
+
+      <text x="92" y="270" class="fig-text fig-text--num fig-text--ink" text-anchor="middle">0.57</text>
+      <text x="162" y="270" class="fig-text fig-text--num fig-text--ink" text-anchor="middle">0.29</text>
+      <text x="232" y="270" class="fig-text fig-text--num fig-text--ink" text-anchor="middle">0.14</text>
+
+      <text x="40" y="286" class="fig-text fig-text--num fig-text--dim">2 + 1 + 0.5 = 3.5</text>
+      <text x="40" y="304" class="fig-text fig-text--dim">not scale-free: 4.0, 1.0, 0.2 gives the same shares</text>
+
+      <!-- panel B: the constant shift -->
+      <text x="330" y="58" class="fig-text fig-text--ink">+ 5 to every score</text>
+      <text x="330" y="76" class="fig-text fig-text--dim">the order does not change</text>
+
+      <defs>
+        <marker id="L12-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-prussian)" />
+        </marker>
+      </defs>
+
+      <path class="m-draw" style="--m-length: 100; --m-duration: 1.1s;" d="M 380 200 L 380 100" fill="none" stroke="var(--color-prussian)" stroke-width="1" marker-end="url(#L12-arrow)" />
+      <path class="m-draw" style="--m-length: 100; --m-duration: 1.1s; --m-delay: 0.25s;" d="M 470 220 L 470 120" fill="none" stroke="var(--color-prussian)" stroke-width="1" marker-end="url(#L12-arrow)" />
+      <path class="m-draw" style="--m-length: 100; --m-duration: 1.1s; --m-delay: 0.5s;" d="M 560 230 L 560 130" fill="none" stroke="var(--color-prussian)" stroke-width="1" marker-end="url(#L12-arrow)" />
+
+      <text x="368" y="204" class="fig-text fig-text--num fig-text--ink" text-anchor="end">2</text>
+      <text x="392" y="104" class="fig-text fig-text--num" fill="var(--color-prussian)">7</text>
+      <text x="458" y="224" class="fig-text fig-text--num fig-text--ink" text-anchor="end">1</text>
+      <text x="482" y="124" class="fig-text fig-text--num" fill="var(--color-prussian)">6</text>
+      <text x="548" y="234" class="fig-text fig-text--num fig-text--ink" text-anchor="end">0.5</text>
+      <text x="572" y="134" class="fig-text fig-text--num" fill="var(--color-prussian)">5.5</text>
+
+      <text x="330" y="262" class="fig-text fig-text--dim">subtract the max: every exponent is at or below 1</text>
+      <text x="330" y="280" class="fig-text" fill="var(--color-prussian)">exp(1000) would be Infinity, then NaN</text>
+
+      <text x="40" y="326" class="fig-text fig-text--dim">why exponentiate: a gap of 1 becomes a weight gap of 2.7, a gap of 3 becomes 20, and e^2 is about 7.4</text>
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L12</span>
+    <span class="fig__caption-text">Dividing the scores by their total gives shares that look right but do not scale, while adding 5 to every score leaves the order alone and subtracting the maximum keeps every exponent at or below 1.</span>
+  </figcaption>
+</figure>
+
+<style>
+  .fig-text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--color-ink-70);
+  }
+
+  .fig-text--ink {
+    fill: var(--color-ink);
+  }
+
+  .fig-text--dim {
+    fill: var(--color-ink-45);
+    font-size: 10px;
+  }
+
+  .fig-text--num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fig-axis-line {
+    stroke: var(--color-rule);
+    stroke-width: 1;
+  }
+</style>

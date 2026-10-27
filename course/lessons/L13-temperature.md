@@ -78,6 +78,29 @@ identical. Same model, same state, same ranking, different action. This is
 why `metrics.action_change_rate()` exists, and why a benchmark that only
 compared labels would have missed it entirely.
 
+## The story
+
+Imagine a panel of three judges holding score cards. Billing gets 8,
+technical 5, other 4. The panel has one dial, and the dial does not change
+who is highest - it changes how far ahead the winner is.
+
+Turn the dial one way and every score is multiplied by the same factor
+before the numbers become chances. The gaps grow: the winner pulls away and
+the top chance climbs close to one. Turn it the other way and the scores are
+divided by the same factor first. The gaps shrink, everyone looks nearly
+equal, and the top chance drops to a little under half.
+
+Now the part that catches people. The dial has not changed the ranking -
+billing is still in front at every setting, and the label the panel reports
+is the same. But the desk has a rule: act only when the top chance reaches
+0.6. So the same judges, the same ticket, the same top option - and at one
+setting the desk acts, at another it does not.
+
+And nothing about the judges improved. The dial cannot make a wrong answer
+right; it can only make the same answer louder or quieter. Turning it up
+until the panel sounds certain is how you end up with a system that is
+certain and wrong.
+
 ## The real thing
 
 Temperature is a single positive scalar that divides every logit **before**

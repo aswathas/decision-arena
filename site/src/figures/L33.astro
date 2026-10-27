@@ -1,0 +1,157 @@
+---
+/* L33 - calibration: stated confidence against observed accuracy. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L33.jpg`}
+      alt="A line drawing of a sloping ramp with a row of round balls hanging from a straight horizontal line above it, each ball touching the ramp, so that the balls sit level with the line at the far left and drop progressively further below it towards the right."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L33-fig-title L33-fig-desc"
+    >
+      <title id="L33-fig-title">A reliability diagram: stated confidence against observed accuracy</title>
+      <desc id="L33-fig-desc">
+        A square plot with stated confidence on the horizontal axis and
+        observed accuracy on the vertical axis, both from 0 to 1. A dashed
+        diagonal runs from the origin to the top right corner and marks perfect
+        calibration. A solid curve runs below that diagonal, touching it near
+        the origin and falling away as confidence rises, which is the shape of
+        an overconfident model. Two marked points on the curve show the
+        worked example: at stated confidence 0.9 the observed accuracy is 0.6,
+        a gap of 0.3, and at stated confidence 0.5 the observed accuracy is
+        0.6, a gap of 0.1.
+      </desc>
+
+      <!-- the axes -->
+      <g class="fig-axis">
+        <path d="M88 300 H588 M88 300 V44" />
+      </g>
+      <text x="52" y="48" class="fig-text fig-text--dim">1.0</text>
+      <text x="60" y="304" class="fig-text fig-text--dim">0</text>
+      <text x="80" y="320" class="fig-text fig-text--dim">0</text>
+      <text x="564" y="320" class="fig-text fig-text--dim">1.0</text>
+      <text x="500" y="320" class="fig-text fig-text--dim">0.9</text>
+      <text x="320" y="320" class="fig-text fig-text--dim">0.5</text>
+      <text x="240" y="336" class="fig-label">stated confidence</text>
+      <text x="26" y="180" class="fig-label">observed</text>
+      <text x="26" y="194" class="fig-label">accuracy</text>
+
+      <!-- the perfect-calibration diagonal -->
+      <g class="fig-diagonal">
+        <path d="M88 300 L588 44" />
+      </g>
+      <text x="404" y="106" class="fig-text fig-text--dim">perfect calibration</text>
+
+      <!-- the overconfident model curve -->
+      <g class="m-draw fig-curve" style="--m-length: 560; --m-duration: 2.2s">
+        <path d="M88 300 C 160 268, 250 236, 340 214 C 430 192, 520 176, 578 172" />
+      </g>
+
+      <!-- the two worked points -->
+      <g class="fig-point">
+        <circle cx="538" cy="174" r="4" />
+        <circle cx="338" cy="215" r="4" />
+      </g>
+      <text x="470" y="152" class="fig-text fig-text--num fig-text--ink">conf 0.90</text>
+      <text x="470" y="138" class="fig-text fig-text--num fig-text--ink">acc 0.60</text>
+      <text x="470" y="124" class="fig-text fig-text--num fig-text--ink">gap 0.30</text>
+      <text x="222" y="240" class="fig-text fig-text--num fig-text--ink">conf 0.50</text>
+      <text x="222" y="254" class="fig-text fig-text--num fig-text--ink">acc 0.60</text>
+
+      <!-- the gap, drawn -->
+      <g class="fig-gap">
+        <path d="M538 174 V110 M532 110 H544" />
+        <path d="M588 110 H544" class="fig-gap-ref" />
+      </g>
+
+      <!-- the consequence -->
+      <g>
+        <rect x="88" y="52" width="196" height="52" class="fig-panel fig-panel--ink" />
+        <text x="100" y="72" class="fig-text fig-text--ink">at conf 0.9 the model</text>
+        <text x="100" y="88" class="fig-text fig-text--ink">is right 6 times in 10</text>
+        <text x="100" y="100" class="fig-text fig-text--dim">four in ten are wrong</text>
+      </g>
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L33</span>
+    <span class="fig__caption-text">A reliability curve that sits below the diagonal is an overconfident model, and the gap is widest exactly where the stated confidence is highest.</span>
+  </figcaption>
+</figure>
+
+<style>
+  .fig-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    fill: var(--color-ink-45);
+  }
+
+  .fig-text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--color-ink-70);
+  }
+
+  .fig-text--ink {
+    fill: var(--color-ink);
+  }
+
+  .fig-text--dim {
+    fill: var(--color-ink-45);
+  }
+
+  .fig-text--num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fig-axis path {
+    fill: none;
+    stroke: var(--color-rule);
+    stroke-width: 1;
+  }
+
+  .fig-diagonal path {
+    fill: none;
+    stroke: var(--color-ink-45);
+    stroke-width: 1;
+    stroke-dasharray: 5 4;
+  }
+
+  .fig-curve path {
+    fill: none;
+    stroke: var(--color-ink);
+    stroke-width: 1;
+  }
+
+  .fig-point circle {
+    fill: var(--color-prussian);
+  }
+
+  .fig-gap path {
+    fill: none;
+    stroke: var(--color-prussian);
+    stroke-width: 1;
+  }
+
+  .fig-gap .fig-gap-ref {
+    stroke-dasharray: 3 3;
+  }
+
+  .fig-panel {
+    fill: none;
+    stroke: var(--color-rule-soft);
+    stroke-width: 1;
+  }
+
+  .fig-panel--ink {
+    stroke: var(--color-ink);
+  }
+</style>

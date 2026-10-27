@@ -55,6 +55,28 @@ becomes garbage.
 `[2, 1, 0.5]` becomes `[7, 6, 5.5]`. The contestant order did not change. The
 gut answer is unchanged. So why would anyone care that the *numbers* changed?
 
+## The story
+
+Imagine a quiz show where contestants do not earn points but hand out
+tickets. Three have earned 2, 1 and 0.5 tickets of goodwill, and the show
+must give out 100 real tickets in proportion to how well they did.
+
+The instinctive way to share is to divide: 2 out of 3.5, 1 out of 3.5, 0.5
+out of 3.5. Here is the flaw. Double every score - 4, 2 and 1 - and the share
+comes out exactly the same. So a contestant twice as good gets no more
+tickets, and one a hair better gets the same as one far better.
+
+The show fixes it with an odd rule: before dividing, every score goes through
+an exponential. A gap of 1 becomes a weight gap of about 2.7, and a gap of 3
+becomes a weight gap of about 20. Being slightly better now counts for a
+little; being much better counts for a lot.
+
+One more thing the show must survive: an enormous score. Raising a very
+large number to that power overflows, and the whole share-out becomes
+rubbish. The fix is simple - subtract the biggest score from every score
+first. Everyone's score drops by the same amount, so the gaps are untouched,
+and the winner's new score is zero, so nothing can overflow.
+
 ## The real thing
 
 **Softmax** turns a vector of raw scores (called **logits**) into a

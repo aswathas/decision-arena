@@ -75,6 +75,31 @@ who wins? Python's `max()` returns the **first** one it sees. A tie-break rule
 that is not written down is a tie-break rule that will differ between your
 laptop and the next run - and this repo cares a lot about determinism.
 
+## The story
+
+Imagine a quiz show where three contestants hold up numbered cards. The
+numbers are not percentages and do not add up to anything. They are marks on
+a board, and the only thing the audience wants is the name of the contestant
+with the highest mark.
+
+So a stagehand walks along the board with a pointer, touches the highest
+mark, and that is the winner. The pointer is the operation: it hands back a
+position, and you look the name up yourself.
+
+Here is the surprising part. Suppose the stagehand is told to double every
+mark on the board. The marks all grow - the winner's mark grows by most,
+because it was the biggest - and the pointer moves to exactly the same
+contestant. The order did not change, because you cannot reorder a set of
+numbers by making them all bigger in the same proportion. The temperature
+dial from the last lesson scales every score the same way, and the winner is
+the same there too.
+
+Add the same amount to every mark instead, and again nothing reorders. Only
+the gaps carry information.
+
+Which means "the model was more sure" has to be unpacked first. If only the
+gaps grew, the model did not change its mind - it said the same thing more
+loudly.
 ## The real thing
 
 **Logit** - a raw, uncalibrated score that a model produces for each option.
