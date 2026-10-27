@@ -40,6 +40,22 @@ Regenerate them with:
 node scripts/capture.mjs     # needs the preview server running
 ```
 
+## Serving the build locally
+
+A background `npm run preview` in this harness is reaped after one hour, which
+breaks a long review session. Launch it detached instead, and it stays up:
+
+```powershell
+$site = "C:\Users\aswat\Downloads\Projects\decision-arena\site"
+Start-Process -FilePath "C:\Program Files\nodejs\node.exe" `
+  -ArgumentList "$site\node_modules\astro\bin\astro.mjs","preview","--port","4321" `
+  -WorkingDirectory $site -WindowStyle Hidden `
+  -RedirectStandardOutput "$site\preview.out.log" -RedirectStandardError "$site\preview.err.log"
+```
+
+Stop it with `Stop-Process -Id <pid>` after finding the listener:
+`Get-NetTCPConnection -State Listen -LocalPort 4321`.
+
 The design system this build produced is recorded in `../DESIGN.md` and
 `../.impeccable/design.json`; the direction it was built against is recorded
 in `../.impeccable/surfaces/site-src-pages-index-astro.md`.
