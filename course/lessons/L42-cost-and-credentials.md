@@ -54,6 +54,27 @@ finish slightly **over** the cap - the last call you were allowed to make
 was not yet paid for when the check ran. A cap is a ceiling on the number of
 *further* calls, not on the final bill to the cent.
 
+## The story
+
+Picture a hired van with a fuel limit. The hire company fits a collar on the
+filler, and the gauge shows what you have used. The limit is not there because
+they expect you to drive badly. It is there so that a wrong turn costs a
+bounded amount instead of a month of pay.
+
+This harness is that van. The price per provider is one number - dollars per
+million tokens - and the cost of a call is that number times the tokens you
+sent, divided by a million. The division is the step people skip: "per million
+tokens" is a rate for a heap, not for a single token.
+
+And the check happens before the next call, not after the last one. That is
+why the total on the bill can sit slightly above the cap: the cap governs how
+many further calls you are allowed, not the settlement to the cent.
+
+The key is part of the same story. It travels in an environment variable and
+in the request header and nowhere else - never in a script, never in a file
+you commit, never in a report. A key written down anywhere has already leaked,
+because a committed file stays in the history forever.
+
 ## The real thing
 
 **Tokens.** A **token** is the unit a model reads text in - roughly four

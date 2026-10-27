@@ -1,0 +1,67 @@
+---
+/* L43 - the decision-model wire format. One writer: the figures workstream C. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L43.jpg`}
+      alt="A line drawing of three request fields flowing through a single endpoint box into three structured answer boxes labelled probability, option and level."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L43-fig-title L43-fig-desc"
+    >
+      <title id="L43-fig-title">A structured payload in, structured answers out</title>
+      <desc id="L43-fig-desc">
+        On the left, three stacked field boxes labelled model, state and questions make up the request. An arrow leads right into a tinted box labelled with the single endpoint path, one URL and one key. A second arrow leads into three stacked answer boxes on the right: a noul question answered with a probability, a choice question answered with an option, and a score question answered with a level. The answer boxes fade in one after another, after the request arrows have drawn themselves.
+      </desc>
+      <defs>
+        <marker id="L43-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-ink-45)" />
+        </marker>
+      </defs>
+
+      <text x="40" y="72" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink)">request</text>
+      <rect x="40" y="84" width="150" height="34" fill="var(--color-ground-deep)" stroke="var(--color-rule)" stroke-width="1" />
+      <text x="54" y="106" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">model</text>
+      <rect x="40" y="126" width="150" height="34" fill="var(--color-ground-deep)" stroke="var(--color-rule)" stroke-width="1" />
+      <text x="54" y="148" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">state</text>
+      <rect x="40" y="168" width="150" height="34" fill="var(--color-ground-deep)" stroke="var(--color-rule)" stroke-width="1" />
+      <text x="54" y="190" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">questions</text>
+
+      <rect x="248" y="120" width="150" height="60" fill="var(--color-prussian-tint)" stroke="var(--color-prussian)" stroke-width="1" />
+      <text x="262" y="146" font-family="var(--font-mono)" font-size="11" fill="var(--color-prussian)">/v1/systemone</text>
+      <text x="262" y="166" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">one URL, one key</text>
+
+      <path class="m-draw" style="--m-length: 60; --m-duration: 0.8s;" d="M 190 145 L 244 145" fill="none" stroke="var(--color-ink)" stroke-width="1" marker-end="url(#L43-arrow)" />
+      <path class="m-draw" style="--m-length: 60; --m-duration: 0.8s; --m-delay: 0.4s;" d="M 398 145 L 452 145" fill="none" stroke="var(--color-ink)" stroke-width="1" marker-end="url(#L43-arrow)" />
+
+      <text x="460" y="72" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink)">answers</text>
+      <rect class="m-fade" style="--m-duration: 0.6s; --m-delay: 0.8s;" x="460" y="84" width="150" height="34" fill="var(--color-ground)" stroke="var(--color-rule)" stroke-width="1" />
+      <text class="m-fade" style="--m-duration: 0.6s; --m-delay: 0.8s;" x="474" y="106" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">noul: probability</text>
+      <rect class="m-fade" style="--m-duration: 0.6s; --m-delay: 1.05s;" x="460" y="126" width="150" height="34" fill="var(--color-ground)" stroke="var(--color-rule)" stroke-width="1" />
+      <text class="m-fade" style="--m-duration: 0.6s; --m-delay: 1.05s;" x="474" y="148" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">choice: option</text>
+      <rect class="m-fade" style="--m-duration: 0.6s; --m-delay: 1.3s;" x="460" y="168" width="150" height="34" fill="var(--color-ground)" stroke="var(--color-rule)" stroke-width="1" />
+      <text class="m-fade" style="--m-duration: 0.6s; --m-delay: 1.3s;" x="474" y="190" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">score: level</text>
+
+      <text x="40" y="240" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">a structured payload in, structured answers out -</text>
+      <text x="40" y="256" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">no paragraph to parse, no key sent until it is checked</text>
+
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L43</span>
+    <span class="fig__caption-text">Jev takes a structured payload and returns structured answers - a probability, an option or a level - from one endpoint and one key.</span>
+  </figcaption>
+</figure>
+
+<style>
+  /* scoped to this figure */
+  .fig__svg {
+    font-variant-numeric: tabular-nums;
+  }
+</style>

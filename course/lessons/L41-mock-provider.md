@@ -53,6 +53,29 @@ mock in this repo avoids all three - it derives its numbers from a **hash** of
 the seed, the question id and the serialised state, which is a pure function
 of its inputs.
 
+## The story
+
+Picture a fire drill in an empty building. There are no flames, but the alarm
+is real, the doors unlock on schedule, and the supervisor times how long
+everyone takes to get out. The drill cannot tell you whether the building
+would survive a real fire. It tells you something else, and it is the thing
+you actually need first: that your alarm, your doors and your people know what
+to do.
+
+The mock provider is that drill for this harness. It answers, it answers fast,
+it costs nothing, and every report labels it a simulation. What it proves is
+that the battery loads, the answers come back, the metrics compute and the
+report prints.
+
+A drill has to be repeatable too. If the alarm rang at a different minute each
+time, you could never tell whether a change in your score came from a change
+in your people or from a change in the drill. So the drill is scheduled, and
+so is the mock: its numbers come from a hash of the seed, the question and the
+state, so the same inputs always produce the same answer. Change the seed and
+you get a different rehearsal, one that behaves like a different colleague -
+which is how you rehearse swapping one colleague for another without spending
+anything.
+
 ## The real thing
 
 `MockProvider` in `decisionarena/providers.py` is a `Provider` subclass, so

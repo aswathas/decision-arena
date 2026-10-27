@@ -1,0 +1,65 @@
+---
+/* L63 - the same case, three times, one answer. One writer: the figures workstream C. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L63.jpg`}
+      alt="A line drawing of three identical input boxes sending arrows to three dots stacked on one dashed vertical line."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L63-fig-title L63-fig-desc"
+    >
+      <title id="L63-fig-title">The same case three times, one distinct answer</title>
+      <desc id="L63-fig-desc">
+        Three rows, each with the same small input box labelled case 12 on the left, an arrow running right, and a filled prussian dot at the same horizontal position. A dashed vertical line joins the three dots, and a note to the right reads one distinct answer, byte for byte, across the repeats. The arrows draw themselves in sequence and the three dots fade in one after another along the same line.
+      </desc>
+      <defs>
+        <marker id="L63-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-ink-45)" />
+        </marker>
+      </defs>
+
+      <text x="40" y="56" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink)">the same case, three times</text>
+
+      <rect x="40" y="76" width="150" height="34" fill="var(--color-ground)" stroke="var(--color-rule)" stroke-width="1" />
+      <text x="54" y="98" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">case 12</text>
+      <path class="m-draw" style="--m-length: 190; --m-duration: 0.9s;" d="M 190 93 L 400 93" fill="none" stroke="var(--color-ink-45)" stroke-width="1" marker-end="url(#L63-arrow)" />
+      <circle class="m-fade" style="--m-duration: 0.6s; --m-delay: 0.7s;" cx="420" cy="93" r="6" fill="var(--color-prussian)" />
+
+      <rect x="40" y="146" width="150" height="34" fill="var(--color-ground)" stroke="var(--color-rule)" stroke-width="1" />
+      <text x="54" y="168" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">case 12</text>
+      <path class="m-draw" style="--m-length: 190; --m-duration: 0.9s; --m-delay: 0.3s;" d="M 190 163 L 400 163" fill="none" stroke="var(--color-ink-45)" stroke-width="1" marker-end="url(#L63-arrow)" />
+      <circle class="m-fade" style="--m-duration: 0.6s; --m-delay: 1s;" cx="420" cy="163" r="6" fill="var(--color-prussian)" />
+
+      <rect x="40" y="216" width="150" height="34" fill="var(--color-ground)" stroke="var(--color-rule)" stroke-width="1" />
+      <text x="54" y="238" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">case 12</text>
+      <path class="m-draw" style="--m-length: 190; --m-duration: 0.9s; --m-delay: 0.6s;" d="M 190 233 L 400 233" fill="none" stroke="var(--color-ink-45)" stroke-width="1" marker-end="url(#L63-arrow)" />
+      <circle class="m-fade" style="--m-duration: 0.6s; --m-delay: 1.3s;" cx="420" cy="233" r="6" fill="var(--color-prussian)" />
+
+      <line x1="420" y1="93" x2="420" y2="233" stroke="var(--color-prussian)" stroke-width="1" stroke-dasharray="3 3" />
+      <text x="440" y="158" font-family="var(--font-mono)" font-size="11" fill="var(--color-prussian)">one distinct answer</text>
+      <text x="440" y="174" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">byte for byte, across the repeats</text>
+
+      <text x="40" y="292" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">repeats write several records; the report groups them by case</text>
+      <text x="40" y="308" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">and compares them, so a model that drifts cannot be certified</text>
+
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L63</span>
+    <span class="fig__caption-text">Repeating a case writes several records, and the report compares them: identical answers land on the same line, and a model that drifts shows up as more than one.</span>
+  </figcaption>
+</figure>
+
+<style>
+  /* scoped to this figure */
+  .fig__svg {
+    font-variant-numeric: tabular-nums;
+  }
+</style>

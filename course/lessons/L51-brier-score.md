@@ -62,6 +62,32 @@ that is right but says 0.51 has a small error; a model that is right and says
 `collect_scored()` produces two parallel lists - `probs` and `outcomes` -
 before any calibration metric runs.
 
+## The story
+
+Picture a forecaster who says, every morning, "seventy percent chance of
+rain". Over a hundred days it rained on seventy.
+
+A score that only counted right and wrong would treat her like someone who
+says "fifty percent" every morning and gets the same split. But she deserves
+more credit, because her number was specific: of the days she called at
+seventy percent, seventy percent were real. That extra credit is the Brier
+score.
+
+The number itself is a distance. Take what she said, take what happened - one
+for rain, zero for dry - and look at the gap. Square that gap, and average the
+squares. Zero is perfect, one the worst possible.
+
+Squaring is what makes it bite. A day she called ninety-five percent that
+stayed dry leaves a square of 0.9025; a day she called forty-five percent and
+stayed dry leaves 0.2025. The big confident mistake costs far more, which is
+what you want when a wrong confident answer triggers something irreversible.
+
+Here is the part that makes the metric worth having. A forecaster who says
+"fifty percent" about everything scores 0.25 - and that beats the
+overconfident forecast's 0.325, with the very same accuracy. Saying nothing
+useful is a milder failure than saying something confidently wrong, and only
+this metric says so.
+
 ## The real thing
 
 **The definition.** The Brier score is the **average squared distance between

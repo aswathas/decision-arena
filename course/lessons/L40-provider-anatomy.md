@@ -52,6 +52,28 @@ forgets to record usage is an adapter that cannot be costed - and this repo's
 whole selling point is that a full comparison costs under a dollar, so someone
 has to know the number to the cent.
 
+## The story
+
+Imagine a railway station where every platform speaks its own signalling
+language. The station master wants one timetable and one set of rules, and
+does not care which platform a train uses. So you hire an interpreter per
+platform. The interpreter is not the train, and does not decide where the
+train goes - the timetable does. The interpreter's job is narrow: turn the
+station's words into the platform's words going out, the platform's words back
+into the station's words coming back, and report how many words were consumed
+so the fare can be charged.
+
+That is a provider adapter. The harness is the station master. It hands over a
+state and a list of questions and gets answers in one fixed shape, and it
+never learns that one platform calls a yes/no question `noul` while another
+calls it `boolean`, or that one platform nests its answers inside a wrapper
+and another sets them at the top level. Those differences belong to the
+platform, and the adapter is where they get flattened.
+
+The meter is the part people forget. Words are consumed on every call, and
+consumed words cost money. An adapter that did not keep the meter would leave
+the harness unable to say what the comparison cost.
+
 ## The real thing
 
 A **provider adapter** is one object that hides one vendor's quirks behind a

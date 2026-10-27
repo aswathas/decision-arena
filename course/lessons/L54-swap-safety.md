@@ -62,6 +62,30 @@ to stop. That is called **hysteresis**, and this repo does not implement it
 - it measures the *damage* that hysteresis would prevent, which is exactly
 what the action-change rate is for.
 
+## The story
+
+Picture two thermostats on the same wall, both set to heat at 22 °C. One reads
+21.9 °C, the other 22.1 °C. They agree, and in every way that matters they are
+the same thermostat. Nobody calls the difference between those readings a
+behaviour change.
+
+Now put the set point at 21.5 °C. One reads 21.4 and the other 21.6. Still
+close, still looking like agreement - but one of them has the heater on and
+the other has it off. The action changed.
+
+That gap is the question a buyer actually asks. Not which model is more
+accurate, but: if I swap the vendor, what changes? The same decisions, the
+same escalations, the same tickets closed automatically means a boring, safe
+swap. A few percent of tickets taking a different path means you need to know
+which few percent, because that is where your risk sits.
+
+A label is not an action. The routing questions carry their own thresholds,
+and two providers can pick the same team and still disagree about whether to
+act on it - one just above the threshold, one just below. And a probability
+difference of 0.04 is enough to flip a threshold, because a threshold sitting
+in the middle of two models' outputs is the normal condition, not an edge
+case.
+
 ## The real thing
 
 **The metric.** `action_change_rate(a, b, thresholds)` in

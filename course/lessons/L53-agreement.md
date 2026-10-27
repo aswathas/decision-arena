@@ -63,6 +63,31 @@ providers. Conflating them leads to the wrong fix: if a provider is
 non-deterministic you fix the provider; if two providers disagree you need
 labels, or an action-level metric (lesson L54).
 
+## The story
+
+Picture two radiologists in separate rooms reading the same film under the
+same lamp. They circle the same spot. That tells you the two behave alike. It
+is not worth quoting as quality.
+
+They can agree for a bad reason. They read the same textbook, and the textbook
+can be wrong. They share the same blind spot. The film is ambiguous and both
+are guessing the same way. And when both obey an instruction hidden in the
+file itself, they agree perfectly on the wrong answer - and the more they
+agree, the more certain you feel.
+
+So agreement is a cheap signal, and a useful one. It needs no gold labels, so
+when a new provider arrives and you have no answers for your own traffic, the
+first question is whether it behaves like the one you trust. If the two do not
+agree, you have bigger questions than quality.
+
+What agreement cannot see is the gap underneath it. Two models answering 0.52
+and 0.88 agree - both sit on the same side of the line - yet their confidence
+is 0.36 apart. Labels throw that away; a separate measurement keeps it.
+
+Two providers agreeing is evidence that they are alike. Two providers agreeing
+with the answer is evidence that they are right. Only the second is about
+quality.
+
 ## The real thing
 
 **`label_agreement(a, b)`** in `decisionarena/metrics.py` takes two dicts of

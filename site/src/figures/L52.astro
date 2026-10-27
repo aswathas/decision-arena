@@ -1,0 +1,60 @@
+---
+/* L52 - the reliability curve, one point per drawer. One writer: the figures workstream C. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L52.jpg`}
+      alt="A line drawing of a reliability plot with a dashed diagonal and five plotted points, one of them ringed and labelled as an unkept promise."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L52-fig-title L52-fig-desc"
+    >
+      <title id="L52-fig-title">A reliability curve with one point per confidence drawer</title>
+      <desc id="L52-fig-desc">
+        A square plot with confidence along the bottom and accuracy up the side, and a dashed diagonal running from the bottom left to the top right, labelled calibrated. Five plotted points appear one after another: two sit on the top edge, two on the bottom edge, and one prussian point low and to the right is ringed and labelled promised 0.85, delivered 0. The dashed diagonal draws itself first, then the points fade in.
+      </desc>
+      <line x1="120" y1="270" x2="570" y2="270" stroke="var(--color-ink-45)" stroke-width="1" />
+      <line x1="120" y1="270" x2="120" y2="50" stroke="var(--color-ink-45)" stroke-width="1" />
+      <path class="m-draw" style="--m-length: 620; --m-duration: 1.2s;" d="M 120 270 L 560 50" fill="none" stroke="var(--color-rule)" stroke-width="1" stroke-dasharray="5 4" />
+      <text x="300" y="150" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">calibrated</text>
+
+      <circle class="m-fade" style="--m-duration: 0.6s; --m-delay: 0.5s;" cx="538" cy="50" r="5" fill="var(--color-ink)" />
+      <text class="m-fade" style="--m-duration: 0.6s; --m-delay: 0.5s;" x="500" y="38" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">0.95 - 1.0</text>
+
+      <circle class="m-fade" style="--m-duration: 0.6s; --m-delay: 0.75s;" cx="494" cy="270" r="5" fill="var(--color-prussian)" />
+      <circle class="m-fade" style="--m-duration: 0.6s; --m-delay: 0.75s;" cx="494" cy="270" r="11" fill="none" stroke="var(--color-prussian)" stroke-width="1" />
+      <text class="m-fade" style="--m-duration: 0.6s; --m-delay: 0.75s;" x="300" y="256" font-family="var(--font-mono)" font-size="11" fill="var(--color-prussian)">promised 0.85, delivered 0</text>
+
+      <circle class="m-fade" style="--m-duration: 0.6s; --m-delay: 1s;" cx="362" cy="50" r="5" fill="var(--color-ink)" />
+      <text class="m-fade" style="--m-duration: 0.6s; --m-delay: 1s;" x="330" y="38" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">0.55 - 1.0</text>
+
+      <circle class="m-fade" style="--m-duration: 0.6s; --m-delay: 1.25s;" cx="318" cy="270" r="5" fill="var(--color-ink)" />
+      <text class="m-fade" style="--m-duration: 0.6s; --m-delay: 1.25s;" x="268" y="256" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">0.45 - 0</text>
+
+      <circle class="m-fade" style="--m-duration: 0.6s; --m-delay: 1.5s;" cx="142" cy="50" r="5" fill="var(--color-ink)" />
+      <text class="m-fade" style="--m-duration: 0.6s; --m-delay: 1.5s;" x="150" y="38" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">0.05 - 1.0</text>
+
+      <text x="300" y="292" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">confidence</text>
+      <text x="40" y="170" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">accuracy</text>
+      <text x="40" y="312" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">one point per drawer: promise across, outcome up; the average of the gaps is the score</text>
+
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L52</span>
+    <span class="fig__caption-text">Sorting the results into confidence drawers turns each one into a point - promise across, outcome up - and a point below the diagonal is a promise the model did not keep.</span>
+  </figcaption>
+</figure>
+
+<style>
+  /* scoped to this figure */
+  .fig__svg {
+    font-variant-numeric: tabular-nums;
+  }
+</style>

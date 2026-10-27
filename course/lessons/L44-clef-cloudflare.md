@@ -54,6 +54,29 @@ what lets the same client drive a local server (lesson L45).
 adapter's `PRICES` dict is the only place that knows this, so a price can
 never drift away from the model it belongs to.
 
+## The story
+
+Imagine a food truck parked in a fenced yard. The chef is the same chef and
+the recipes are the same, but the truck belongs to someone else and the yard
+owner meters the fuel. To get in you need two things: the number of the bay
+you are in, printed into the address of the gate, and a card that opens it.
+The card alone gets you nothing; the bay number alone lets you walk in but not
+start the machine.
+
+Clef is that truck. The account id says which yard, and whose account pays;
+the auth token opens the gate. Both must be present, and if either is missing
+the adapter says so by name before anything is sent.
+
+The yard also bills by size. The same truck comes in two sizes, and the meter
+reads very differently for each, even though the request is the same. The
+adapter keeps the two prices side by side, so a price never drifts away from
+the model it belongs to.
+
+The last wrinkle is the reply. This yard wraps what it hands back in an outer
+envelope: a success flag, then a result, with the answers inside that. The
+other desk wraps nothing. The adapter unwraps it, so everything downstream
+sees one flat shape, whatever the yard does.
+
 ## The real thing
 
 **What Clef is.** `available_providers()` describes them as "Cloudflare
@@ -92,7 +115,7 @@ repo's README notes that no vision case set exists yet - the adapter accepts
 
 **The prices and what they cost.** `clef` at `$0.24` per Mtok, `clef-flash`
 at `$0.038`. A 2000-token decision costs `$0.00048` on `clef` and
-`$0.000076` on `clef-flash`. Compare Jev's `$0.000042` for the same
+`$0.000076` on `clef-flash`. Compare Jev's `$0.000084` for the same
 2000 tokens: on a small battery the bill is dominated by how many cases you
 run, not by which vendor you pick. That is why the spend cap defaults to
 `$0.25`.

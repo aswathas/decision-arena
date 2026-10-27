@@ -1,0 +1,70 @@
+---
+/* L40 - one request, one answer shape, one meter. One writer: the figures workstream C. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L40.jpg`}
+      alt="A line drawing of a harness box sending a request into a tinted adapter box that rewrites one keyword, then to a model box, with the answer returning along a path underneath into a single flat shape."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L40-fig-title L40-fig-desc"
+    >
+      <title id="L40-fig-title">One request in, one answer shape out</title>
+      <desc id="L40-fig-desc">
+        A harness box on the left holds a state and a set of questions and sends them right, into a tinted adapter box in the middle. The adapter rewrites the question keyword from noul to boolean, and lists the answers and the usage it will hand back. A model box on the right holds the vendor's quirks. An arrow leaves the model, runs down and across the bottom of the drawing, and returns into the harness from below, showing the answer coming back in the single flattened shape. The outbound arrows draw themselves first, then the returning arrow draws along the bottom.
+      </desc>
+      <defs>
+        <marker id="L40-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-ink-45)" />
+        </marker>
+      </defs>
+
+      <rect x="40" y="104" width="130" height="116" fill="var(--color-ground)" stroke="var(--color-rule)" stroke-width="1" />
+      <text x="56" y="130" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink)">harness</text>
+      <text x="56" y="158" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">state</text>
+      <text x="56" y="176" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">questions</text>
+      <text x="56" y="204" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">one shape out</text>
+
+      <rect x="250" y="92" width="150" height="140" fill="var(--color-prussian-tint)" stroke="var(--color-prussian)" stroke-width="1" />
+      <text x="266" y="118" font-family="var(--font-mono)" font-size="11" fill="var(--color-prussian)">adapter</text>
+      <text x="266" y="150" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">noul</text>
+      <path d="M 298 146 L 322 146" stroke="var(--color-ink-45)" stroke-width="1" marker-end="url(#L40-arrow)" />
+      <text x="330" y="150" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">boolean</text>
+      <line x1="266" y1="168" x2="384" y2="168" stroke="var(--color-rule)" stroke-width="1" />
+      <text x="266" y="192" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">answers</text>
+      <text x="266" y="212" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">usage</text>
+
+      <rect x="470" y="104" width="130" height="116" fill="var(--color-ground)" stroke="var(--color-rule)" stroke-width="1" />
+      <text x="486" y="130" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink)">model</text>
+      <text x="486" y="158" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">vendor</text>
+      <text x="486" y="176" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">quirks</text>
+      <text x="486" y="204" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">hidden here</text>
+
+      <path class="m-draw" style="--m-length: 80; --m-duration: 0.9s;" d="M 170 140 L 246 140" fill="none" stroke="var(--color-ink)" stroke-width="1" marker-end="url(#L40-arrow)" />
+      <path class="m-draw" style="--m-length: 70; --m-duration: 0.9s; --m-delay: 0.4s;" d="M 400 140 L 466 140" fill="none" stroke="var(--color-ink)" stroke-width="1" marker-end="url(#L40-arrow)" />
+
+      <path class="m-draw" style="--m-length: 460; --m-duration: 1.4s; --m-delay: 1s;" d="M 535 220 L 535 272 L 105 272 L 105 224" fill="none" stroke="var(--color-prussian)" stroke-width="1" marker-end="url(#L40-arrow)" />
+      <text x="230" y="290" font-family="var(--font-mono)" font-size="11" fill="var(--color-prussian)">one shape back</text>
+      <text x="250" y="290" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)"></text>
+      <text x="40" y="306" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">the harness never learns the vendor's words</text>
+
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L40</span>
+    <span class="fig__caption-text">The adapter is the only thing that knows the vendor's words: it translates the request in and hands back one answer shape and the usage meter.</span>
+  </figcaption>
+</figure>
+
+<style>
+  /* scoped to this figure */
+  .fig__svg {
+    font-variant-numeric: tabular-nums;
+  }
+</style>

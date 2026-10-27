@@ -67,6 +67,32 @@ perfect ECE of 0 - perfectly calibrated, and completely useless. Good
 calibration and good discrimination are two different properties, and a
 useful model needs both.
 
+## The story
+
+Imagine a forecaster who keeps a scorecard of promises. Every time she says
+"seventy percent" she writes it in a column; every time it rains she writes
+"rained" beside it.
+
+At the end of the month she sorts the scorecard into drawers by the number she
+promised: one for "said seventy percent", one for "said forty percent". She
+opens each drawer and asks the only question that matters: in the drawer where
+she promised seventy percent, how often did it actually rain?
+
+If it rained about seventy percent of the time there, her promises are honest.
+If it rained only forty percent of the time when she promised seventy, she is
+overconfident - she promised more than she delivers. If it rained ninety
+percent when she promised seventy, she undersold herself.
+
+One point per drawer: promise along the bottom, outcome up the side. The
+honest forecaster's points lie on the diagonal. Two forecasters on one pair of
+axes give the curve.
+
+The drawers are bins, and one number compresses the curve: the average of the
+gaps, weighted by how many questions each drawer holds. Keep the curve too: a
+good average can hide one drawer where she promised eighty-five percent and it
+rained forty percent of the time. The average says there is a problem; the
+curve says which drawer.
+
 ## The real thing
 
 **The diagram.** For each bin, you compute two numbers:

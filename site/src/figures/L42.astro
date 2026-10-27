@@ -1,0 +1,58 @@
+---
+/* L42 - the running cost climbs until the cap stops it. One writer: the figures workstream C. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L42.jpg`}
+      alt="A line drawing of five rising bars against a dashed spend-cap line, the last bar tinted and crossing above the cap, with a marker for the check before the next call."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L42-fig-title L42-fig-desc"
+    >
+      <title id="L42-fig-title">The running cost climbs past the spend cap</title>
+      <desc id="L42-fig-desc">
+        A bar chart with calls in order along the bottom and running cost up the side. The bars grow from left to right. A dashed prussian line across the chart marks the spend cap of 0.25. The first four bars stop below that line; the fifth bar, tinted, rises past it. A dashed marker between the fourth and fifth bar is labelled 'check before the next call', and a note to the right says the call that was already made still gets billed. The bars rise into place one after another.
+      </desc>
+      <line x1="60" y1="250" x2="600" y2="250" stroke="var(--color-ink-45)" stroke-width="1" />
+      <line x1="60" y1="250" x2="60" y2="60" stroke="var(--color-ink-45)" stroke-width="1" />
+      <text x="66" y="268" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">calls, in order</text>
+      <text x="66" y="56" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">running cost</text>
+
+      <line x1="60" y1="112" x2="600" y2="112" stroke="var(--color-prussian)" stroke-width="1" stroke-dasharray="5 4" />
+      <text x="470" y="104" font-family="var(--font-mono)" font-size="11" fill="var(--color-prussian)">spend cap 0.25</text>
+
+      <rect class="m-rise" style="--m-duration: 0.6s;" x="90" y="222" width="54" height="28" fill="var(--color-ground-deep)" stroke="var(--color-rule)" stroke-width="1" />
+      <rect class="m-rise" style="--m-duration: 0.6s; --m-delay: 0.15s;" x="175" y="200" width="54" height="50" fill="var(--color-ground-deep)" stroke="var(--color-rule)" stroke-width="1" />
+      <rect class="m-rise" style="--m-duration: 0.6s; --m-delay: 0.3s;" x="260" y="168" width="54" height="82" fill="var(--color-ground-deep)" stroke="var(--color-rule)" stroke-width="1" />
+      <rect class="m-rise" style="--m-duration: 0.6s; --m-delay: 0.45s;" x="345" y="140" width="54" height="110" fill="var(--color-ground-deep)" stroke="var(--color-rule)" stroke-width="1" />
+      <rect class="m-rise" style="--m-duration: 0.6s; --m-delay: 0.6s;" x="430" y="64" width="54" height="186" fill="var(--color-prussian-tint)" stroke="var(--color-prussian)" stroke-width="1" />
+
+      <line x1="420" y1="250" x2="420" y2="112" stroke="var(--color-ink-45)" stroke-width="1" stroke-dasharray="2 3" />
+      <text x="330" y="242" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">check before the next call</text>
+
+      <text x="500" y="60" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">the call that was</text>
+      <text x="500" y="74" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">already made</text>
+      <text x="500" y="88" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">still gets billed</text>
+
+      <text x="40" y="306" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">the cap bounds how many further calls happen, not the final bill to the cent</text>
+
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L42</span>
+    <span class="fig__caption-text">The cap is checked before the next call, so the last permitted call still lands - a run can finish slightly over the cap.</span>
+  </figcaption>
+</figure>
+
+<style>
+  /* scoped to this figure */
+  .fig__svg {
+    font-variant-numeric: tabular-nums;
+  }
+</style>

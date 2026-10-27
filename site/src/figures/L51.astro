@@ -1,0 +1,71 @@
+---
+/* L51 - the brier score is a squared gap. One writer: the figures workstream C. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L51.jpg`}
+      alt="A line drawing of three probability scales with markers and prussian gap lines, scored 0.64, 0.16 and 0.25."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L51-fig-title L51-fig-desc"
+    >
+      <title id="L51-fig-title">Three forecasts and the square of the gap</title>
+      <desc id="L51-fig-desc">
+        Three rows, each a horizontal probability scale from 0 to 1. The first row
+        shows a forecast of 0.8 that stayed dry, with a long prussian line drawn
+        back to the zero end and a score of 0.64. The second shows a forecast of
+        0.6 that rained, with a shorter line forward to the one end and a score of
+        0.16. The third shows a forecast of 0.5 that rained, with a score of
+        0.25. The lines draw themselves in sequence, longest gap first.
+      </desc>
+      <text x="40" y="56" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink)">the square of the gap</text>
+
+      <line x1="210" y1="90" x2="530" y2="90" stroke="var(--color-rule)" stroke-width="1" />
+      <circle cx="466" cy="90" r="4" fill="var(--color-ink)" />
+      <line x1="210" y1="82" x2="210" y2="98" stroke="var(--color-ink-45)" stroke-width="1" />
+      <path class="m-draw" style="--m-length: 256; --m-duration: 1s;" d="M 466 90 L 210 90" fill="none" stroke="var(--color-prussian)" stroke-width="2" />
+      <text x="40" y="94" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">said 0.8</text>
+      <text x="196" y="112" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">dry</text>
+      <text x="552" y="94" font-family="var(--font-mono)" font-size="11" fill="var(--color-prussian)">0.64</text>
+
+      <line x1="210" y1="160" x2="530" y2="160" stroke="var(--color-rule)" stroke-width="1" />
+      <circle cx="402" cy="160" r="4" fill="var(--color-ink)" />
+      <line x1="530" y1="152" x2="530" y2="168" stroke="var(--color-ink-45)" stroke-width="1" />
+      <path class="m-draw" style="--m-length: 128; --m-duration: 1s; --m-delay: 0.35s;" d="M 402 160 L 530 160" fill="none" stroke="var(--color-prussian)" stroke-width="2" />
+      <text x="40" y="164" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">said 0.6</text>
+      <text x="536" y="164" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">rained</text>
+      <text x="552" y="164" font-family="var(--font-mono)" font-size="11" fill="var(--color-prussian)">0.16</text>
+
+      <line x1="210" y1="230" x2="530" y2="230" stroke="var(--color-rule)" stroke-width="1" />
+      <circle cx="370" cy="230" r="4" fill="var(--color-ink)" />
+      <line x1="530" y1="222" x2="530" y2="238" stroke="var(--color-ink-45)" stroke-width="1" />
+      <path class="m-draw" style="--m-length: 160; --m-duration: 1s; --m-delay: 0.7s;" d="M 370 230 L 530 230" fill="none" stroke="var(--color-prussian)" stroke-width="2" />
+      <text x="40" y="234" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">said 0.5</text>
+      <text x="536" y="234" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">rained</text>
+      <text x="552" y="234" font-family="var(--font-mono)" font-size="11" fill="var(--color-prussian)">0.25</text>
+
+      <text x="206" y="262" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">0</text>
+      <text x="524" y="262" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">1</text>
+      <text x="330" y="262" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">probability said</text>
+      <text x="40" y="292" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">the confident miss costs the most; a flat answer beats it on the same accuracy</text>
+
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L51</span>
+    <span class="fig__caption-text">The Brier score squares the distance between what you said and what happened, so a confident miss is punished far harder than a flat guess.</span>
+  </figcaption>
+</figure>
+
+<style>
+  /* scoped to this figure */
+  .fig__svg {
+    font-variant-numeric: tabular-nums;
+  }
+</style>

@@ -59,6 +59,29 @@ of the time with 99 % confidence score identically on accuracy - and they are
 completely different products. That gap is what the Brier score (L51) and
 ECE (L52) measure.
 
+## The story
+
+Picture a sorting bench at a support desk, with four bins. A hundred tickets
+arrive. You want one number: how often did a ticket land in the right bin?
+Count the right ones, divide by a hundred, and you have accuracy.
+
+Now imagine a second sorter that never sorts. It puts every ticket in the
+fullest bin. If eighty of your hundred tickets really are billing tickets,
+that sorter scores eighty out of a hundred - eighty percent accuracy - and it
+learned nothing at all.
+
+That number is the base rate, and it is the floor every model has to beat. A
+model at eighty percent is worth exactly as much as always guessing. Worse,
+the failure hides: accuracy is an average over all the tickets, so if
+ninety-nine percent of your traffic is one kind, a model that gets every one
+of the rare cases wrong still scores ninety-nine percent. The customer who was
+hurt is diluted into the average.
+
+And accuracy cannot see how sure the model was. Two sorters, both right eighty
+percent of the time, one confident every time and one barely confident, score
+identically - and they are completely different products. That gap is what the
+next two lessons measure.
+
 ## The real thing
 
 Work with four counts over a set of questions. For a binary yes/no question,

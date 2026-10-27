@@ -56,6 +56,30 @@ is the same, the output is different. Nothing in the harness broke; the
 *subject* changed. This is why the evidence contract records the provider
 name and a run id: so that "which version answered this?" has an answer.
 
+## The story
+
+Picture a machine with a chute. You drop the same token in twice, and twice an
+identical bead comes out and lands in the same spot. That is the shape of a
+deterministic thing - and what this harness assumes.
+
+Everything else rests on it. If the same ticket can get a different answer on
+Tuesday than on Wednesday, your accuracy is partly a roll of the dice, and
+your regression suite a slot machine.
+
+Three things break it, and only one is yours to fix. Sampling: above zero
+temperature the model picks from a distribution rather than taking the
+likeliest token; temperature zero asks it to stop. Batching: servers group
+requests to keep the hardware busy, and floating-point addition does not
+associate, so the same prompt in a different batch can come back with
+different last bits. And the provider can change the model behind the same
+name overnight - your prompt is the same, the address is the same, and the
+subject has changed.
+
+So the harness measures instead of assuming. Repeating a case writes several
+records, and the report groups them by case and compares the answers byte for
+byte. A model that differs three percent of the time can never be certified to
+a threshold: the behaviour you certified is not always what you get.
+
 ## The real thing
 
 **Determinism**: for a fixed input, the output is identical every time.

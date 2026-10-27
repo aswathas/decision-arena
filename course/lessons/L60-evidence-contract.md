@@ -54,6 +54,31 @@ against the *old* questions. Now the run file and the case file disagree, and
 there is no way to tell which questions produced which answers - unless the
 run recorded a **fingerprint** of the case file at the time of the run.
 
+## The story
+
+Picture a science-fair project. You run the experiment, get a number, and
+write it on the poster: our robot is 94 % accurate. Your friend asks to see
+the robot, and you point at the poster. That is the failure this repo is built
+against.
+
+The fix is old and boring: keep the raw notes. Every observation goes in a
+notebook, in order, dated. The poster's number is computed from the notebook,
+never typed onto it. When your friend wants to check, they read the notebook
+and do the arithmetic themselves.
+
+That is the order here: the raw calls first, one line per call; then a record
+about the run - provider, price, cases, when; then the readable summary,
+derived and never hand-edited. Change a metric and the summary is re-derived.
+
+Two small inventions make the notebook trustworthy. A label on every run,
+stamped into every line, so a loose line still says where it came from. And a
+fingerprint of the question set, so a reader can tell whether two runs were
+asked the same questions. Edit one question and the fingerprint changes - the
+old numbers then describe a battery that no longer exists.
+
+A number with no raw notes behind it is marketing. The notebook is the only
+reason anyone else can check you.
+
 ## The real thing
 
 **The evidence contract** has three parts, and the order matters:

@@ -51,6 +51,29 @@ adapter in this repo knows one URL, and this is it.
 not set")`. So a missing credential is a clear error, not a mysterious 401
 or a hang.
 
+## The story
+
+Picture a triage desk in a clinic. A patient arrives - that is the state. The
+desk has a fixed card of questions it always asks: is this about payment,
+which team should take it, how severe is it. The desk does not write a letter
+about the patient. It decides, and it hands back a card where each answer is a
+number, a team name or a level.
+
+Jev's System One API is that desk. You send the patient and the card of
+questions as a structured payload, and the desk hands back structured answers:
+a probability for the yes/no question, an option for the multiple choice, a
+level for the severity. No paragraph to parse, and no instruction about how to
+read the reply.
+
+The desk has one fixed address - a single specific URL, not a family of chat
+paths - and one key. The key is checked before the request is built, so a
+missing key produces a plain error naming the environment variable you forgot,
+rather than a puzzling refusal from the far end.
+
+The desk also keeps its own meter: the reply says how many tokens it consumed,
+so the fare can be worked out. And it stamps which model answered, because
+"latest" is a moving target and a pinned version is not.
+
 ## The real thing
 
 **What Jev is.** TypeSafe's decision model, exposed as the System One API.
@@ -88,7 +111,7 @@ request header.
 
 **The price.** `0.042` USD per million input tokens, the default argument of
 `JevProvider.__init__`. So a 2000-token decision costs
-`2000 * 0.042 / 1_000_000` = **$0.000042**.
+`2000 * 0.042 / 1_000_000` = **$0.000084**.
 
 **How to check whether your machine is set up.** Run
 `python -m decisionarena providers`. The `jev` row says `yes` or `no`, and

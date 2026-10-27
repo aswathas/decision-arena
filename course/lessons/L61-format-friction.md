@@ -60,6 +60,29 @@ question it moves 0.9. The mean is a comfortable, ignorable number; the one
 question that flipped from "no" to "yes" is a customer who got the wrong
 team. The mean is not the story. The **flip** is the story.
 
+## The story
+
+Picture a support ticket. On Monday it arrives as a blob of text. On Tuesday
+someone adds a parser, and the same ticket arrives as a nested structure with
+metadata wrapped in keys. Nobody changed the customer or the model. But the
+model reads keys, and keys carry emphasis - a field named for a refund may
+read as stronger evidence than the words please refund. Same facts, different
+bytes, possibly a different decision.
+
+And you can measure that without knowing the right answer. Send the same
+content in a few shapes, watch how far the probability travels, and you have a
+measurement of the friction between model and serialiser. No human labelled
+anything. That is why this is the cheapest experiment in the field: the
+expensive part of an accuracy study is the gold set, and this one does without
+it.
+
+Here is the discipline. The average movement tells you how far the probability
+usually moves - but a probability going from 0.41 to 0.49 changed no decision.
+What you must count is flips: the answer crossing the line where the system
+acts. A battery whose probabilities barely move but where one question of nine
+flips is a product bug waiting for a customer; one where everything moves a
+lot but nothing ever crosses is boring.
+
 ## The real thing
 
 **Serialisation** is the exact text or structure you hand to the model. Same
