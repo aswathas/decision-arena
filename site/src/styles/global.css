@@ -312,6 +312,10 @@
     stroke-dasharray: var(--m-length, 400);
     stroke-dashoffset: var(--m-length, 400);
     animation: fig-draw var(--m-duration, 1.4s) ease-out forwards;
+    /* The delay belongs here too. Without it every .m-draw element fires at
+       0s, and a figure whose <desc> says "the arrows draw themselves in
+       turn" shows them all arriving at once. */
+    animation-delay: var(--m-delay, 0s);
   }
 
   .m-rise {
@@ -344,6 +348,10 @@
       opacity: 1;
       transform: none;
       stroke-dashoffset: 0;
+      /* The dash period is an authored number, and a figure whose path is
+         longer than it would still lose its tail with the motion switched
+         off. Under reduced motion the whole stroke paints. */
+      stroke-dasharray: none;
     }
   }
 }
