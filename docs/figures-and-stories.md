@@ -110,9 +110,35 @@ Files nobody but the orchestrator touches:
 |---|---|
 | `tools/course_check.py --check` | a lesson is well-formed: front matter, the eight required sections in order, a quiz with three good questions, real prerequisites |
 | `tools/check_course_figures.py` | a lesson is finished as a *teaching artifact*: it has a story in the word band, a diagram with an accessible name and description, and a picture that exists and is under the size limit |
+| `tools/test_check_course_figures.py` | the figures gate itself: thirteen deliberately broken figures, each of which must be rejected. A gate nobody has tested is a gate nobody can trust |
 | `tools/check_site_a11y.py` | every built page has one h1, no duplicate ids, labelled SVGs, a skip link, a lang, a description, and every link - including in-page anchors - resolves |
 | the Impeccable detector | no kickers, no tiny text, no low contrast, no runaway measure, on the built pages |
 | `python -m unittest discover -s tests` | the harness and the learning engine still work |
+
+### The three browser checks
+
+The Python gate cannot measure pixels, so three things are checked in a real
+browser instead. They need the site built and served.
+
+```bash
+cd site && npm run build
+node site/node_modules/astro/bin/astro.mjs preview --port 4321   # if not already serving
+
+cd site
+node scripts/measure_mdraw.mjs http://localhost:4321   # every drawn stroke covers its path
+node scripts/measure_figs.mjs                          # no text overlaps, none past the frame
+node scripts/check_reduced_motion.mjs                  # the reduced-motion end state is the end state
+```
+
+- **measure_mdraw** walks the dash pattern of every `.m-draw` element and
+  compares the painted arc against the real path length. A dash period shorter
+  than the path loses the tail of the stroke - and the arrowhead with it.
+- **measure_figs** compares the bounding boxes of every `<text>` in every
+  figure. Overlaps above about two pixels are real collisions; a fraction of a
+  pixel is ordinary line spacing.
+- **check_reduced_motion** emulates `prefers-reduced-motion: reduce` and reads
+  the transform of the markers that travel. With the motion off, a marker must
+  still sit where the story ends, not where it started.
 
 ## Motion, in one paragraph
 

@@ -97,6 +97,10 @@ verified_facts:
     claim: "The course pages are rendered from the repository's own files, not copied: the lesson body is course/lessons/*.md imported as markdown, the quiz is course/quizzes/*.json, and the index is the generated course/curriculum.json. A lesson file that moves fails the build instead of publishing a stale copy."
     evidence: "site/src/data/course.ts, course/curriculum.json"
     verified_on: 2026-10-28
+  - id: illustrated-course-complete
+    claim: "All 46 lessons carry a story, a motion diagram and a generated picture. An independent audit found four defect classes the old gate could not see - a dash period shorter than the path, a missing animation-delay on .m-draw, nine figures with overlapping text, and fifteen alt texts describing the diagram instead of the picture - and all four are fixed. The gate now checks them, and tools/test_check_course_figures.py proves each new check fires."
+    evidence: "site/FIGURES.md, tools/check_course_figures.py, tools/test_check_course_figures.py, site/scripts/measure_mdraw.mjs"
+    verified_on: 2026-10-28
   - id: site-no-third-party-runtime
     claim: "The site makes no third-party runtime request: both typefaces are self-hosted woff2 files vendored from the upstream releases by tools/vendor_fonts.py."
     evidence: "tools/vendor_fonts.py, site/public/fonts/fonts.css"
