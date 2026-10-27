@@ -1,0 +1,95 @@
+---
+/* L00 - what this repo is, and what a decision model is not. One writer: the figures workstream A. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L00.jpg`}
+      alt="A line drawing of two hands sliding a paper ticket into one of four open trays arranged in a row on a counter, with a stack of tickets waiting beside them."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L00-fig-title L00-fig-desc"
+    >
+      <title id="L00-fig-title">One message in, a number on every option, and a threshold the caller draws</title>
+      <desc id="L00-fig-desc">
+        On the left a small card stands for one customer message, drawn as three short
+        rules. An arrow runs right into a square labelled model, with swappable written
+        under it. A second arrow runs right again into a distribution over four fixed
+        options, drawn as four horizontal bars that start at a common origin on a scale
+        labelled probability, with the names billing, technical, sales and other
+        written to the left of them. The first bar reaches furthest; the other three stop
+        well short of it. A vertical prussian line labelled 0.6 threshold crosses the
+        first bar and misses the other three; a note says the bar lengths are
+        illustrative. The bars rise into place one after another, the threshold line then
+        draws itself down across them, and a prussian dot pulses where the line crosses
+        the first bar.
+      </desc>
+      <defs>
+        <marker id="L00-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-ink-45)" />
+        </marker>
+      </defs>
+
+      <!-- the state: one customer message -->
+      <rect x="34" y="104" width="108" height="76" fill="var(--color-ground)" stroke="var(--color-rule)" stroke-width="1" />
+      <line x1="46" y1="122" x2="128" y2="122" stroke="var(--color-ink-45)" stroke-width="1" />
+      <line x1="46" y1="138" x2="128" y2="138" stroke="var(--color-ink-45)" stroke-width="1" />
+      <line x1="46" y1="154" x2="104" y2="154" stroke="var(--color-ink-45)" stroke-width="1" />
+      <text x="34" y="196" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">one customer message</text>
+
+      <!-- into the model -->
+      <path d="M 146 142 L 184 142" fill="none" stroke="var(--color-ink-45)" stroke-width="1" marker-end="url(#L00-arrow)" />
+
+      <!-- the model: swappable, the same questions every time -->
+      <rect x="190" y="98" width="88" height="88" fill="var(--color-ground)" stroke="var(--color-ink)" stroke-width="1" />
+      <text x="234" y="136" text-anchor="middle" font-family="var(--font-mono)" font-size="12" fill="var(--color-ink)">model</text>
+      <text x="234" y="154" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">swappable</text>
+      <text x="190" y="202" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">the same question set</text>
+
+      <!-- out of the model: a distribution over a fixed set of options -->
+      <path d="M 282 142 L 320 142" fill="none" stroke="var(--color-ink-45)" stroke-width="1" marker-end="url(#L00-arrow)" />
+
+      <line x1="418" y1="204" x2="618" y2="204" stroke="var(--color-rule)" stroke-width="1" />
+      <text x="418" y="222" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">probability</text>
+
+      <text x="336" y="86" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">billing</text>
+      <rect class="m-rise" style="--m-duration: 0.7s; --m-delay: 0.2s;" x="418" y="74" width="150" height="14" fill="var(--color-prussian-tint)" stroke="var(--color-prussian)" stroke-width="1" />
+
+      <text x="336" y="116" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">technical</text>
+      <rect class="m-rise" style="--m-duration: 0.7s; --m-delay: 0.4s;" x="418" y="104" width="56" height="14" fill="var(--color-ground-deep)" stroke="var(--color-rule)" stroke-width="1" />
+
+      <text x="336" y="146" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">sales</text>
+      <rect class="m-rise" style="--m-duration: 0.7s; --m-delay: 0.6s;" x="418" y="134" width="36" height="14" fill="var(--color-ground-deep)" stroke="var(--color-rule)" stroke-width="1" />
+
+      <text x="336" y="176" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">other</text>
+      <rect class="m-rise" style="--m-duration: 0.7s; --m-delay: 0.8s;" x="418" y="164" width="26" height="14" fill="var(--color-ground-deep)" stroke="var(--color-rule)" stroke-width="1" />
+
+      <!-- the caller's threshold, drawn after the answers arrive -->
+      <path class="m-draw" style="--m-length: 148; --m-duration: 1s; animation-delay: 1.2s;" d="M 538 54 L 538 198" fill="none" stroke="var(--color-prussian)" stroke-width="1" />
+      <text x="544" y="62" font-family="var(--font-mono)" font-size="10" fill="var(--color-prussian)">0.6 threshold</text>
+
+      <circle class="m-pulse" style="--m-duration: 1.2s; --m-delay: 2s;" cx="538" cy="81" r="4" fill="var(--color-prussian)" />
+
+      <text x="336" y="248" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">a number on every option, not one answer</text>
+      <text x="336" y="264" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">bar lengths are illustrative</text>
+
+      <text x="34" y="330" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">the model supplies the numbers; the caller decides what to do with them</text>
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L00</span>
+    <span class="fig__caption-text">One customer message goes in and a number comes back on every fixed option, and the threshold that turns a number into an action belongs to the caller, not to the model.</span>
+  </figcaption>
+</figure>
+
+<style>
+  /* scoped to this figure */
+  .fig__svg {
+    font-variant-numeric: tabular-nums;
+  }
+</style>

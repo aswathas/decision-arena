@@ -1,0 +1,100 @@
+---
+/* L10 - lists, dicts and floats: the shapes you handle all course. One writer: the figures workstream A. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L10.jpg`}
+      alt="A line drawing of a worker pulling a labelled drawer out of a tall cabinet of drawers, while at the right a second pair of hands lifts a parcel from an evenly spaced row of slots along a long rail."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L10-fig-title L10-fig-desc"
+    >
+      <title id="L10-fig-title">A dict is opened by name, a list by position, and a float only within a tolerance</title>
+      <desc id="L10-fig-desc">
+        The drawing has three panels. On the left, under the heading by name, four rows
+        list the keys billing, technical, sales and other, each followed by a short
+        horizontal rule standing for its value; the first key is marked in prussian and
+        the note underneath reads criteria["billing"]. In the middle, under the heading by
+        position, four boxes in a row carry the digits 0, 1, 2 and 3; the second box is
+        marked in prussian and the note underneath reads that levels[1] gives Minor and
+        that counting starts at zero. On the right, under the heading by tolerance, the
+        text reads 0.1 + 0.2 = 0.30000000000000004 and, in prussian, not 0.3. Below it two
+        tick marks stand a hair apart with the label the gap beside them, and a wide
+        bracket with upturned ends draws itself across and past both of them, closing
+        over the two numbers. The lines underneath give the comparison as
+        abs(a - b) &lt; 1e-9 and round(0.1 + 0.2, 4) -&gt; 0.3.
+      </desc>
+
+      <text x="30" y="40" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">by name</text>
+      <text x="220" y="40" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">by position</text>
+      <text x="420" y="40" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">by tolerance</text>
+
+      <!-- a dict: keys you open by name -->
+      <rect x="30" y="52" width="170" height="150" fill="var(--color-ground)" stroke="var(--color-rule)" stroke-width="1" />
+
+      <text x="42" y="86" font-family="var(--font-mono)" font-size="11" fill="var(--color-prussian)">billing</text>
+      <line x1="112" y1="82" x2="188" y2="82" stroke="var(--color-ink-45)" stroke-width="1" />
+
+      <text x="42" y="116" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">technical</text>
+      <line x1="112" y1="112" x2="176" y2="112" stroke="var(--color-ink-45)" stroke-width="1" />
+
+      <text x="42" y="146" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">sales</text>
+      <line x1="112" y1="142" x2="182" y2="142" stroke="var(--color-ink-45)" stroke-width="1" />
+
+      <text x="42" y="176" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">other</text>
+      <line x1="112" y1="172" x2="168" y2="172" stroke="var(--color-ink-45)" stroke-width="1" />
+
+      <text x="30" y="224" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">criteria["billing"]</text>
+
+      <!-- a list: positions you count from zero -->
+      <rect x="220" y="52" width="180" height="150" fill="var(--color-ground)" stroke="var(--color-rule)" stroke-width="1" />
+
+      <rect x="230" y="88" width="34" height="34" fill="var(--color-ground-deep)" stroke="var(--color-rule)" stroke-width="1" />
+      <text x="247" y="111" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">0</text>
+
+      <rect x="272" y="88" width="34" height="34" fill="var(--color-prussian-tint)" stroke="var(--color-prussian)" stroke-width="1" />
+      <text x="289" y="111" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="var(--color-prussian)">1</text>
+
+      <rect x="314" y="88" width="34" height="34" fill="var(--color-ground-deep)" stroke="var(--color-rule)" stroke-width="1" />
+      <text x="331" y="111" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">2</text>
+
+      <rect x="356" y="88" width="34" height="34" fill="var(--color-ground-deep)" stroke="var(--color-rule)" stroke-width="1" />
+      <text x="373" y="111" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">3</text>
+
+      <text x="220" y="152" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-70)">levels[1] -&gt; "Minor"</text>
+      <text x="220" y="170" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">counting starts at zero</text>
+
+      <!-- a float: close, but not equal -->
+      <text x="420" y="80" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">0.1 + 0.2 = 0.30000000000000004</text>
+      <text x="420" y="100" font-family="var(--font-mono)" font-size="11" fill="var(--color-prussian)">not 0.3</text>
+
+      <line x1="470" y1="120" x2="470" y2="136" stroke="var(--color-ink-45)" stroke-width="1" />
+      <line x1="475" y1="120" x2="475" y2="136" stroke="var(--color-ink-45)" stroke-width="1" />
+      <text x="484" y="132" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">the gap</text>
+
+      <path class="m-draw" style="--m-length: 124; --m-duration: 1.2s; animation-delay: 0.4s;" d="M 440 140 L 440 152 L 540 152 L 540 140" fill="none" stroke="var(--color-prussian)" stroke-width="1" />
+
+      <text x="420" y="176" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">abs(a - b) &lt; 1e-9</text>
+      <text x="420" y="196" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">round(0.1 + 0.2, 4) -&gt; 0.3</text>
+
+      <text x="30" y="330" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">same data, three shapes: a dict by name, a list by position, a float within a tolerance</text>
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L10</span>
+    <span class="fig__caption-text">A dict is opened by name, a list is opened by position counting from zero, and a float is only ever equal to another number inside a tolerance you chose.</span>
+  </figcaption>
+</figure>
+
+<style>
+  /* scoped to this figure */
+  .fig__svg {
+    font-variant-numeric: tabular-nums;
+  }
+</style>

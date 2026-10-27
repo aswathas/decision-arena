@@ -64,6 +64,32 @@ publishes a table saying Clef wins. The two tables disagree with each other.
 This repo exists so that *a third party* can run the same battery against
 several models and publish the raw evidence.
 
+## The story
+
+Imagine a support desk on a busy morning. A customer message arrives: a
+subscription was charged twice. The person at the desk does not write a
+reply. They decide three things: is this about a payment, which team takes
+it, how severe is it.
+
+There are fixed boards for each answer: a yes-or-no flag for the payment
+question, a set of team bays, a ladder of four rungs for severity. A pointer
+is set on each answer and left there.
+
+Now put a machine on the desk. It reads the customer message and moves the
+same pointers. It does not talk to the customer, it does not plan, and it
+does not think out loud. It puts a number beside each pointer instead.
+
+That is the whole job. One situation in, a fixed set of answers out, a number
+on every answer.
+
+And the numbers belong to the machine, not to the world. Swap the machine and
+the pointers move even though the customer message did not. That is why this
+repo sends the same questions to several models and writes down what each one
+did.
+
+The pointer is not the verdict either. Where it ends up is a policy the desk
+sets after the model has answered.
+
 ## The real thing
 
 **One sentence, and it is the whole brief:**

@@ -58,6 +58,31 @@ the harness does not.
 the question type (`noul`, `choice`, `score`) or a generic `value`. Without a
 translation step, downstream code has to guess.
 
+## The story
+
+Picture a hotel front desk, but a chain where every branch has its own
+habits. A guest arrives and hands over two things: a note describing their
+situation, and a slip listing what the hotel needs to know. The guest does
+not step behind the counter and does not care which hotel they are at.
+
+Behind the counter, each branch works differently. One fills in a form with
+typed fields. Another writes the answers on a card. A third shouts into a
+back room and the answers come back on a tape.
+
+What the guest receives is the same everywhere: a card with a box per
+question, and inside each box the same four compartments - the kind of
+answer, the answer itself, a number beside each option where the branch had
+one, and how sure the branch was. If the branch had no number, that
+compartment is simply empty.
+
+One rule holds at every branch. The guest's note is data, never an
+instruction. In one branch's files, that note literally contains the words
+ignore all previous instructions - and it goes behind the counter exactly as
+written, because the instructions live on the hotel's own slip.
+
+Same two things in, same four compartments out. That is why you can swap
+hotels and compare what came out.
+
 ## The real thing
 
 **The request** (this is the payload in `JevProvider.decide()` and

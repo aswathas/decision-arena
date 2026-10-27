@@ -71,6 +71,31 @@ slightly above probability": the model is always a bit more sure of itself
 than its own distribution supports. You can measure that gap on day one
 without spending money.
 
+## The story
+
+Picture two people answering the same question, and two notebooks.
+
+The first notebook is the world. Every time someone says yes to the billing
+question, a mark goes in a column labelled "correct". Count the marks against
+the number they claimed and you can see whether they are honest - a
+forecaster who writes 0.9 and is right nine times in ten is calibrated.
+
+The second notebook is the person. Every time someone answers, they also
+write down how sure they are. This column can disagree with the first.
+
+Someone writes 0.9 on a hundred questions and is right seventy times. Their
+confidence is overstated by 0.2 on every question. Someone else writes 0.6
+and is right sixty times - honest, and unimpressive.
+
+The trouble starts when a rule is built on the wrong notebook. Suppose a
+support desk only escalates a ticket when the number crosses 0.6. If the
+rule reads the first notebook, a shaky answer of 0.55 simply does not
+escalate - the system gets cautious. If it reads the second notebook, the
+person who claims 0.9 while being right 70% of the time escalates
+everywhere, including the thirty times they were wrong. The first failure
+slows the system down. The second makes it act hardest exactly when it
+should have stayed quiet.
+
 ## The real thing
 
 Two numbers, two meanings, two failure modes.

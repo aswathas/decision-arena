@@ -78,6 +78,30 @@ is a plain sentence. In `cases/format_variants.json` the state is a dict
 looks at the *values* to decide whether the shape is "flat" or "nested" - that
 is how the format-friction experiment knows which shape it is looking at.
 
+## The story
+
+Imagine a warehouse with two kinds of shelf. The first is a set of labelled
+drawers: you open a drawer by pulling the tab marked "billing", and you do
+not care which drawer is highest. The second is a long numbered rail:
+parcels stand in a row and you take the third by counting - the first is at
+position 0, the second at 1, the third at 2.
+
+Same shelf, two ways in. Pull the wrong tab on the rail and you get a
+surprise: the first thing in the row comes back, a string, and nothing tells
+you that was not what you wanted. Reach for a missing name and you get an
+error and you stop. The quiet failure is the dangerous one.
+
+The parcels also carry prices, and here the shelf lies a little. A tag
+reading 0.1 grams and another reading 0.2 grams weigh 0.30000000000000004
+grams together, not 0.3. Nothing is broken and no parcel is wrong; the
+weighing machine just cannot hold those numbers exactly. So the warehouse
+checks its totals against a tolerance it chose on purpose rather than
+insisting the digits match.
+
+Everything in this course is one of these two shelves, plus the numbers
+printed on them. Learn to open each one the right way and the rest is
+bookkeeping.
+
 ## The real thing
 
 The three shapes, and how you get into them.

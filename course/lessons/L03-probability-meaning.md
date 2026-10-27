@@ -65,6 +65,30 @@ version now: probability is a claim about *the outcome*; confidence is a claim
 about *the model's own feeling*, and this repo keeps them in two separate
 fields.
 
+## The story
+
+Imagine a hundred mornings. On each one, before anyone goes outside, a
+forecaster writes a single number on a card and pins it to a board: the
+chance of rain today.
+
+Now count the cards. On the mornings where the card said 0.9, it rained about
+ninety times out of a hundred. On the mornings where the card said 0.6, it
+rained about sixty times. That is the whole meaning of the number: a tally
+of what happened on the days when the card said that.
+
+Notice what it does not say. Not that ninety percent of today's sky is wet.
+Not that today's forecast is ninety percent correct. On its own it says
+nothing about today - it describes a population of days that resemble today.
+
+And the tally belongs to the forecaster, not the weather. Swap the person at
+the desk and the rain still falls on the same mornings, but the cards read
+differently. A second forecaster might write 0.4 on a morning when the first
+wrote 0.9, and both could be honest about their own past.
+
+Which is why the number has to be counted against outcomes afterwards. A
+desk that says 0.9 every morning and is right seven times in ten is not
+lying - it is miscalibrated, and only the tally sheet shows it.
+
 ## The real thing
 
 **Probability** - a float in `[0, 1]`. In this repo the rule from `AGENTS.md`

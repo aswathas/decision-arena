@@ -71,6 +71,29 @@ type.** In `cases/routing.json` the gold block for `routing-001` is
 `noul`. A `str` gold is a `choice`. An `int` gold is a `score`. That is not a
 coincidence - `metrics.collect_scored()` reads exactly that way.
 
+## The story
+
+Picture a clinic reception desk with three trays. The first holds a single
+slip reading yes or no - the nurse taps it and writes a number beside it,
+because "probably yes" and "certainly yes" are different answers to the same
+question. The second holds four labelled folders: billing, technical, sales,
+other. The nurse picks up exactly one and writes a number beside each of the
+four, so the record shows what was weighed, not just what was chosen. The
+third holds a ladder with four rungs, in order, from no impact at the bottom
+to critical at the top. The nurse puts a marker on one rung - and here the
+rungs count: a marker one rung off is nearly right, not simply wrong.
+
+Three trays, three shapes of answer. Nobody writes an essay.
+
+The trays look alike from across the room. A yes-or-no slip and a folder both
+look like "one thing was selected", so a reader who only looks at the answer
+misses that one carried a number, one carried four names, and one carried a
+position in an ordered ladder.
+
+Even the yes-or-no tray has two spellings. One clinic writes yes-or-no,
+another writes true-or-false. Same judgement, different word - and at the
+edge of the desk the two are translated into one.
+
 ## The real thing
 
 Three question types, three answer shapes, one measurement path.
