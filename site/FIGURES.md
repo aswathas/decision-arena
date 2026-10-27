@@ -160,8 +160,20 @@ a scraped image carries a licence the repository cannot carry.
 mcode-tools connector call connector__matrix__generate_image --args-file <prompt.json>
 # 3. take the node_id from success_items, then
 mcode-tools get_asset_url <node_id>
-# 4. download the download_url to site/public/illustrations/<ID>.jpg
+# 4. download the download_url to the raw scratch directory
+#    site/.illustrations-raw/<ID>.jpg   (this directory is git-ignored)
+#    (a workstream may use site/.illustrations-raw/<workstream>/<ID>.jpg)
+# 5. re-encode it into the committed location
+node site/scripts/optimize-illustrations.mjs
+#    -> site/public/illustrations/<ID>.jpg, 1200px on the long edge,
+#       progressive JPEG, ~40KB instead of ~630KB
+#    when the raw files live in a subfolder, pass it:
+node site/scripts/optimize-illustrations.mjs --raw site/.illustrations-raw/<workstream>
 ```
+
+The raw download is never committed. Only the optimized file is, and the
+optimiser is idempotent: re-run it and it rebuilds every file from the raw
+directory.
 
 The prompt template - keep the style clause identical every time, change only
 the scene:

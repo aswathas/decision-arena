@@ -63,7 +63,8 @@ course/             Decision Arena Academy — the beginner course
   curriculum.json   GENERATED index of the whole course
   FORMAT.md         the authoring contract for lessons and quizzes
   placement.json    the placement quiz
-skills/             the Academy's skills (learn, arena-coach, course-author)
+skills/             the skills (learn, arena-coach, course-author,
+                    viral-linkedin-post - the release/post generator)
 learning/           the learner's state: progress.json + build_log.md
 tests/              stdlib unittest
 tools/              check_links.py (vault link gate), sync_brief.py
@@ -71,6 +72,7 @@ tools/              check_links.py (vault link gate), sync_brief.py
                     install_skills.py (install skills into a host)
                     vendor_fonts.py (self-host the site's typefaces)
                     check_site_a11y.py (site accessibility and link check)
+                    linkedin_post.py (render and gate a LinkedIn post spec)
                     show_links.py (print a built page's internal links)
                     hooks/ (session_start.py, stop.py)
 docs/               architecture-graph.md (graphify AST graph), decision-log.md
@@ -100,6 +102,11 @@ python tools/learn_state.py status          # progress report
 python tools/learn_state.py review          # what to go back to
 python tools/learn_state.py feedback        # the closing feedback note
 python tools/install_skills.py              # install the skills into .claude/skills/
+
+# The release post (skills/viral-linkedin-post/)
+python tools/linkedin_post.py --spec docs/linkedin/specs/<slug>.json --check
+python tools/linkedin_post.py --spec docs/linkedin/specs/<slug>.json \
+    --out docs/linkedin/<YYYY-MM-DD>-<slug>.md
 
 # The public site (site/)
 python tools/check_site_a11y.py             # accessibility and link check on every built page

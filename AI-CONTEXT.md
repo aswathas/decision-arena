@@ -103,6 +103,9 @@ verified_facts:
     verified_on: 2026-10-27
 
 in_progress:
+  - id: illustrated-course
+    what: "Every one of the 46 lessons carries three teaching artifacts: a first-principles story, a motion-bearing SVG diagram, and a generated 2D line-art picture."
+    state: "contract in site/FIGURES.md, command reference and ownership map in docs/figures-and-stories.md, gate in tools/check_course_figures.py. Seven workstreams (A-G) with disjoint file ownership produced the stories, the 46 figures and the 46 pictures; the pictures are generated on this machine with mcode-tools and re-encoded to under 400KB by site/scripts/optimize-illustrations.mjs."
   - id: laya-local
     what: "Local Laya provider (in-process) + JevProvider base_url pointing at laya-serve."
     state: "not started; laya-lab/README.md has the Windows setup"
@@ -117,6 +120,7 @@ in_progress:
     state: "published by CI at https://aswathas.github.io/decision-arena/ (GitHub Pages, every push to main rebuilds and redeploys it). An earlier host at https://pm51wr5jr44rf.space.minimax.io still serves the older one-page build and its deploy endpoint now refuses this session; it is not the canonical home."
 
 next_actions:
+  - "Publish the illustrated course: push the 46 stories, 46 figures and 46 pictures; GitHub Pages rebuilds the 48 pages and runs the accessibility gate."
   - "Day 1 of the Academy: `python tools/learn_state.py init --learner aswath --path beginner`, then `/learn` for L00."
   - "Day 2: work through examples/01_softmax.py and 02_temperature.py, quiz, log."
   - "Day 5: live Jev + Clef run on the routing battery; repo flips PUBLIC."
@@ -161,6 +165,8 @@ commands_that_work:
   - "python tools/learn_state.py feedback"
   - "python tools/install_skills.py --target claude-project"
   - "python tools/check_site_a11y.py"
+  - "python tools/check_course_figures.py"
+  - "python tools/linkedin_post.py --spec docs/linkedin/specs/<slug>.json --check"
   - "python tools/vendor_fonts.py"
   - "cd site && npm run build && node scripts/capture.mjs && node scripts/measure.mjs"
   - "python tools/check_links.py --vault \"C:\\Users\\aswat\\Aswaths Obsidian Den\\Aswaths Mountain Den\""
@@ -180,7 +186,7 @@ that can already exercise the full pipeline offline: providers (mock, Jev,
 Clef, OpenAI-compatible), three batteries (routing / injection / format),
 metrics, a Markdown report writer, and a swap-safety comparator. (2)
 **Decision Arena Academy** - a self-contained beginner course in `course/`
-(46 lessons, 46 quizzes, 10 phases), with three skills (`skills/`), a
+(46 lessons, 46 quizzes, 10 phases), with four skills (`skills/`), a
 per-concept mastery engine (`tools/learn_state.py`), a course gate
 (`tools/course_check.py`) and session hooks. 29/29 unit tests pass. (3) A
 public site in `site/` - 48 static pages: a landing page carrying two equal

@@ -50,16 +50,38 @@ fixed clause is what keeps 46 pictures looking like one publication.
 
 ## Ownership map - one writer per file
 
-The work is split by phase. **Each agent owns exactly the files in its own
-rows. Nothing else. If you need a file that is not yours, say so instead of
-editing it.**
+The work was split by phase, then re-cut twice as the run went long: the point
+was always to finish, and the only way to finish is to keep every file with
+exactly one writer. **Each agent owns exactly the files in its own rows.
+Nothing else. If you need a file that is not yours, say so instead of editing
+it.**
 
-| workstream | phases | lessons | files it owns |
-|---|---|---|---|
-| A | 0, 1, 2 | L00, L10, L01-L04, L11-L14 | `course/lessons/L0*.md`, `course/lessons/L1*.md` (the 10 lesson ids above) + `site/src/figures/<ID>.astro` + `site/public/illustrations/<ID>.jpg` for those ids |
-| B | 3, 4 | L20-L24, L30-L34 | the same three kinds of file, for those 10 ids |
-| C | 5, 6, 7 | L40-L44, L50-L54, L60-L63 | the same three kinds of file, for those 14 ids |
-| D | 8, 9 | L70-L73, L80-L83, L90-L93 | the same three kinds of file, for those 12 ids |
+| workstream | lessons it owns | files it owns |
+|---|---|---|
+| A | L00, L10 | `course/lessons/L00-*.md`, `course/lessons/L10-*.md` + `site/src/figures/<ID>.astro` + `site/public/illustrations/<ID>.jpg` for those ids |
+| B | L11-L14, plus a repair pass on L20-L24 and L30-L33 | the lesson files for L11-L14, `site/src/figures/<ID>.astro` for L11-L14 and for the nine repair ids, `site/public/illustrations/<ID>.jpg` for L11-L14 |
+| C | L40-L44, L50-L54, L60-L63 | the same three kinds of file, for those 14 ids |
+| D | L70-L73 | `site/src/figures/<ID>.astro` for those ids; the pictures are already generated and committed, so D does not touch them |
+| E | L01-L04 | `site/src/figures/<ID>.astro` + `site/public/illustrations/<ID>.jpg` for those ids (the stories were written by A) |
+| F | L45 | `course/lessons/L45-*.md` + `site/src/figures/L45.astro` + `site/public/illustrations/L45.jpg` |
+| G | L80-L83, L90-L93 | `site/src/figures/<ID>.astro` for those ids, plus the `## The story` section of `course/lessons/L93-publication.md`; the pictures are already generated and committed |
+
+The repair pass in workstream B exists because the figures and the pictures
+were produced by different waves of the run: a figure written before its
+picture existed has no `<img>` inside it, and the lesson page then shows a
+diagram with no picture. The fix is one block per file:
+
+```astro
+<img
+  class="fig__picture"
+  src={`${import.meta.env.BASE_URL}illustrations/<ID>.jpg`}
+  alt="<one sentence describing the actual generated picture>"
+/>
+```
+
+as the **first child** of `<div class="fig__frame">`, before the `<svg>`. The
+`BASE_URL` prefix is what makes it work under the GitHub Pages base path
+`/decision-arena`.
 
 Files nobody but the orchestrator touches:
 
