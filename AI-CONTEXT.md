@@ -90,8 +90,8 @@ verified_facts:
     evidence: "runs/20261027-212313-friction-mock.jsonl, runs/20261027-212313-friction-mock.meta.json"
     verified_on: 2026-10-27
   - id: public-site
-    claim: "The public site builds from site/ (Astro 7 + Tailwind 4, static) and ships 48 pages: the landing page (one figure plate with the measure and learn doors, the friction field, and the evidence links), a course index, and one page per lesson. It is published at https://pm51wr5jr44rf.space.minimax.io. The Impeccable detector reports 0 findings at 1440x900 and 390x844, and the a11y smoke check passes on every built page."
-    evidence: "site/src/pages/index.astro, site/src/pages/lessons/[id].astro, site/README.md, tools/check_site_a11y.py"
+    claim: "The public site builds from site/ (Astro 7 + Tailwind 4, static) and ships 48 pages: the landing page (one figure plate with the measure and learn doors, the friction field, and the evidence links), a course index, and one page per lesson. It is published by CI at https://aswathas.github.io/decision-arena/ on every push to main. The Impeccable detector reports 0 findings at 1440x900 and 390x844, and the a11y and link check passes on every built page."
+    evidence: "site/src/pages/index.astro, site/src/pages/lessons/[id].astro, .github/workflows/pages.yml, tools/check_site_a11y.py"
     verified_on: 2026-10-28
   - id: course-reader-reads-the-repo
     claim: "The course pages are rendered from the repository's own files, not copied: the lesson body is course/lessons/*.md imported as markdown, the quiz is course/quizzes/*.json, and the index is the generated course/curriculum.json. A lesson file that moves fails the build instead of publishing a stale copy."
@@ -114,7 +114,7 @@ in_progress:
     state: "not started; the repo's learning/build_log.md is authoritative for now"
   - id: site-deployment
     what: "Publish site/dist to a public URL so the repository's front door is a real page."
-    state: "published at https://pm51wr5jr44rf.space.minimax.io (2026-10-27); the host injects its own badge and analytics script, so the deployed page is not byte-identical to site/dist"
+    state: "published by CI at https://aswathas.github.io/decision-arena/ (GitHub Pages, every push to main rebuilds and redeploys it). An earlier host at https://pm51wr5jr44rf.space.minimax.io still serves the older one-page build and its deploy endpoint now refuses this session; it is not the canonical home."
 
 next_actions:
   - "Day 1 of the Academy: `python tools/learn_state.py init --learner aswath --path beginner`, then `/learn` for L00."

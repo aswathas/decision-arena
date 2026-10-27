@@ -70,7 +70,8 @@ tools/              check_links.py (vault link gate), sync_brief.py
                     course_check.py (course gate), learn_state.py (progress engine)
                     install_skills.py (install skills into a host)
                     vendor_fonts.py (self-host the site's typefaces)
-                    check_site_a11y.py (site accessibility smoke test)
+                    check_site_a11y.py (site accessibility and link check)
+                    show_links.py (print a built page's internal links)
                     hooks/ (session_start.py, stop.py)
 docs/               architecture-graph.md (graphify AST graph), decision-log.md
 runs/               committed evidence: jsonl + meta.json + .md report

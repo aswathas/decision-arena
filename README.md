@@ -39,6 +39,9 @@ output, no server runtime. It is the public front door to both the harness and
 the course: a landing page, a course index, and one page per lesson, rendered
 from the lesson files in `course/` rather than copied from them.
 
+**Live at <https://aswathas.github.io/decision-arena/>**, rebuilt and
+republished by CI on every push to `main`.
+
 ```bash
 cd site && npm install && npm run build
 ```

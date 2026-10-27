@@ -10,6 +10,28 @@ npm run build    # -> dist/
 npm run preview  # serve the build
 ```
 
+## Where it is published
+
+<https://aswathas.github.io/decision-arena/> - published by
+`.github/workflows/pages.yml`, which rebuilds and redeploys the site on every
+push to `main`. The live site cannot lag the repository.
+
+That URL is a project page, so the site is served from a sub-path. Every
+internal link is therefore built from the base (`src/data/urls.ts`), and the
+build reads the base from `BASE_PATH`:
+
+```bash
+npm run build                        # base "/" - for a root deployment
+BASE_PATH=/decision-arena npm run build   # base "/decision-arena" - for Pages
+```
+
+Both builds produce the same 48 pages; only the URLs differ. To see the
+links a build actually produced:
+
+```bash
+python ../tools/show_links.py dist/index.html
+```
+
 ## The pages it ships
 
 48 static pages, in three groups:
