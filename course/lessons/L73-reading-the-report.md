@@ -132,7 +132,7 @@ actual sections `run_report()` emits:
 **Uncertainty** is not a vibe; it is a number you can compute. With `n`
 scored cases and accuracy `a`, a rough standard error is
 `sqrt(a * (1 - a) / n)`. At `a = 0.8`, `n = 5`: `sqrt(0.8*0.2/5) =
-sqrt(0.032) ≈ 0.18`. So the accuracy is 80% ± 18% at one standard
+sqrt(0.032) â‰ˆ 0.18`. So the accuracy is 80% Â± 18% at one standard
 deviation - a 95% range that runs roughly from 44% to 96%. The honest
 statement is not "this model scores 80%"; it is "this model scored 4 of 5
 cases, which is not enough to tell it apart from a model that scored 3".
@@ -181,7 +181,7 @@ JSONL.
   RUN banner at the top and `scored cases 5` in the headline table. That
   report is a **harness test**, and it is committed as evidence of exactly
   that and nothing else.
-- `runs/20261025-040448-friction-mock.md` - the friction report: `cases 3`,
+- `runs/20261027-212313-friction-mock.md` - the friction report: `cases 3`,
   `questions measured 9`, `mean spread 0.42`, `max spread 0.9271`, and
   `questions whose side of 0.5 flips across formats: 4`.
 - `AGENTS.md` - hard rule 4: "The mock is not evidence. `MockProvider` is an

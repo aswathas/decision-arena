@@ -117,7 +117,7 @@ and the boundary. A reader can decide whether it is true. Note that it says
 provider, the sentence would name the model version instead.
 
 **2. The evidence, with identifiers.** Take them from the committed files:
-the `run_id` (`20261025-040448-friction-mock`), the `battery_hash` from the
+the `run_id` (`20261027-212313-friction-mock`), the `battery_hash` from the
 matching `meta.json`, the provider name, the model version, the date, the
 number of cases, the number of repeats, the cost, and the path of the raw
 file. `AI-CONTEXT.md` shows the house style for exactly this - each fact
@@ -178,11 +178,11 @@ finished.
 
 ## In this repo
 
-- `runs/20261025-040448-friction-mock.md` - a real report to read as a
+- `runs/20261027-212313-friction-mock.md` - a real report to read as a
   model: run id, cases, questions measured, `mean spread 0.42`, `max spread
   0.9271`, `questions whose side of 0.5 flips across formats: 4`, and a
   per-question table.
-- `runs/20261025-040448-friction-mock.json` - the machine-readable form of
+- `runs/20261027-212313-friction-mock.json` - the machine-readable form of
   the same run: `rows` with `values` per format, `spread` and `flips_at_0.5`
   per question.
 - `runs/20261025-040448-mock.meta.json` - the provenance block to copy from:

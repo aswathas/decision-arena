@@ -42,10 +42,13 @@ jitter is 0.05. Run it once and you see 0.10. Run it once and you see 0.02.
 Both look like "the effect is small". The difference is not the effect - it is
 the luck of that particular call. **Repeats** are how you find out: the
 `--repeats` flag makes the runner call the same case several times and write
-one JSONL line per call, each with its own `repeat` index. The independent
-harness measured this on real models: Clef repeats **byte-identical**, while
-Jev's labels were stable but its probabilities jitted by about **0.01-0.05**.
-That 0.05 jitter is exactly the size of effect your experiment needs to
+one JSONL line per call, each with its own `repeat` index. An independent
+harness (`rmax-ai/jev-vs-clef`) reported this on real models: Clef repeats
+**byte-identical**, while Jev's labels were stable but its probabilities
+jittered by about **0.01-0.05**. That figure is the *other* project's
+measurement - there is no committed non-mock run in this repository yet - so
+treat it as the size of effect to design for, not as a number this repo has
+produced. A 0.05 jitter is exactly the size of effect your experiment needs to
 survive.
 
 **Break 2 - the metric gets chosen after the number appears.** You run the
@@ -205,12 +208,15 @@ defend, because it saves the next person from running it again.
   model's jitter.
 - `cases/format_variants.json` - the three contents with their `variants`
   dicts and no `gold`.
-- `runs/20261025-040448-friction-mock.json` - a committed friction report:
+- `runs/20261027-212313-friction-mock.json` - a committed friction report:
   `mean_spread 0.42`, `max_spread 0.9271`, `flips_at_0.5: 4`. It is the
   harness's proof of life, and the mock banner in the matching `.md` is the
   reason it is not a finding.
 - `AI-CONTEXT.md` - `verified_facts` shows the shape of a recorded fact:
   `claim`, `evidence`, `verified_on`.
+- The vault's `Learning/Decision Models/Research/Benchmarks and Pricing
+  Evidence.md` - where the independent harness's real-model numbers are
+  recorded, because this repository has no run of its own behind them.
 
 ## Your turn
 
