@@ -213,4 +213,137 @@
   .command__text {
     white-space: pre;
   }
+
+  /* --------------------------------------------------------------- the plate
+     A figure plate: the picture and the diagram, framed by a hairline, with a
+     caption under them. The same furniture the landing page uses for its
+     plot, so a lesson and the landing page look like one publication. */
+  .fig {
+    margin: 0 0 clamp(1.6rem, 3vw, 2.4rem);
+  }
+
+  .fig__frame {
+    border: 1px solid var(--color-rule);
+    background: var(--color-ground);
+    padding: 0.9rem;
+  }
+
+  .fig__picture {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-bottom: 0.9rem;
+    background: var(--color-ground-deep);
+  }
+
+  .fig__svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .fig__caption {
+    display: flex;
+    gap: 0.9rem;
+    align-items: baseline;
+    margin-top: 0.7rem;
+    padding-top: 0.7rem;
+    border-top: 1px solid var(--color-rule-soft);
+  }
+
+  .fig__caption-text {
+    font-size: var(--text-caption);
+    color: var(--color-ink-70);
+    line-height: 1.5;
+  }
+
+  /* --------------------------------------------------------------- motion
+     Five primitives, one idea each. Every one of them is switched off when
+     the reader has asked for less motion. */
+  @keyframes fig-draw {
+    from {
+      stroke-dashoffset: var(--m-length, 400);
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes fig-rise {
+    from {
+      transform: translateY(var(--m-rise, 12px));
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes fig-pulse {
+    0%,
+    100% {
+      opacity: 0.35;
+    }
+    40% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fig-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fig-drift {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(var(--m-drift, 14px));
+    }
+  }
+
+  .m-draw {
+    stroke-dasharray: var(--m-length, 400);
+    stroke-dashoffset: var(--m-length, 400);
+    animation: fig-draw var(--m-duration, 1.4s) ease-out forwards;
+  }
+
+  .m-rise {
+    animation: fig-rise var(--m-duration, 0.8s) ease-out both;
+    animation-delay: var(--m-delay, 0s);
+  }
+
+  .m-pulse {
+    animation: fig-pulse var(--m-duration, 1.6s) ease-in-out both;
+    animation-delay: var(--m-delay, 0s);
+  }
+
+  .m-fade {
+    animation: fig-fade var(--m-duration, 0.7s) ease-out both;
+    animation-delay: var(--m-delay, 0s);
+  }
+
+  .m-sweep {
+    animation: fig-drift var(--m-duration, 1.8s) ease-in-out infinite alternate;
+    animation-delay: var(--m-delay, 0s);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .m-draw,
+    .m-rise,
+    .m-pulse,
+    .m-fade,
+    .m-sweep {
+      animation: none !important;
+      opacity: 1;
+      transform: none;
+      stroke-dashoffset: 0;
+    }
+  }
 }

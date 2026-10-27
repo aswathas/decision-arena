@@ -15,6 +15,13 @@ import Foot from '../../components/Foot.astro';
 import { LESSONS, quizFor, sectionsFor, nextInPath, prevInPath } from '../../data/course';
 import { url } from '../../data/urls';
 
+/**
+ * The figure components, one per lesson. A lesson without a figure simply has
+ * no entry, and the page renders the lesson without one - the figure is an
+ * addition to the lesson, never a requirement for reading it.
+ */
+const FIGURES = import.meta.glob('../../figures/*.astro');
+
 export function getStaticPaths() {
   return LESSONS.map((lesson) => ({
     params: { id: lesson.id },
@@ -28,6 +35,8 @@ const quiz = quizFor(lesson.id);
 const sections = sectionsFor(lesson.id);
 const next = nextInPath(lesson.id);
 const prev = prevInPath(lesson.id);
+const figureModule = FIGURES[`../../figures/${lesson.id}.astro`];
+const Figure = figureModule?.default;
 ---
 
 <Base
@@ -77,6 +86,12 @@ const prev = prevInPath(lesson.id);
 
       <div class="lesson__body">
         <div class="lesson__main">
+          {Figure && (
+            <div class="lesson__figure">
+              <Figure />
+            </div>
+          )}
+
           <div class="prose">
             <Content />
           </div>
@@ -253,6 +268,10 @@ const prev = prevInPath(lesson.id);
 
   .lesson__main {
     min-width: 0;
+  }
+
+  .lesson__figure {
+    margin-bottom: clamp(1.6rem, 3vw, 2.2rem);
   }
 
   .rail {

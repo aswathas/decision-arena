@@ -102,7 +102,8 @@ python tools/learn_state.py feedback        # the closing feedback note
 python tools/install_skills.py              # install the skills into .claude/skills/
 
 # The public site (site/)
-python tools/check_site_a11y.py             # accessibility smoke test on the built page
+python tools/check_site_a11y.py             # accessibility and link check on every built page
+python tools/check_course_figures.py        # every lesson has a story, a diagram and a picture
 cd site && npm run build                   # static build into site/dist
 node scripts/capture.mjs                   # recapture .impeccable/review/*.png
 node scripts/measure.mjs                   # measure the first viewport
@@ -127,6 +128,28 @@ Both graphs are built with the graphify interpreter recorded in each working
 directory's `graphify-out/.graphify_python`. The skill lives at
 `C:\Users\aswat\.claude\skills\graphify\SKILL.md`. The code graph's rendered form is
 `docs/architecture-graph.md`; the vault's lives in `Learning/Graph/` in the vault.
+
+## The illustrated course
+
+Every lesson carries three artifacts, and the rules for them live in
+`site/FIGURES.md`; the commands and the ownership map live in
+`docs/figures-and-stories.md`.
+
+- a **story** — a `## The story` section in the lesson's own markdown, 120-220
+  words, teaching the concept from first principles. It is an extra section:
+  the eight required sections keep their order and the course gate is
+  unchanged.
+- a **diagram** — `site/src/figures/<ID>.astro`, an inline SVG with a
+  `<title>`, a `<desc>`, a caption, and one authored idea of motion.
+- a **picture** — `site/public/illustrations/<ID>.jpg`, generated on this
+  machine with `mcode-tools`, never scraped from the internet.
+
+`python tools/check_course_figures.py` is the gate: a lesson is not finished
+until it has all three, and the figure has an accessible name and
+description, a sensible viewBox, no remote references and no colour outside
+the palette. **One writer per file**: the four figure workstreams own
+disjoint lesson ids, and nobody but the orchestrator edits `global.css`, the
+lesson page, the gates or the course contract.
 
 ## The learning loop
 

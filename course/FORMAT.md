@@ -53,6 +53,27 @@ real thing, point at where the repo uses it, then hand over the pen.
 | `## Check yourself` | 3-4 questions the learner answers in their own words, with no answers shown |
 | `## Artifact` | The one thing the learner publishes. A file path and what it must contain |
 
+## The optional `## The story` section
+
+The illustrated course adds one section, between `## What breaks` and
+`## The real thing`: the naive story breaks, the story makes the real thing
+imaginable, and then the real thing gets named.
+
+- **120 to 220 words.**
+- **First principles.** Start from something the learner already understands
+  and build the concept out of it. Never "in machine learning, we...".
+- **A person or a thing doing something.** "A support desk", "a scale with a
+  needle", "a door with a threshold" count. Abstract nouns do not.
+- **No new claims.** Every fact in the story is already true somewhere in the
+  lesson or the repo.
+- **No invented numbers.** If you need a number, it is already in the lesson.
+
+The gate checks that the eight required sections are present and in order.
+It does not forbid extra sections, and `## The story` is the one that
+belongs. `python tools/check_course_figures.py` checks the story's word band
+and the lesson's diagram and picture; see `site/FIGURES.md` for those rules
+and `docs/figures-and-stories.md` for the commands.
+
 ## The hard rule on exercises
 
 **Never write the learner's exercise implementation.** Not in the lesson, not

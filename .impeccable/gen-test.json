@@ -1,0 +1,10 @@
+{
+  "requests": [
+    {
+      "prompt": "2D technical line-art diagram, single-weight ink strokes, flat fills, no gradients, no 3D, no photorealism, no text, no letters, no numbers. Palette limited to: near-black ink #0b1218, deep prussian blue #0f3d6e, cool pale paper #f2f5f7, and a pale blue tint #e2ebf4. Scene: a customer support ticket arriving as a plain rectangle, then the SAME ticket being re-cut into three different shapes - a flowing ribbon of text, a flat row of small boxes, and a nested stack of boxes - with a single needle-thin vertical threshold line that the shapes cross; a small dark filled dot marks the crossing point. The composition is a calm, precise engineering drawing on pale paper, generous white space, hairline rules, schematic and legible, like a figure in a printed technical manual.",
+      "aspect_ratio": "4:3",
+      "resolution": "1K",
+      "output_file": "L00-test.png"
+    }
+  ]
+}
