@@ -50,8 +50,8 @@
         <rect class="fig-bar fig-bar--weak" x="166" y="299" width="34" height="1" />
         <text x="88" y="72" class="fig-text fig-text--num fig-text--on">0.9999</text>
         <text x="76" y="316" class="fig-text fig-text--dim">billing</text>
-        <text x="122" y="316" class="fig-text fig-text--dim">tech</text>
-        <text x="168" y="316" class="fig-text fig-text--dim">other</text>
+        <text x="130" y="316" class="fig-text fig-text--dim">tech</text>
+        <text x="176" y="316" class="fig-text fig-text--dim">other</text>
         <text x="76" y="332" class="fig-text fig-text--dim">both others below 0.0001</text>
         <text x="86" y="238" class="fig-text fig-text--on fig-text--num">acted</text>
       </g>
@@ -64,8 +64,8 @@
         <rect class="fig-bar fig-bar--weak" x="346" y="266" width="34" height="34" />
         <text x="268" y="163" class="fig-text fig-text--num fig-text--on">0.6285</text>
         <text x="256" y="316" class="fig-text fig-text--dim">billing</text>
-        <text x="302" y="316" class="fig-text fig-text--dim">tech</text>
-        <text x="348" y="316" class="fig-text fig-text--dim">other</text>
+        <text x="310" y="316" class="fig-text fig-text--dim">tech</text>
+        <text x="356" y="316" class="fig-text fig-text--dim">other</text>
         <text x="256" y="332" class="fig-text fig-text--dim">0.2312 / 0.1402</text>
         <text x="266" y="238" class="fig-text fig-text--on fig-text--num">acted</text>
       </g>
@@ -78,8 +78,8 @@
         <rect class="fig-bar fig-bar--weak" x="526" y="229" width="34" height="71" />
         <text x="448" y="221" class="fig-text fig-text--num fig-text--on">0.3907</text>
         <text x="436" y="316" class="fig-text fig-text--dim">billing</text>
-        <text x="482" y="316" class="fig-text fig-text--dim">tech</text>
-        <text x="528" y="316" class="fig-text fig-text--dim">other</text>
+        <text x="490" y="316" class="fig-text fig-text--dim">tech</text>
+        <text x="536" y="316" class="fig-text fig-text--dim">other</text>
         <text x="436" y="332" class="fig-text fig-text--dim">0.3199 / 0.2894</text>
         <text x="446" y="238" class="fig-text fig-text--ink fig-text--num">did not act</text>
       </g>
@@ -197,7 +197,9 @@
   @media (prefers-reduced-motion: reduce) {
     .fig-marker {
       animation: none !important;
-      transform: none;
+      /* the end state of l24-drop, so the marker still sits below the
+         threshold when the motion is switched off */
+      transform: translateY(58px);
     }
   }
 </style>
