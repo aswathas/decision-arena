@@ -90,7 +90,7 @@ verified_facts:
     evidence: "runs/20261027-212313-friction-mock.jsonl, runs/20261027-212313-friction-mock.meta.json"
     verified_on: 2026-10-27
   - id: public-site
-    claim: "The public site builds from site/ (Astro 7 + Tailwind 4, static) and ships as a single page: one figure plate with the measure and learn doors, the friction field, and the evidence links. The Impeccable detector reports 0 findings at 1440x900 and 390x844, and the a11y smoke check passes."
+    claim: "The public site builds from site/ (Astro 7 + Tailwind 4, static) and ships as a single page: one figure plate with the measure and learn doors, the friction field, and the evidence links. It is published at https://pm51wr5jr44rf.space.minimax.io. The Impeccable detector reports 0 findings at 1440x900 and 390x844, and the a11y smoke check passes."
     evidence: "site/src/pages/index.astro, site/README.md, tools/check_site_a11y.py"
     verified_on: 2026-10-27
   - id: site-no-third-party-runtime
@@ -110,7 +110,7 @@ in_progress:
     state: "not started; the repo's learning/build_log.md is authoritative for now"
   - id: site-deployment
     what: "Publish site/dist to a public URL so the repository's front door is a real page."
-    state: "built and verified locally; awaiting the user's explicit go-ahead for a public deployment"
+    state: "published at https://pm51wr5jr44rf.space.minimax.io (2026-10-27); the host injects its own badge and analytics script, so the deployed page is not byte-identical to site/dist"
 
 next_actions:
   - "Day 1 of the Academy: `python tools/learn_state.py init --learner aswath --path beginner`, then `/learn` for L00."
