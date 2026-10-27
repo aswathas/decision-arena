@@ -34,6 +34,14 @@ are in `skills/`; the learner state is in `learning/`; and
 `python tools/course_check.py --check` is the gate that keeps a broken lesson
 from ever reaching a learner.
 
+The website lives in [`site/`](site/README.md) - Astro and Tailwind, static
+output, no server runtime. It is the public front door to both the harness and
+the course:
+
+```bash
+cd site && npm install && npm run build
+```
+
 
 ## Zero-install
 

@@ -1,0 +1,969 @@
+---
+import Base from '../layouts/Base.astro';
+import FieldPlot from '../components/FieldPlot.astro';
+import CourseColumn from '../components/CourseColumn.astro';
+import curriculum from '../../../course/curriculum.json';
+
+const REPO = 'https://github.com/aswathas/decision-arena';
+const RAW_RUN = `${REPO}/blob/main/runs/20261025-005353-friction-mock.json`;
+const RAW_META = `${REPO}/blob/main/runs/20261025-005431-mock.meta.json`;
+
+const phases = curriculum.phases.map((p) => ({
+  id: p.id,
+  title: p.title,
+  count: p.lessons.length,
+  first: p.lessons[0]?.title ?? '',
+  last: p.lessons[p.lessons.length - 1]?.title ?? '',
+}));
+
+const paths = curriculum.paths.map((p) => ({
+  id: p.id,
+  label: p.label,
+  count: p.lessons.length,
+}));
+
+const MEASUREMENTS = [
+  {
+    name: 'Accuracy',
+    asks: 'Did it pick the right answer?',
+    metric: 'accuracy',
+    note: 'Necessary, never sufficient. A model that always answers the majority class scores well and helps nobody.',
+  },
+  {
+    name: 'Calibration',
+    asks: 'When it says 0.9, is it right nine times in ten?',
+    metric: 'ECE + Brier',
+    note: 'A badly calibrated model is more dangerous than an inaccurate one, because you stop checking it.',
+  },
+  {
+    name: 'Cost',
+    asks: 'What did that decision cost?',
+    metric: 'USD per Mtok, with token counts',
+    note: 'Always reported in USD beside the run’s token counts. A whole battery costs under a dollar.',
+  },
+  {
+    name: 'Latency',
+    asks: 'How long did the decision take?',
+    metric: 'elapsed_s per call',
+    note: 'The number that decides whether a model can be used in the path of a live request at all.',
+  },
+  {
+    name: 'Determinism',
+    asks: 'Would the same input give the same answer twice?',
+    metric: 'byte-identical repeat runs',
+    note: 'A model that is 3% non-deterministic can never be certified against a threshold.',
+  },
+  {
+    name: 'Injection resistance',
+    asks: 'Can text inside the state change the decision?',
+    metric: 'answer-change rate',
+    note: 'The state is data, not instructions, but the model still has to be told which is which.',
+  },
+  {
+    name: 'Swap safety',
+    asks: 'Would swapping the vendor change what you do?',
+    metric: 'action_change_rate',
+    note: 'Not whether two models agree, but whether the action you take moves. This is the one that decides procurement.',
+  },
+];
+---
+
+<Base
+  title="Decision Arena - learn to judge a decision model on your own workload"
+  description="A neutral harness that runs the same battery against TypeSafe Jev, Cloudflare Clef and local Laya, and a 46-lesson course that teaches you to read its numbers and publish what you find."
+>
+  <header class="nav">
+    <div class="nav__inner">
+      <a href="/" class="nav__mark" aria-label="Decision Arena, home">
+        <span class="nav__mark-name">Decision Arena</span>
+        <span class="nav__mark-sub">the neutral harness</span>
+      </a>
+      <nav class="nav__links" aria-label="Primary">
+        <a href="#measures">What it measures</a>
+        <a href="#run">Run it</a>
+        <a href="#evidence">Evidence</a>
+        <a href="#course">The course</a>
+        <a href={REPO} rel="noreferrer">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ============================================================ first viewport -->
+    <section class="plate" aria-labelledby="hero-title">
+      <div class="plate__titleblock">
+        <h1 id="hero-title" class="plate__title">
+          Judge a decision model on your own workload.
+        </h1>
+        <p class="plate__sub">
+          Two ways in. <a href="#run">Run the battery</a> yourself and compare every
+          provider on the same questions, or <a href="#course">learn to read what it
+          prints</a> and publish a finding of your own.
+        </p>
+      </div>
+
+      <div class="plate__frame">
+        <section class="panel panel--a" aria-labelledby="panel-a-title">
+          <h2 id="panel-a-title" class="panel__title">
+            <span class="panel__tag num">(a)</span>
+            Run the same battery against every vendor.
+          </h2>
+          <p class="panel__body">
+            Measure it yourself. Seven measurements, identical questions, and the raw call
+            log behind every number.
+          </p>
+
+          <FieldPlot />
+
+          <div class="panel__action">
+            <a class="action" href="#run">
+              Run it now
+              <span class="action__arrow" aria-hidden="true">&rarr;</span>
+            </a>
+            <p class="panel__meta num">
+              python -m decisionarena run --provider jev --battery routing
+            </p>
+          </div>
+        </section>
+
+        <section class="panel panel--b" aria-labelledby="panel-b-title">
+          <h2 id="panel-b-title" class="panel__title">
+            <span class="panel__tag num">(b)</span>
+            Start from &ldquo;what even is this&rdquo;.
+          </h2>
+          <p class="panel__body">
+            Learn it properly. Forty-six lessons, ten minutes each, ending in a finding you
+            published. You write the exercise; the tutor teaches, quizzes, and tracks your
+            progress per concept.
+          </p>
+
+          <CourseColumn />
+
+          <div class="panel__action">
+            <a class="action" href="#start">
+              Start lesson one
+              <span class="action__arrow" aria-hidden="true">&rarr;</span>
+            </a>
+            <p class="panel__meta num">python tools/learn_state.py next</p>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- ================================================================ measures -->
+    <section id="measures" class="section" aria-labelledby="measures-title">
+      <div class="section__head">
+        <h2 id="measures-title" class="section__title">Seven things it measures</h2>
+        <p class="section__lede">
+          One battery, run identically against every provider. The point is not
+          a score. It is the seven questions below, each with the metric that
+          answers it and the number it costs you to get wrong.
+        </p>
+      </div>
+
+      <ol class="measures">
+        {
+          MEASUREMENTS.map((m, i) => (
+            <li class="measure">
+              <span class="measure__index num">{String(i + 1).padStart(2, '0')}</span>
+              <div class="measure__name">
+                <h3 class="measure__label">{m.name}</h3>
+                <p class="measure__asks">{m.asks}</p>
+              </div>
+              <div class="measure__meta">
+                <span class="measure__metric num">{m.metric}</span>
+                <p class="measure__note">{m.note}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <!-- ==================================================================== run -->
+    <section id="run" class="section" aria-labelledby="run-title">
+      <div class="section__head">
+        <h2 id="run-title" class="section__title">It runs before you trust it</h2>
+        <p class="section__lede">
+          A bare Python, no virtualenv, no dependencies. Clone it and the whole
+          pipeline runs, and if you have provider keys, it runs against the
+          providers instead.
+        </p>
+      </div>
+
+      <div class="run">
+        <div class="run__block">
+          <p class="edge-code">1 - see what is configured on this machine</p>
+          <div class="command">
+            <span class="command__prompt" aria-hidden="true">$</span>
+            <span class="command__text">python -m decisionarena providers</span>
+          </div>
+        </div>
+
+        <div class="run__block">
+          <p class="edge-code">2 - run the battery</p>
+          <div class="command">
+            <span class="command__prompt" aria-hidden="true">$</span>
+            <span class="command__text">python -m decisionarena run --provider jev --battery routing --repeats 3</span>
+          </div>
+          <p class="run__note">
+            A dry run costs nothing: add <code>--dry-run</code> and the harness
+            prints the plan it would execute. A live sweep of every battery
+            against every provider stays under a dollar.
+          </p>
+        </div>
+
+        <div class="run__block">
+          <p class="edge-code">3 - compare two providers, then swap one out</p>
+          <div class="command">
+            <span class="command__prompt" aria-hidden="true">$</span>
+            <span class="command__text">python -m decisionarena swap --provider a=jev --provider b=clef:clef-flash</span>
+          </div>
+          <p class="run__note">
+            Swap safety is the number procurement actually needs: not whether
+            two models agree, but whether the action you take moves when you
+            change vendor.
+          </p>
+        </div>
+      </div>
+
+      <p class="caveat">
+        <strong>The mock is not evidence.</strong> With no credentials the
+        harness runs against an offline simulator. It reproduces the
+        <em>shape</em> of a published finding so you can exercise the whole
+        pipeline, and it never measures a model. Numbers from it are labelled
+        as simulated wherever they appear, on this page and in the reports it
+        writes.
+      </p>
+    </section>
+
+    <!-- ================================================================ evidence -->
+    <section id="evidence" class="section" aria-labelledby="evidence-title">
+      <div class="section__head">
+        <h2 id="evidence-title" class="section__title">
+          A number, and the file behind it
+        </h2>
+        <p class="section__lede">
+          This is a real committed run. Not a screenshot of a number, but a JSONL
+          file, a metadata file, and a report generated from both. If a claim
+          cannot show its raw file, it does not go on the page.
+        </p>
+      </div>
+
+      <div class="evidence">
+        <div class="evidence__stats">
+          <div class="stat">
+            <span class="stat__value num">0.42</span>
+            <span class="stat__label">mean spread across the three serialisations</span>
+          </div>
+          <div class="stat">
+            <span class="stat__value num">0.9271</span>
+            <span class="stat__label">largest single swing</span>
+          </div>
+          <div class="stat">
+            <span class="stat__value num">4 / 9</span>
+            <span class="stat__label">questions that change decision at the 0.5 threshold</span>
+          </div>
+        </div>
+
+        <div class="evidence__files">
+          <div class="file">
+            <p class="edge-code">raw calls</p>
+            <a class="file__name num" href={RAW_RUN}>runs/20261025-005353-friction-mock.json</a>
+            <p class="file__note">
+              Every provider response, in order, with the input that produced
+              it. The report is derived from this file; never the other way
+              round.
+            </p>
+          </div>
+          <div class="file">
+            <p class="edge-code">run metadata</p>
+            <a class="file__name num" href={RAW_META}>runs/20261025-005431-mock.meta.json</a>
+            <p class="file__note">
+              Run id, provider, prices, battery hash, timestamps. What you
+              need to reproduce or dispute the run.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================= course -->
+    <section id="course" class="section" aria-labelledby="course-title">
+      <div class="section__head">
+        <h2 id="course-title" class="section__title">The path</h2>
+        <p class="section__lede">
+          Ten phases, {curriculum.total_lessons} lessons, {curriculum.total_lessons} quizzes.
+          Every lesson teaches one concept, hands you one small exercise to
+          write, and ends with one artifact you can point at.
+        </p>
+      </div>
+
+      <ol class="phases">
+        {
+          phases.map((p) => (
+            <li class="phase">
+              <span class="phase__num num">{String(p.id).padStart(2, '0')}</span>
+              <span class="phase__title">{p.title}</span>
+              <span class="phase__count num">{p.count}</span>
+            </li>
+          ))
+        }
+      </ol>
+
+      <div class="paths">
+        {
+          paths.map((p) => (
+            <div class="path">
+              <p class="path__id num">{p.id}</p>
+              <p class="path__label">{p.label}</p>
+              <p class="path__count num">{p.count} lessons</p>
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="rule-note">
+        <p>
+          <strong>The learner writes the code.</strong> The agent teaches,
+          explains, reviews, quizzes and logs, and it never writes the exercise
+          for you, because a lesson that ships its own answer is a broken
+          lesson. Progress is tracked per <em>concept</em>, not per lesson, so
+          the system can tell the difference between owning softmax and
+          faking numerical stability.
+        </p>
+        <p>
+          <strong>And the course is gated.</strong> A lesson that is missing a
+          concept, a quiz without an explanation, or a prerequisite that does
+          not exist fails the build. A broken lesson is a build failure, not a
+          warning.
+        </p>
+      </div>
+    </section>
+
+    <!-- =================================================================== start -->
+    <section id="start" class="section section--start" aria-labelledby="start-title">
+      <div class="start">
+        <h2 id="start-title" class="start__title">
+          Lesson one is ten minutes, and you need no credentials.
+        </h2>
+        <p class="start__lead">
+          Clone it, run the command, and the tutor picks up where you are. It
+          starts from "what even is this" and checks, per concept, that you
+          actually understood it.
+        </p>
+        <div class="start__actions">
+          <a class="action" href={REPO}>
+            Clone and start
+            <span class="action__arrow" aria-hidden="true">&rarr;</span>
+          </a>
+          <a class="start__alt" href={`${REPO}#decision-arena-academy`}>
+            Read the course first
+          </a>
+        </div>
+        <div class="start__commands">
+          <div class="command">
+            <span class="command__prompt" aria-hidden="true">$</span>
+            <span class="command__text">git clone {REPO}.git</span>
+          </div>
+          <div class="command">
+            <span class="command__prompt" aria-hidden="true">$</span>
+            <span class="command__text">python tools/learn_state.py next</span>
+          </div>
+        </div>
+        <p class="start__meta num">
+          apache-2.0 &middot; stdlib only &middot; no third-party dependencies
+        </p>
+      </div>
+    </section>
+
+    <!-- ================================================================== close -->
+    <section class="section section--close" aria-labelledby="close-title">
+      <div class="close">
+        <h2 id="close-title" class="close__title">Evidence before claims</h2>
+        <p class="close__body">
+          A number without its raw <code>runs/*.jsonl</code> behind it is
+          marketing. That rule holds for this harness, for the course, and for
+          this page, including the parts of it that are still simulated.
+        </p>
+        <p class="close__body close__body--quiet">
+          To be plain about where this stands: no live provider has been
+          measured yet. Every committed number comes from the offline
+          simulator and proves only that the harness works. The pricing on
+          this page was verified against vendor pages on 2026-10-25. The
+          formats the course teaches are the ones the first finding was
+          published in.
+        </p>
+        <p class="close__links">
+          <a href={REPO}>The repository</a>
+          <a href={`${REPO}/blob/main/AI-CONTEXT.md`}>What is verified so far</a>
+          <a href={`${REPO}/blob/main/docs/decision-log.md`}>The decision log</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p class="foot__left num">
+      Decision Arena &middot; apache-2.0 &middot; built for engineers who want
+      the number, not the brochure
+    </p>
+    <p class="foot__right num">github.com/aswathas/decision-arena</p>
+  </footer>
+</Base>
+
+<style>
+  /* ------------------------------------------------------------ navigation */
+  .nav {
+    border-bottom: 1px solid var(--color-rule);
+    position: sticky;
+    top: 0;
+    background: color-mix(in srgb, var(--color-ground) 92%, transparent);
+    backdrop-filter: blur(6px);
+    z-index: 20;
+  }
+
+  .nav__inner {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0.85rem clamp(1rem, 4vw, 3rem);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .nav__mark {
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    text-decoration: none;
+  }
+
+  .nav__mark-name {
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .nav__mark-sub {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--color-ink-45);
+  }
+
+  .nav__links {
+    display: flex;
+    gap: 1.6rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+
+  .nav__links a {
+    text-decoration: none;
+    color: var(--color-ink-70);
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent;
+  }
+
+  .nav__links a:hover {
+    color: var(--color-ink);
+    border-bottom-color: var(--color-prussian);
+  }
+
+  /* ------------------------------------------------------------------ plate */
+  .plate {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 4vw, 3rem) clamp(3rem, 6vw, 5rem);
+  }
+
+  .plate__titleblock {
+    max-width: 58ch;
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .plate__title {
+    font-size: var(--text-display);
+    margin-bottom: 0.9rem;
+  }
+
+  .plate__sub {
+    color: var(--color-ink-70);
+    font-size: var(--text-lead);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .plate__sub a {
+    color: var(--color-ink);
+    text-decoration-color: var(--color-prussian);
+  }
+
+  /* A figure plate: one hairline frame, two panels, one hairline between. */
+  .plate__frame {
+    border: 1px solid var(--color-rule);
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  }
+
+  .panel {
+    padding: clamp(1.25rem, 2.6vw, 2.25rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+  }
+
+  .panel--b {
+    border-left: 1px solid var(--color-rule);
+  }
+
+  .panel__tag {
+    font-family: var(--font-mono);
+    font-size: 0.72em;
+    color: var(--color-prussian);
+    margin-right: 0.45rem;
+    vertical-align: 0.08em;
+  }
+
+  .panel__title {
+    font-size: clamp(1.35rem, 1.05rem + 1vw, 1.75rem);
+    margin: 0;
+  }
+
+  .panel__body {
+    margin: 0;
+    color: var(--color-ink-70);
+    font-size: var(--text-caption);
+    line-height: 1.55;
+    max-width: 54ch;
+  }
+
+  .panel__action {
+    margin-top: auto;
+    padding-top: 1.15rem;
+    border-top: 1px solid var(--color-rule-soft);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.7rem;
+  }
+
+  .panel__meta {
+    margin: 0;
+    font-size: var(--text-micro);
+    letter-spacing: 0.04em;
+    color: var(--color-ink-45);
+    overflow-wrap: anywhere;
+  }
+
+  /* --------------------------------------------------------------- sections */
+  .section {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: clamp(2.5rem, 6vw, 5rem) clamp(1rem, 4vw, 3rem);
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .section__head {
+    max-width: 62ch;
+    margin-bottom: 2.4rem;
+  }
+
+  .section__title {
+    font-size: var(--text-section);
+    margin-bottom: 0.85rem;
+  }
+
+  .section__lede {
+    color: var(--color-ink-70);
+    font-size: var(--text-lead);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* -------------------------------------------------------------- measures */
+  .measures {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .measure {
+    display: grid;
+    grid-template-columns: 3.2rem minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: 0 1.5rem;
+    padding: 1.35rem 0;
+    border-bottom: 1px solid var(--color-rule-soft);
+    align-items: start;
+  }
+
+  .measure__index {
+    color: var(--color-ink-45);
+    font-size: var(--text-caption);
+    padding-top: 0.28rem;
+  }
+
+  .measure__label {
+    font-size: 1.12rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+
+  .measure__asks {
+    margin: 0;
+    color: var(--color-ink-70);
+    font-size: var(--text-caption);
+  }
+
+  .measure__metric {
+    display: inline-block;
+    font-size: var(--text-micro);
+    letter-spacing: 0.05em;
+    color: var(--color-prussian);
+    background: var(--color-prussian-tint);
+    padding: 0.2rem 0.5rem;
+    margin-bottom: 0.45rem;
+  }
+
+  .measure__note {
+    margin: 0;
+    font-size: var(--text-caption);
+    line-height: 1.5;
+    color: var(--color-ink-70);
+  }
+
+  /* ------------------------------------------------------------------- run */
+  .run {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+    gap: 1.5rem 2.5rem;
+    margin-bottom: 2.2rem;
+  }
+
+  .run__block .edge-code {
+    margin: 0 0 0.6rem;
+  }
+
+  .run__note {
+    margin: 0.7rem 0 0;
+    font-size: var(--text-caption);
+    line-height: 1.5;
+    color: var(--color-ink-70);
+  }
+
+  .caveat {
+    margin: 0;
+    border-left: 2px solid var(--color-prussian);
+    padding: 0.1rem 0 0.1rem 1.1rem;
+    max-width: 60ch;
+    color: var(--color-ink-70);
+    line-height: 1.55;
+  }
+
+  .caveat strong {
+    color: var(--color-ink);
+  }
+
+  /* -------------------------------------------------------------- evidence */
+  .evidence {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: 2.5rem 3.5rem;
+    align-items: start;
+  }
+
+  .evidence__stats {
+    display: grid;
+    gap: 1.4rem;
+  }
+
+  .stat {
+    border-top: 1px solid var(--color-rule);
+    padding-top: 0.85rem;
+  }
+
+  .stat__value {
+    display: block;
+    font-size: clamp(2rem, 1.2rem + 2.4vw, 3rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat__label {
+    display: block;
+    font-size: var(--text-caption);
+    color: var(--color-ink-70);
+    max-width: 34ch;
+  }
+
+  .evidence__files {
+    display: grid;
+    gap: 1.4rem;
+  }
+
+  .file {
+    border-top: 1px solid var(--color-rule);
+    padding-top: 0.85rem;
+  }
+
+  .file .edge-code {
+    margin: 0 0 0.4rem;
+  }
+
+  .file__name {
+    display: block;
+    font-size: var(--text-caption);
+    color: var(--color-prussian);
+    margin-bottom: 0.4rem;
+    word-break: break-all;
+  }
+
+  .file__note {
+    margin: 0;
+    font-size: var(--text-caption);
+    line-height: 1.5;
+    color: var(--color-ink-70);
+  }
+
+  /* ---------------------------------------------------------------- course */
+  .phases {
+    list-style: none;
+    margin: 0 0 2.2rem;
+    padding: 0;
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .phase {
+    display: grid;
+    grid-template-columns: 3.2rem minmax(0, 1fr) 4.5rem;
+    gap: 0 1.5rem;
+    align-items: baseline;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--color-rule-soft);
+  }
+
+  .phase__num {
+    color: var(--color-ink-45);
+    font-size: var(--text-caption);
+  }
+
+  .phase__title {
+    font-size: 1.02rem;
+  }
+
+  .phase__count {
+    text-align: right;
+    color: var(--color-ink-45);
+    font-size: var(--text-caption);
+  }
+
+  .paths {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1.5rem 2.5rem;
+    margin-bottom: 2.2rem;
+  }
+
+  .path {
+    border-top: 1px solid var(--color-rule);
+    padding-top: 0.85rem;
+  }
+
+  .path__id {
+    margin: 0 0 0.35rem;
+    font-size: var(--text-micro);
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--color-prussian);
+  }
+
+  .path__label {
+    margin: 0 0 0.4rem;
+    font-size: var(--text-caption);
+    color: var(--color-ink-70);
+  }
+
+  .path__count {
+    margin: 0;
+    font-size: var(--text-caption);
+    color: var(--color-ink-45);
+  }
+
+  .rule-note {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    gap: 1.5rem 3rem;
+    border-top: 1px solid var(--color-rule);
+    padding-top: 1.4rem;
+  }
+
+  .rule-note p {
+    margin: 0;
+    max-width: 58ch;
+    color: var(--color-ink-70);
+    line-height: 1.55;
+  }
+
+  .rule-note strong {
+    color: var(--color-ink);
+  }
+
+  /* ----------------------------------------------------------------- start */
+  .section--start {
+    background: var(--color-ground-deep);
+  }
+
+  .start {
+    max-width: 58ch;
+  }
+
+  .start__title {
+    font-size: var(--text-section);
+    margin-bottom: 0.9rem;
+  }
+
+  .start__lead {
+    color: var(--color-ink-70);
+    font-size: var(--text-lead);
+    line-height: 1.55;
+    margin: 0 0 1.6rem;
+  }
+
+  .start__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.2rem;
+  }
+
+  .start__alt {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--color-ink-70);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-rule);
+    padding-bottom: 2px;
+  }
+
+  .start__alt:hover {
+    color: var(--color-ink);
+    border-bottom-color: var(--color-prussian);
+  }
+
+  .start__meta {
+    margin: 1.4rem 0 0;
+    font-size: var(--text-micro);
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--color-ink-45);
+  }
+
+  .start__commands {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-top: 1.4rem;
+    max-width: 42rem;
+  }
+
+  /* ----------------------------------------------------------------- close */
+  .close {
+    max-width: 66ch;
+  }
+
+  .close__title {
+    font-size: var(--text-section);
+    margin-bottom: 0.9rem;
+  }
+
+  .close__body {
+    color: var(--color-ink-70);
+    line-height: 1.6;
+    margin: 0 0 1rem;
+  }
+
+  .close__body--quiet {
+    color: var(--color-ink-45);
+    font-size: var(--text-caption);
+    max-width: 52ch;
+  }
+
+  .close__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin: 1.6rem 0 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+  }
+
+  /* ------------------------------------------------------------------ foot */
+  .foot {
+    border-top: 1px solid var(--color-rule);
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 1.4rem clamp(1rem, 4vw, 3rem) 2.4rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 2rem;
+    justify-content: space-between;
+  }
+
+  .foot p {
+    margin: 0;
+    font-size: var(--text-caption);
+    color: var(--color-ink-45);
+    max-width: 58ch;
+  }
+
+  /* ------------------------------------------------------------ responsive */
+  @media (max-width: 1080px) {
+    .plate__frame {
+      grid-template-columns: 1fr;
+    }
+
+    .panel--b {
+      border-left: 0;
+      border-top: 1px solid var(--color-rule);
+    }
+
+    .evidence {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .nav__inner {
+      flex-wrap: wrap;
+      gap: 0.6rem 1.5rem;
+    }
+
+    .nav__links {
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .nav__mark-sub {
+      display: none;
+    }
+
+    .measure {
+      grid-template-columns: 2.4rem minmax(0, 1fr);
+    }
+
+    .measure__meta {
+      grid-column: 2;
+    }
+
+    .phase {
+      grid-template-columns: 2.4rem minmax(0, 1fr) 3rem;
+      gap: 0 0.75rem;
+    }
+  }
+</style>

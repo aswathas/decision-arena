@@ -1,0 +1,630 @@
+---
+import {
+  FRICTION_ROWS,
+  PROJECTION_LABELS,
+  PROJECTION_NOTES,
+  RUN_ID,
+  RUN_PROVIDER,
+  QUESTIONS_MEASURED,
+  FLIPS_AT_HALF,
+  MEAN_SPREAD,
+  MAX_SPREAD,
+  FEATURED_CASE,
+  FEATURED_QUESTION,
+  type Projection,
+} from '../data/friction';
+
+const PLOT_LEFT = 84;
+const PLOT_RIGHT = 900;
+const PLOT_TOP = 96;
+const PLOT_BOTTOM = 500;
+const PLOT_WIDTH = PLOT_RIGHT - PLOT_LEFT;
+const PLOT_HEIGHT = PLOT_BOTTOM - PLOT_TOP;
+
+const SLOT = PLOT_WIDTH / FRICTION_ROWS.length;
+const yOf = (p: number) => PLOT_BOTTOM - p * PLOT_HEIGHT;
+const xOf = (i: number) => PLOT_LEFT + SLOT * (i + 0.5);
+
+const INK = '#0b1218';
+const PRUSSIAN = '#0f3d6e';
+const GRAPHITE = '#8a97a1';
+const RULE = '#cfd9e0';
+const RULE_SOFT = '#e6edf1';
+
+const projections: Projection[] = ['prose', 'flat', 'nested'];
+
+const series = projections.map((key) => ({
+  key,
+  points: FRICTION_ROWS.map((r, i) => `${xOf(i).toFixed(1)},${yOf(r.values[key]).toFixed(1)}`),
+}));
+
+/** Stations where the projections disagree about the decision at 0.5. */
+const flipBands = FRICTION_ROWS.map((r, i) => {
+  const values = Object.values(r.values);
+  const crosses = values.some((v) => v >= 0.5) && values.some((v) => v < 0.5);
+  if (!crosses) return null;
+  const top = Math.max(...values);
+  const bottom = Math.min(...values);
+  return {
+    index: i,
+    x: xOf(i),
+    y: yOf(top),
+    height: Math.max(2, yOf(bottom) - yOf(top)),
+  };
+}).filter(Boolean) as { index: number; x: number; y: number; height: number }[];
+
+const featuredIndex = FRICTION_ROWS.findIndex(
+  (r) => r.caseId === FEATURED_CASE && r.question === FEATURED_QUESTION,
+);
+
+const caseGroups = [
+  { label: 'fmt-001-refund', start: 0, count: 3 },
+  { label: 'fmt-002-outage', start: 3, count: 3 },
+  { label: 'fmt-003-sales', start: 6, count: 3 },
+];
+---
+
+<div class="field" data-field>
+  <div class="field__head">
+    <div>
+      <p class="edge-code">The one chart no vendor will publish for you</p>
+      <p class="field__caption">
+        The same three support tickets, asked the same nine questions, in three
+        serialisations. Nothing about the ticket changed - only its shape.
+      </p>
+    </div>
+    <div class="field__toggle" role="group" aria-label="Choose the serialisation to read">
+      {
+        projections.map((p) => (
+          <button
+            type="button"
+            class="toggle__option"
+            data-projection={p}
+            aria-pressed={p === 'prose' ? 'true' : 'false'}
+          >
+            {PROJECTION_LABELS[p]}
+          </button>
+        ))
+      }
+    </div>
+  </div>
+
+  <figure class="field__figure">
+    <svg
+      viewBox="0 0 940 596"
+      width="940"
+      height="596"
+      class="field__svg"
+      role="img"
+      aria-labelledby="field-title field-desc"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <title id="field-title">
+        Decision probability for nine questions across three serialisations of the same input
+      </title>
+      <desc id="field-desc">
+        A plot of the probability returned for each of nine questions, measured under a prose
+        serialisation, a flat JSON serialisation and a nested JSON serialisation. Four of the nine
+        questions change sides of the 0.5 decision threshold between serialisations. The largest
+        change is {MAX_SPREAD}, on the question {FEATURED_QUESTION}.
+      </desc>
+
+      <defs>
+        <pattern
+          id="flip-hatch"
+          width="7"
+          height="7"
+          patternUnits="userSpaceOnUse"
+          patternTransform="rotate(45)"
+        >
+          <line x1="0" y1="0" x2="0" y2="7" stroke={PRUSSIAN} stroke-width="1" opacity="0.55" />
+        </pattern>
+      </defs>
+
+      {/* grid */}
+      {
+        [0, 0.25, 0.5, 0.75, 1].map((p) => (
+          <line
+            x1={PLOT_LEFT}
+            x2={PLOT_RIGHT}
+            y1={yOf(p)}
+            y2={yOf(p)}
+            stroke={p === 0.5 ? RULE : RULE_SOFT}
+            stroke-width="1"
+          />
+        ))
+      }
+
+      {/* y axis labels */}
+      {
+        [0, 0.5, 1].map((p) => (
+          <text
+            x={PLOT_LEFT - 14}
+            y={yOf(p) + 4}
+            text-anchor="end"
+            class="field__axis"
+          >
+            {p.toFixed(1)}
+          </text>
+        ))
+      }
+      <text
+        x={PLOT_LEFT - 14}
+        y={PLOT_TOP - 20}
+        text-anchor="end"
+        class="field__axis field__axis--title"
+      >
+        P(answer)
+      </text>
+
+      {/* the decision threshold */}
+      <line
+        x1={PLOT_LEFT}
+        x2={PLOT_RIGHT}
+        y1={yOf(0.5)}
+        y2={yOf(0.5)}
+        stroke={INK}
+        stroke-width="1"
+        stroke-dasharray="6 5"
+        opacity="0.55"
+      />
+      <text x={PLOT_RIGHT} y={yOf(0.5) + 18} text-anchor="end" class="field__threshold">
+        decision threshold 0.5
+      </text>
+
+      {/* flip bands */}
+      {
+        flipBands.map((band) => (
+          <rect
+            x={band.x - 15}
+            y={band.y}
+            width="30"
+            height={band.height}
+            fill="url(#flip-hatch)"
+            stroke={PRUSSIAN}
+            stroke-width="1"
+            stroke-opacity="0.4"
+            data-band
+          />
+        ))
+      }
+
+      {/* case separators */}
+      {caseGroups.slice(1).map((g) => (
+        <line
+          x1={PLOT_LEFT + SLOT * g.start}
+          x2={PLOT_LEFT + SLOT * g.start}
+          y1={PLOT_TOP - 18}
+          y2={PLOT_BOTTOM}
+          stroke={RULE}
+          stroke-width="1"
+        />
+      ))}
+
+      {/* series */}
+      {series.map((s) => (
+        <polyline
+          points={s.points.join(' ')}
+          fill="none"
+          stroke={GRAPHITE}
+          stroke-width="1"
+          stroke-opacity="0.85"
+          data-series={s.key}
+        />
+      ))}
+
+      {/* markers: graphite for context, ink for the selected reading */}
+      {series.map((s) =>
+        FRICTION_ROWS.map((r, i) => (
+          <rect
+            x={xOf(i) - 3.5}
+            y={yOf(r.values[s.key]) - 3.5}
+            width="7"
+            height="7"
+            fill={GRAPHITE}
+            stroke="none"
+            data-marker={s.key}
+            data-index={i}
+          />
+        )),
+      )}
+
+      {/* the annotation - one reading at a time, pointing at the featured
+          station on the selected series */}
+      <g data-annotation>
+        <line
+          data-annotation-leader
+          x1={xOf(featuredIndex)}
+          y1={yOf(FRICTION_ROWS[featuredIndex].values.prose)}
+          x2={xOf(featuredIndex) + 86}
+          y2={yOf(FRICTION_ROWS[featuredIndex].values.prose) - 54}
+          stroke={INK}
+          stroke-width="1"
+        />
+        <circle
+          data-annotation-dot
+          cx={xOf(featuredIndex)}
+          cy={yOf(FRICTION_ROWS[featuredIndex].values.prose)}
+          r="5.5"
+          fill="none"
+          stroke={INK}
+          stroke-width="1.5"
+        />
+        <text
+          data-annotation-value
+          x={xOf(featuredIndex) + 92}
+          y={yOf(FRICTION_ROWS[featuredIndex].values.prose) - 58}
+          class="field__annot-value"
+        >
+          {FRICTION_ROWS[featuredIndex].values.prose.toFixed(2)}
+        </text>
+        <text
+          data-annotation-label
+          x={xOf(featuredIndex) + 92}
+          y={yOf(FRICTION_ROWS[featuredIndex].values.prose) - 42}
+          class="field__annot-label"
+        >
+          {FEATURED_QUESTION} in prose
+        </text>
+      </g>
+
+      {/* x axis - station labels */}
+      {FRICTION_ROWS.map((r, i) => (
+        <text x={xOf(i)} y={PLOT_BOTTOM + 26} text-anchor="middle" class="field__station">
+          {r.question}
+        </text>
+      ))}
+      {caseGroups.map((g) => (
+        <text
+          x={PLOT_LEFT + SLOT * (g.start + g.count / 2)}
+          y={PLOT_BOTTOM + 52}
+          text-anchor="middle"
+          class="field__case"
+        >
+          {g.label}
+        </text>
+      ))}
+    </svg>
+
+    <figcaption class="field__foot">
+      <p class="edge-code">run {RUN_ID} &middot; provider {RUN_PROVIDER}</p>
+      <p class="field__measure num">
+        {QUESTIONS_MEASURED} questions &middot; mean spread {MEAN_SPREAD.toFixed(2)} &middot;
+        max {MAX_SPREAD.toFixed(4)} &middot; {FLIPS_AT_HALF} of {QUESTIONS_MEASURED} flip at
+        0.5
+      </p>
+      <p class="field__sim">
+        <strong>Simulated run.</strong> The offline simulator reproduces the shape of a published
+        finding so the pipeline can be exercised with no credentials. It is never a measurement of
+        a real model.
+      </p>
+    </figcaption>
+  </figure>
+
+  {/* one reading at a time */}
+  <div class="field__readout" data-readout>
+    <div class="readout__row">
+      <p class="edge-code">reading - {FEATURED_CASE} / {FEATURED_QUESTION}</p>
+      <p class="readout__note" data-readout-note>{PROJECTION_NOTES.prose}</p>
+    </div>
+    <ul class="readout__values">
+      {
+        projections.map((p) => (
+          <li class="readout__value" data-readout-item={p}>
+            <span class="readout__key">{PROJECTION_LABELS[p]}</span>
+            <span class="readout__num num" data-readout-num={p}>
+              {FRICTION_ROWS[featuredIndex].values[p].toFixed(2)}
+            </span>
+          </li>
+        ))
+      }
+      <li class="readout__value readout__value--wide">
+        <span class="readout__key">spread</span>
+        <span class="readout__num num" data-readout-spread>
+          {FRICTION_ROWS[featuredIndex].spread.toFixed(4)}
+        </span>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<style>
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+
+  .field__head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.5rem;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .field__caption {
+    margin: 0.45rem 0 0;
+    max-width: 46ch;
+    color: var(--color-ink-70);
+    font-size: var(--text-caption);
+    line-height: 1.5;
+  }
+
+  .field__toggle {
+    display: flex;
+    gap: 0.35rem;
+  }
+
+  .field__figure {
+    margin: 0;
+  }
+
+  .field__svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: var(--color-ground);
+  }
+
+  .field__axis {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--color-ink-45);
+  }
+
+  .field__axis--title {
+    fill: var(--color-ink-70);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 10px;
+  }
+
+  .field__threshold {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    fill: var(--color-ink-70);
+  }
+
+  .field__station {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    fill: var(--color-ink-70);
+  }
+
+  .field__case {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    fill: var(--color-ink-45);
+  }
+
+  .field__annot-value {
+    font-family: var(--font-mono);
+    font-size: 21px;
+    font-variant-numeric: tabular-nums;
+    fill: var(--color-ink);
+  }
+
+  .field__annot-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    fill: var(--color-ink-45);
+  }
+
+  .field__foot {
+    margin-top: 0.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .field__measure {
+    margin: 0;
+    font-size: var(--text-caption);
+    color: var(--color-ink-70);
+    line-height: 1.5;
+  }
+
+  .field__sim {
+    margin: 0;
+    max-width: 62ch;
+    font-size: var(--text-caption);
+    line-height: 1.5;
+    color: var(--color-ink-70);
+  }
+
+  .field__sim strong {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+
+  /* the one authored moment: the selected series is promoted to ink, the
+     others fall back to graphite context. */
+  .field__svg [data-series] {
+    transition:
+      stroke 180ms ease,
+      stroke-width 180ms ease,
+      stroke-opacity 180ms ease;
+  }
+
+  .field__svg [data-marker] {
+    transition:
+      fill 180ms ease;
+  }
+
+  .field__svg [data-series][data-active='true'] {
+    stroke: var(--color-ink);
+    stroke-width: 1.75;
+    stroke-opacity: 1;
+  }
+
+  .field__svg [data-marker][data-active='true'] {
+    fill: var(--color-ink);
+  }
+
+  .field__svg [data-annotation] {
+    transition: opacity 180ms ease;
+  }
+
+  .field__readout {
+    border-top: 1px solid var(--color-rule);
+    padding-top: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  .readout__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1rem;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+
+  .readout__note {
+    margin: 0;
+    font-size: var(--text-caption);
+    color: var(--color-ink-70);
+  }
+
+  .readout__values {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 2.4rem;
+  }
+
+  .readout__value {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    padding: 0.12rem 0;
+    color: var(--color-ink-45);
+    transition: color 180ms ease;
+  }
+
+  .readout__value[data-active='true'] {
+    color: var(--color-ink);
+  }
+
+  .readout__key {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: inherit;
+  }
+
+  .readout__num {
+    font-size: 1.05rem;
+    color: inherit;
+  }
+
+  .readout__value--wide {
+    border-left: 1px solid var(--color-rule);
+    padding-left: 2.4rem;
+  }
+</style>
+
+<script>
+  import {
+    FRICTION_ROWS,
+    PROJECTION_NOTES,
+    FEATURED_CASE,
+    FEATURED_QUESTION,
+  } from '../data/friction';
+
+  const PLOT_TOP = 96;
+  const PLOT_BOTTOM = 500;
+  const PLOT_WIDTH = 816;
+  const SLOT = PLOT_WIDTH / FRICTION_ROWS.length;
+  const yOf = (p: number) => PLOT_BOTTOM - p * (PLOT_BOTTOM - PLOT_TOP);
+
+  const featuredIndex = FRICTION_ROWS.findIndex(
+    (r) => r.caseId === FEATURED_CASE && r.question === FEATURED_QUESTION,
+  );
+
+  document.querySelectorAll<HTMLElement>('[data-field]').forEach((root) => {
+    const buttons = Array.from(
+      root.querySelectorAll<HTMLButtonElement>('[data-projection]'),
+    );
+    const seriesEls = Array.from(root.querySelectorAll<SVGElement>('[data-series]'));
+    const markers = Array.from(root.querySelectorAll<SVGElement>('[data-marker]'));
+    const annotation = root.querySelector<SVGGElement>('[data-annotation]');
+    const leader = root.querySelector<SVGLineElement>('[data-annotation-leader]');
+    const dot = root.querySelector<SVGCircleElement>('[data-annotation-dot]');
+    const valueText = root.querySelector<SVGTextElement>('[data-annotation-value]');
+    const labelText = root.querySelector<SVGTextElement>('[data-annotation-label]');
+    const note = root.querySelector<HTMLElement>('[data-readout-note]');
+    const readoutItems = Array.from(
+      root.querySelectorAll<HTMLElement>('[data-readout-item]'),
+    );
+
+    if (!buttons.length) return;
+
+    const select = (key: string) => {
+      buttons.forEach((b) =>
+        b.setAttribute('aria-pressed', String(b.dataset.projection === key)),
+      );
+
+      seriesEls.forEach((el) =>
+        el.setAttribute('data-active', String(el.getAttribute('data-series') === key)),
+      );
+      markers.forEach((el) =>
+        el.setAttribute('data-active', String(el.getAttribute('data-marker') === key)),
+      );
+      readoutItems.forEach((el) =>
+        el.setAttribute('data-active', String(el.getAttribute('data-readout-item') === key)),
+      );
+
+      const value = FRICTION_ROWS[featuredIndex].values[key as 'prose' | 'flat' | 'nested'];
+      const markerY = yOf(value);
+      const markerX = PLOT_WIDTH / FRICTION_ROWS.length * (featuredIndex + 0.5) + 84;
+
+      if (dot) {
+        dot.setAttribute('cy', String(markerY));
+        dot.setAttribute('cx', String(markerX));
+      }
+      if (leader) {
+        leader.setAttribute('y1', String(markerY));
+        leader.setAttribute('x1', String(markerX));
+        leader.setAttribute('y2', String(markerY - 54));
+        leader.setAttribute('x2', String(markerX + 86));
+      }
+      if (valueText) {
+        valueText.textContent = value.toFixed(2);
+        valueText.setAttribute('x', String(markerX + 92));
+        valueText.setAttribute('y', String(markerY - 58));
+      }
+      if (labelText) {
+        labelText.textContent = `${FEATURED_QUESTION} in ${key}`;
+        labelText.setAttribute('x', String(markerX + 92));
+        labelText.setAttribute('y', String(markerY - 42));
+      }
+      if (note) {
+        note.textContent = PROJECTION_NOTES[key as 'prose' | 'flat' | 'nested'];
+      }
+      if (annotation) {
+        annotation.setAttribute('opacity', '1');
+      }
+    };
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const key = button.dataset.projection;
+        if (key) select(key);
+      });
+    });
+
+    select('prose');
+  });
+</script>

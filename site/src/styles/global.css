@@ -1,0 +1,216 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ tokens
+   The world: a printed technical plot. Cool plot-paper ground, ink with a
+   blue cast, one committed data colour (prussian), graphite for simulated
+   data. Hairlines only - no soft borders, no shadows on data, no rounded
+   cards, no gradients. */
+@theme {
+  --color-ground: #f2f5f7;
+  --color-ground-deep: #e7edf1;
+  --color-ink: #0b1218;
+  --color-ink-70: #45555f;
+  --color-ink-45: #5d6b76;
+  --color-rule: #cfd9e0;
+  --color-rule-soft: #dfe7ec;
+  --color-prussian: #0f3d6e;
+  --color-prussian-tint: #e2ebf4;
+  --color-graphite: #8a97a1;
+
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", monospace;
+
+  --text-micro: 0.6875rem;
+  --text-caption: 0.8125rem;
+  --text-body: 1rem;
+  --text-lead: 1.1875rem;
+  --text-display: clamp(2.1rem, 1.15rem + 3.1vw, 3.65rem);
+  --text-section: clamp(1.5rem, 1.05rem + 1.5vw, 2.15rem);
+}
+
+/* ------------------------------------------------------------------- base */
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    background: var(--color-ground);
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-ground);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: 1.6;
+    font-feature-settings: "kern" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: var(--color-prussian);
+    color: #fff;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: -0.021em;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  a {
+    color: inherit;
+    text-decoration-color: var(--color-rule);
+    text-underline-offset: 0.22em;
+    text-decoration-thickness: 1px;
+  }
+
+  a:hover {
+    text-decoration-color: var(--color-prussian);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-prussian);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  code,
+  kbd,
+  samp {
+    font-family: var(--font-mono);
+    font-size: 0.92em;
+  }
+
+  /* Numbers are the product: they are always tabular monospace. */
+  .num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+  }
+}
+
+/* ------------------------------------------------------------- components */
+@layer components {
+  /* A measured label, the way a plot labels its axis. */
+  .edge-code {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--color-ink-45);
+  }
+
+  .rule {
+    border: 0;
+    border-top: 1px solid var(--color-rule);
+    margin: 0;
+  }
+
+  .rule-soft {
+    border: 0;
+    border-top: 1px solid var(--color-rule-soft);
+    margin: 0;
+  }
+
+  /* The one filled control on the page. Everything else is a link or a
+     hairline. */
+  .action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    background: var(--color-ink);
+    color: var(--color-ground);
+    padding: 0.85rem 1.35rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    border: 1px solid var(--color-ink);
+    transition:
+      background-color 140ms ease,
+      color 140ms ease;
+  }
+
+  .action:hover {
+    background: var(--color-prussian);
+    border-color: var(--color-prussian);
+    color: #fff;
+  }
+
+  .action__arrow {
+    transition: transform 180ms ease;
+  }
+
+  .action:hover .action__arrow {
+    transform: translateX(3px);
+  }
+
+  /* The projection toggle. Hairline boxes, not pills. */
+  .toggle__option {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--color-ink-45);
+    background: transparent;
+    border: 1px solid var(--color-rule);
+    padding: 0.42rem 0.72rem;
+    cursor: pointer;
+    transition:
+      color 140ms ease,
+      border-color 140ms ease,
+      background-color 140ms ease;
+  }
+
+  .toggle__option:hover {
+    color: var(--color-ink);
+    border-color: var(--color-ink-45);
+  }
+
+  .toggle__option[aria-pressed="true"] {
+    color: var(--color-ground);
+    background: var(--color-ink);
+    border-color: var(--color-ink);
+  }
+
+  .toggle__option:focus-visible {
+    outline: 2px solid var(--color-prussian);
+    outline-offset: 2px;
+  }
+
+  /* A command line you can actually copy. */
+  .command {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    background: var(--color-ground-deep);
+    border: 1px solid var(--color-rule);
+    padding: 0.7rem 0.9rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    overflow-x: auto;
+  }
+
+  .command__prompt {
+    color: var(--color-ink-45);
+    user-select: none;
+  }
+
+  .command__text {
+    white-space: pre;
+  }
+}

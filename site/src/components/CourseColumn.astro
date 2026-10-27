@@ -1,0 +1,171 @@
+---
+import curriculum from '../../../course/curriculum.json';
+
+const phases = curriculum.phases;
+
+const COLUMN_LEFT = 8;
+const COLUMN_WIDTH = 62;
+const COLUMN_TOP = 14;
+const UNIT = 9.6; // px per lesson
+const LABEL_X = COLUMN_LEFT + COLUMN_WIDTH + 14;
+
+let cursor = COLUMN_TOP;
+const bands = phases.map((p) => {
+  const height = p.lessons.length * UNIT;
+  const band = {
+    id: p.id,
+    title: p.title,
+    count: p.lessons.length,
+    y: cursor,
+    height,
+    capstone: p.id === phases.length - 1,
+  };
+  cursor += height;
+  return band;
+});
+
+const totalHeight = cursor - COLUMN_TOP;
+const VIEW_H = Math.ceil(totalHeight + 18);
+---
+
+<div class="column">
+  <div class="column__head">
+    <p class="edge-code">The path</p>
+    <p class="column__caption">
+      Ten phases, {curriculum.total_lessons} lessons. Each band's thickness is its
+      lesson count - the course is drawn to scale.
+    </p>
+  </div>
+
+  <figure class="column__figure">
+    <svg
+      viewBox="0 0 420 {VIEW_H}"
+      width="420"
+      height={VIEW_H}
+      class="column__svg"
+      role="img"
+      aria-labelledby="column-title column-desc"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <title id="column-title">The Decision Arena Academy curriculum</title>
+      <desc id="column-desc">
+        Ten phases stacked as bands whose thickness is the number of lessons in each. Phase 0
+        has six lessons, phases 1 to 9 have four to six each, and the last phase is the
+        capstone in which the learner publishes a finding.
+      </desc>
+
+      {
+        bands.map((b) => (
+          <g>
+            <rect
+              x={COLUMN_LEFT}
+              y={b.y}
+              width={COLUMN_WIDTH}
+              height={b.height}
+              fill={b.capstone ? 'url(#column-capstone)' : 'var(--color-prussian-tint)'}
+              stroke="var(--color-rule)"
+              stroke-width="1"
+            />
+            <text
+              x={COLUMN_LEFT + COLUMN_WIDTH / 2}
+              y={b.y + b.height / 2 + 4}
+              text-anchor="middle"
+              class="column__count"
+            >
+              {b.count}
+            </text>
+            <text x={LABEL_X} y={b.y + b.height / 2 + 1} class="column__label">
+              {String(b.id).padStart(2, '0')}
+            </text>
+            <text x={LABEL_X + 22} y={b.y + b.height / 2 + 1} class="column__title">
+              {b.title}
+            </text>
+          </g>
+        ))
+      }
+
+      <defs>
+        <pattern
+          id="column-capstone"
+          width="6"
+          height="6"
+          patternUnits="userSpaceOnUse"
+          patternTransform="rotate(45)"
+        >
+          <rect width="6" height="6" fill="var(--color-prussian-tint)" />
+          <line x1="0" y1="0" x2="0" y2="6" stroke="var(--color-prussian)" stroke-width="1.4" />
+        </pattern>
+      </defs>
+    </svg>
+
+    <figcaption class="column__foot">
+      <p class="edge-code">{curriculum.total_lessons} lessons &middot; {phases.length} phases</p>
+      <p class="column__note">
+        The hatched band is the capstone: run your own experiment and publish a finding
+        somebody else can check. Progress is tracked per concept, not per lesson.
+      </p>
+    </figcaption>
+  </figure>
+</div>
+
+<style>
+  .column {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+
+  .column__caption {
+    margin: 0.45rem 0 0;
+    max-width: 44ch;
+    color: var(--color-ink-70);
+    font-size: var(--text-caption);
+    line-height: 1.5;
+  }
+
+  .column__figure {
+    margin: 0;
+  }
+
+  .column__svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    /* a replaced element inside a flex column will be compressed unless it
+       is told not to shrink - the column is the point of the panel. */
+    flex-shrink: 0;
+  }
+
+  .column__count {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    font-variant-numeric: tabular-nums;
+    fill: var(--color-ink-70);
+  }
+
+  .column__label {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    fill: var(--color-ink-45);
+  }
+
+  .column__title {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    fill: var(--color-ink);
+  }
+
+  .column__foot {
+    margin-top: 0.7rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .column__note {
+    margin: 0;
+    font-size: var(--text-caption);
+    line-height: 1.5;
+    color: var(--color-ink-70);
+  }
+</style>
