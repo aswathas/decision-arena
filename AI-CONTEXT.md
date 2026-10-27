@@ -26,9 +26,9 @@ verified_facts:
     evidence: "runs/20261025-005316-mock.md, runs/20261025-005353-friction-mock.json"
     verified_on: 2026-10-25
   - id: unit-tests
-    claim: "29/29 stdlib unittest cases pass (python -m unittest discover -s tests): 7 metric tests plus 22 Academy tests."
-    evidence: "tests/test_metrics.py, tests/test_learn_state.py"
-    verified_on: 2026-10-27
+    claim: "41/41 stdlib unittest cases pass (python -m unittest discover -s tests): 7 metric tests, 22 Academy tests, and 12 commit-message gate tests."
+    evidence: "tests/test_metrics.py, tests/test_learn_state.py, tests/test_check_commit.py"
+    verified_on: 2026-10-28
   - id: academy-course
     claim: "Decision Arena Academy ships 46 lessons and 46 quizzes across 10 phases; the course gate passes and course/curriculum.json is in sync."
     evidence: "course/curriculum.json, tools/course_check.py, course/lessons/L00-what-is-a-decision-model.md"
@@ -105,6 +105,14 @@ verified_facts:
     claim: "The site makes no third-party runtime request: both typefaces are self-hosted woff2 files vendored from the upstream releases by tools/vendor_fonts.py."
     evidence: "tools/vendor_fonts.py, site/public/fonts/fonts.css"
     verified_on: 2026-10-27
+  - id: commit-history-rule
+    claim: "One commit per workstream, one writer per file, and a message that names the workstream, the file count and the gates that proved it. tools/check_commit.py gates the message from the commit-msg hook, and the 176-file illustrated-course commit was split into 23 commits whose final tree is byte-identical to the original (git diff a12c252 HEAD is empty)."
+    evidence: "skills/commit-history/SKILL.md, tools/check_commit.py, .githooks/commit-msg, tests/test_check_commit.py"
+    verified_on: 2026-10-28
+  - id: release-post-ready
+    claim: "The release post for the illustrated course is written and gated but not published: no LinkedIn connector exists on this machine, so the artefact has to be pasted by hand. The three images and the spec are committed."
+    evidence: "docs/linkedin/2026-10-28-illustrated-course.md, docs/linkedin/specs/illustrated-course.json"
+    verified_on: 2026-10-28
 
 in_progress:
   - id: illustrated-course
@@ -124,7 +132,7 @@ in_progress:
     state: "published by CI at https://aswathas.github.io/decision-arena/ (GitHub Pages, every push to main rebuilds and redeploys it). An earlier host at https://pm51wr5jr44rf.space.minimax.io still serves the older one-page build and its deploy endpoint now refuses this session; it is not the canonical home."
 
 next_actions:
-  - "Publish the illustrated course: push the 46 stories, 46 figures and 46 pictures; GitHub Pages rebuilds the 48 pages and runs the accessibility gate."
+  - "Publish the release post by hand: paste docs/linkedin/2026-10-28-illustrated-course.md with the three images in docs/linkedin/media/ - no LinkedIn connector exists on this machine."
   - "Day 1 of the Academy: `python tools/learn_state.py init --learner aswath --path beginner`, then `/learn` for L00."
   - "Day 2: work through examples/01_softmax.py and 02_temperature.py, quiz, log."
   - "Day 5: live Jev + Clef run on the routing battery; repo flips PUBLIC."
@@ -171,6 +179,7 @@ commands_that_work:
   - "python tools/check_site_a11y.py"
   - "python tools/check_course_figures.py"
   - "python tools/linkedin_post.py --spec docs/linkedin/specs/<slug>.json --check"
+  - "python tools/check_commit.py <message-file> --staged"
   - "python tools/vendor_fonts.py"
   - "cd site && npm run build && node scripts/capture.mjs && node scripts/measure.mjs"
   - "python tools/check_links.py --vault \"C:\\Users\\aswat\\Aswaths Obsidian Den\\Aswaths Mountain Den\""
@@ -192,7 +201,7 @@ metrics, a Markdown report writer, and a swap-safety comparator. (2)
 **Decision Arena Academy** - a self-contained beginner course in `course/`
 (46 lessons, 46 quizzes, 10 phases), with four skills (`skills/`), a
 per-concept mastery engine (`tools/learn_state.py`), a course gate
-(`tools/course_check.py`) and session hooks. 29/29 unit tests pass. (3) A
+(`tools/course_check.py`) and session hooks. 41/41 unit tests pass. (3) A
 public site in `site/` - 48 static pages: a landing page carrying two equal
 doors on one figure plate, the friction field plotted from the committed run,
 every number linked to its raw file, and a course reader that renders the 46

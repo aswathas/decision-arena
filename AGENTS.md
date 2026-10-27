@@ -40,6 +40,14 @@ safety** — because every vendor publishes a benchmark where they win.
    own answer is a broken lesson.
 9. **The course gate must pass.** `python tools/course_check.py --check`
    fails a commit that breaks a lesson, a quiz or the generated index.
+10. **One commit per workstream, and the message is documentation.**
+    Every commit names the workstream whose files it carries, how many files
+    that was, and the gates that proved it. A 176-file commit with a two-line
+    subject is a receipt, not history. Never `git add -A` when another
+    agent's files are in the tree — stage your paths by name. The rule and the
+    message format live in `skills/commit-history/SKILL.md`; the checker lives
+    in `tools/check_commit.py` and runs from the `commit-msg` hook
+    (`git config core.hooksPath .githooks`).
 
 ## Conventions
 
@@ -64,7 +72,8 @@ course/             Decision Arena Academy — the beginner course
   FORMAT.md         the authoring contract for lessons and quizzes
   placement.json    the placement quiz
 skills/             the skills (learn, arena-coach, course-author,
-                    viral-linkedin-post - the release/post generator)
+                    viral-linkedin-post - the release/post generator,
+                    commit-history - the house rule for how work becomes history)
 learning/           the learner's state: progress.json + build_log.md
 tests/              stdlib unittest
 tools/              check_links.py (vault link gate), sync_brief.py
@@ -73,6 +82,7 @@ tools/              check_links.py (vault link gate), sync_brief.py
                     vendor_fonts.py (self-host the site's typefaces)
                     check_site_a11y.py (site accessibility and link check)
                     linkedin_post.py (render and gate a LinkedIn post spec)
+                    check_commit.py (gate a commit message: workstream, gates)
                     show_links.py (print a built page's internal links)
                     hooks/ (session_start.py, stop.py)
 docs/               architecture-graph.md (graphify AST graph), decision-log.md
@@ -87,7 +97,7 @@ laya-lab/           local Laya experiments (separate venv, torch)
 ## How to work here
 
 ```bash
-python -m unittest discover -s tests -v     # 7 tests, must stay green
+python -m unittest discover -s tests -v     # 41 tests, must stay green
 python -m decisionarena providers           # what is configured on this machine
 python -m decisionarena run --provider mock --battery all
 python -m decisionarena friction --provider mock
@@ -114,6 +124,10 @@ python tools/check_course_figures.py        # every lesson has a story, a diagra
 cd site && npm run build                   # static build into site/dist
 node scripts/capture.mjs                   # recapture .impeccable/review/*.png
 node scripts/measure.mjs                   # measure the first viewport
+
+# The commit message (skills/commit-history/)
+python tools/check_commit.py <message-file> --staged   # gate a message before committing
+git config core.hooksPath .githooks         # enable the commit-msg hook (once per clone)
 ```
 
 ## The knowledge map (graphify)

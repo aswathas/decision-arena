@@ -1,0 +1,15 @@
+#!/bin/sh
+# The commit-msg hook: check the message against the house shape before git
+# accepts it.
+#
+# Enabled per clone with:
+#
+#   git config core.hooksPath .githooks
+#
+# It only refuses; it never rewrites. A message it rejects tells you what is
+# missing, and the shape is documented in
+# skills/commit-history/references/message-format.md.
+set -e
+
+root=$(git rev-parse --show-toplevel)
+python "$root/tools/check_commit.py" "$1" --staged
