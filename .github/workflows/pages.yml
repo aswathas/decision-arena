@@ -1,0 +1,73 @@
+name: Publish the site
+
+# The site is the repository's front door, so it is built and published from
+# the repository itself: every push to main rebuilds it and deploys it. A
+# live site that can lag the repo is a site that publishes lies by accident.
+#
+# The build runs with BASE_PATH=/decision-arena because a GitHub Pages project
+# page is served from a sub-path. Every internal link in the site is built
+# from that base (site/src/data/urls.ts), so the same source tree also builds
+# for a root deployment - a plain `npm run build` with no BASE_PATH.
+
+on:
+  push:
+    branches: [main]
+  # A manual run publishes the current main without waiting for a push.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time, and never cancel one that is already running:
+# a half-published site is worse than a slightly stale one.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Install the site's dependencies
+        working-directory: site
+        run: npm ci
+
+      - name: Build the site
+        working-directory: site
+        env:
+          BASE_PATH: /decision-arena
+        run: npm run build
+
+      - name: Check the build before publishing it
+        run: python3 tools/check_site_a11y.py
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload the build
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { url } from '../data/urls';
 
 interface Props {
   title: string;
@@ -22,13 +23,13 @@ const { title, description } = Astro.props;
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
 
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
     <!-- Self-hosted on purpose (see tools/vendor_fonts.py): the site claims no
          third-party dependencies, and a render-blocking font request from a
          third party is one. -->
-    <link rel="preload" href="/fonts/ibm-plex-sans-500.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/ibm-plex-mono-400.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="/fonts/fonts.css" />
+    <link rel="preload" href={url('/fonts/ibm-plex-sans-500.woff2')} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={url('/fonts/ibm-plex-mono-400.woff2')} as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href={url('/fonts/fonts.css')} />
   </head>
   <body>
     <a

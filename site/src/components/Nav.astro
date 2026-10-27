@@ -3,20 +3,22 @@
  * The one navigation bar. The landing page and the course reader are the same
  * product seen from two doors, so they share the chrome exactly.
  */
+import { url } from '../data/urls';
+
 const REPO = 'https://github.com/aswathas/decision-arena';
 ---
 
 <header class="nav">
   <div class="nav__inner">
-    <a href="/" class="nav__mark" aria-label="Decision Arena, home">
+    <a href={url('/')} class="nav__mark" aria-label="Decision Arena, home">
       <span class="nav__mark-name">Decision Arena</span>
       <span class="nav__mark-sub">the neutral harness</span>
     </a>
     <nav class="nav__links" aria-label="Primary">
-      <a href="/#measures">What it measures</a>
-      <a href="/#run">Run it</a>
-      <a href="/#evidence">Evidence</a>
-      <a href="/course/">Course</a>
+      <a href={`${url('/')}#measures`}>What it measures</a>
+      <a href={`${url('/')}#run`}>Run it</a>
+      <a href={`${url('/')}#evidence`}>Evidence</a>
+      <a href={url('/course/')}>Course</a>
       <a href={REPO} rel="noreferrer">GitHub</a>
     </nav>
   </div>

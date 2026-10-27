@@ -13,6 +13,7 @@ import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import Foot from '../../components/Foot.astro';
 import { LESSONS, quizFor, sectionsFor, nextInPath, prevInPath } from '../../data/course';
+import { url } from '../../data/urls';
 
 export function getStaticPaths() {
   return LESSONS.map((lesson) => ({
@@ -61,7 +62,7 @@ const prev = prevInPath(lesson.id);
                 <dt class="meta__label num">read first</dt>
                 <dd class="meta__value num">
                   {lesson.prereqs.map((p) => (
-                    <a href={`/lessons/${p}/`}>{p}</a>
+                    <a href={url(`/lessons/${p}/`)}>{p}</a>
                   ))}
                 </dd>
               </div>
@@ -148,7 +149,7 @@ const prev = prevInPath(lesson.id);
               }
             </ol>
             <p class="rail__foot">
-              <a class="rail__link" href="/course/">The whole course</a>
+              <a class="rail__link" href={url('/course/')}>The whole course</a>
             </p>
           </div>
         </aside>
@@ -158,7 +159,7 @@ const prev = prevInPath(lesson.id);
         <div class="lessonnav__side">
           {
             prev && (
-              <a class="lessonnav__link" href={`/lessons/${prev.id}/`}>
+              <a class="lessonnav__link" href={url(`/lessons/${prev.id}/`)}>
                 <span class="edge-code">previous</span>
                 <span class="lessonnav__title">
                   <span class="num">{prev.id}</span> {prev.title}
@@ -170,7 +171,7 @@ const prev = prevInPath(lesson.id);
         <div class="lessonnav__side lessonnav__side--end">
           {
             next && (
-              <a class="lessonnav__link" href={`/lessons/${next.id}/`}>
+              <a class="lessonnav__link" href={url(`/lessons/${next.id}/`)}>
                 <span class="edge-code">next</span>
                 <span class="lessonnav__title">
                   <span class="num">{next.id}</span> {next.title}

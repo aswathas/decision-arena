@@ -5,6 +5,7 @@ import CourseColumn from '../components/CourseColumn.astro';
 import Nav from '../components/Nav.astro';
 import Foot from '../components/Foot.astro';
 import curriculum from '../../../course/curriculum.json';
+import { url } from '../data/urls';
 import {
   RAW_CALLS_FILE,
   REPORT_FILE,
@@ -142,7 +143,7 @@ const MEASUREMENTS = [
             published.
           </p>
           <div class="panel__action">
-            <a class="action" href="/lessons/L00/">
+            <a class="action" href={url('/lessons/L00/')}>
               Start lesson one
               <span class="action__arrow" aria-hidden="true">&rarr;</span>
             </a>
@@ -312,7 +313,7 @@ const MEASUREMENTS = [
         <p class="section__lede">
           Ten phases, {curriculum.total_lessons} lessons, {curriculum.total_lessons} quizzes.
           Every lesson teaches one concept, hands you one small exercise to
-          write, and ends with one artifact you can point at. <a href="/course/">Read the whole
+          write, and ends with one artifact you can point at. <a href={url('/course/')}>Read the whole
           course in the browser</a>, or clone it and let the tutor walk you through.
         </p>
       </div>
@@ -375,7 +376,7 @@ const MEASUREMENTS = [
             Clone and start
             <span class="action__arrow" aria-hidden="true">&rarr;</span>
           </a>
-          <a class="start__alt" href="/course/">
+          <a class="start__alt" href={url('/course/')}>
             Read the course first
           </a>
         </div>

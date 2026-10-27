@@ -83,20 +83,39 @@ def check(path: str) -> list[str]:
     return problems
 
 
-def resolves(target: str) -> bool:
+def site_base(links: dict[str, set[str]]) -> str:
+    """The sub-path the site was built for.
+
+    A root deployment serves "/" and a GitHub Pages project page serves
+    "/decision-arena/". Every internal link carries it, so the common prefix
+    of the page links is the base - and the base is what has to be stripped
+    before a link can be resolved against the build directory.
+    """
+    page_links = [h for targets in links.values() for h in targets if h.endswith("/")]
+    if not page_links:
+        return "/"
+    base = os.path.commonprefix(page_links)
+    return base if base.endswith("/") else base + "/"
+
+
+def resolves(target: str, base: str) -> bool:
     """Does an internal href point at something the build actually produced?
 
     A link with no extension is a page (`/course/` -> `course/index.html`);
     a link with an extension is an asset (`/fonts/fonts.css`).
     """
-    path = target.lstrip("/")
+    if target.startswith(base):
+        path = target[len(base):]
+    else:
+        path = target.lstrip("/")
     if not path:
-        return True
+        return os.path.isfile(os.path.join(DIST, "index.html"))
+    path = path.replace("/", os.sep)
     if os.path.splitext(path)[1]:
-        return os.path.isfile(os.path.join(DIST, path.replace("/", os.sep)))
-    if path.endswith("/"):
-        return os.path.isfile(os.path.join(DIST, path.replace("/", os.sep), "index.html"))
-    return os.path.isfile(os.path.join(DIST, path.replace("/", os.sep)))
+        return os.path.isfile(os.path.join(DIST, path))
+    if path.endswith(os.sep) or path == "":
+        return os.path.isfile(os.path.join(DIST, path, "index.html"))
+    return os.path.isfile(os.path.join(DIST, path))
 
 
 def internal_links() -> dict[str, set[str]]:
@@ -130,13 +149,17 @@ def main() -> int:
                 print("       - %s" % p)
 
     # A link to something that was never built is a dead end for the reader.
-    for page, targets in internal_links().items():
+    links = internal_links()
+    base = site_base(links)
+    for page, targets in links.items():
         for target in sorted(targets):
             if target.startswith("/_astro"):
                 continue
-            if not resolves(target):
+            if not resolves(target, base):
                 problems += 1
                 print("FAIL %s links to %s, which was not built" % (page, target))
+
+    print("site base            :", base)
 
     print()
     print("pages checked       :", len(pages))

@@ -12,6 +12,7 @@ import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import Foot from '../../components/Foot.astro';
 import { PHASES, PATHS, TOTAL_LESSONS, FIRST_LESSON, LESSONS } from '../../data/course';
+import { url } from '../../data/urls';
 
 const totalMinutes = LESSONS.reduce((sum, l) => sum + l.minutes, 0);
 const totalHours = Math.round(totalMinutes / 60);
@@ -70,7 +71,7 @@ const totalHours = Math.round(totalMinutes / 60);
                 {FIRST_LESSON.minutes} min &middot; {FIRST_LESSON.concepts.join(' · ')}
               </p>
             </div>
-            <a class="action" href={`/lessons/${FIRST_LESSON.id}/`}>
+            <a class="action" href={url(`/lessons/${FIRST_LESSON.id}/`)}>
               Read {FIRST_LESSON.id}
               <span class="action__arrow" aria-hidden="true">&rarr;</span>
             </a>
@@ -98,7 +99,7 @@ const totalHours = Math.round(totalMinutes / 60);
               <ol class="lessons">
                 {phase.lessons.map((lesson) => (
                   <li class="lessonrow">
-                    <a class="lessonrow__link" href={`/lessons/${lesson.id}/`}>
+                    <a class="lessonrow__link" href={url(`/lessons/${lesson.id}/`)}>
                       <span class="lessonrow__id num">{lesson.id}</span>
                       <span class="lessonrow__title">{lesson.title}</span>
                       <span class="lessonrow__minutes num">{lesson.minutes} min</span>
@@ -140,7 +141,7 @@ const totalHours = Math.round(totalMinutes / 60);
               <ol class="path__seq num">
                 {path.lessons.map((lesson) => (
                   <li>
-                    <a class="path__id-link" href={`/lessons/${lesson.id}/`}>
+                    <a class="path__id-link" href={url(`/lessons/${lesson.id}/`)}>
                       {lesson.id}
                     </a>
                   </li>
