@@ -87,6 +87,30 @@ than a negative one that everyone stops repeating.
 review is how the credential leaks and the stale number ships. A review is
 five minutes and a checklist.
 
+## The story
+
+A stranger on another machine decides whether to believe your number. They
+will not read your reasoning. They will look at the number and ask one
+question - and the answer has to be sitting right there in front of them.
+
+So you pack a parcel and hand it over. Four things go in it. The **repo**,
+so the reader's first act is running something rather than fighting a
+package manager. The **command**: one line to type, the name of the key it
+wants, and what it will cost - well under a dollar, because a check nobody
+can afford is not a check. The **raw evidence**, one line per call, so a
+reader can count instead of believing. And the **one finding**: a single
+sentence somebody else can disagree with, carrying the identifiers that
+point at the file behind it.
+
+Then you read your own parcel before you let it go. Does every identifier
+resolve to a file that exists. Does one number recompute by hand from the
+raw lines. Is the simulator labelled as a simulator everywhere it appears.
+Is the denominator visible. Is there a credential in anything you are about
+to commit.
+
+And if the answer turned out to be no? You send the same parcel, with a
+sentence that says there was no effect.
+
 ## The real thing
 
 **Publishing** in this repo means putting four things in front of a reader,

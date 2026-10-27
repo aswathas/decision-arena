@@ -1,0 +1,80 @@
+---
+/* L91 - repeats find the noise floor, and the floor decides what you can see. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L91.jpg`}
+      alt="A line drawing of a laboratory bench with five test tubes in a rack, each holding a slightly different level of dark blue liquid, beside a ruler and a wavy trace."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L91-fig-title L91-fig-desc"
+    >
+      <title id="L91-fig-title">The noise floor decides which effects you can see</title>
+      <desc id="L91-fig-desc">
+        A horizontal scale of the size of a probability move. One bar, 0.10 long,
+        reaches past the floor and is labelled visible. A second bar, 0.02 long, ends
+        inside the floor and is labelled inside the floor. The floor itself is a
+        bracket running from 0 to 0.05, labelled the noise floor 0.05, with a note
+        that one provider's probabilities jitted by about 0.05 while another
+        provider's repeats came back byte-identical. Below: three repeats, one raw
+        line per call, 24 labelled cases as a small denominator, a spend cap of
+        0.25 and a plan of 160 tokens per call.
+      </desc>
+
+      <text x="30" y="40" font-family="var(--font-mono)" font-size="10" letter-spacing="0.09em" fill="var(--color-ink-45)">HOW FAR THE PROBABILITY MOVED</text>
+
+      <!-- an effect that clears the floor -->
+      <text x="30" y="116" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">effect 0.10</text>
+      <g class="m-rise" style="--m-rise: 12px; --m-duration: 0.7s; --m-delay: 0.5s;">
+        <rect x="60" y="100" width="417" height="24" fill="var(--color-ink)" />
+      </g>
+      <text x="487" y="116" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">0.10</text>
+      <text x="487" y="132" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">above the floor: visible</text>
+
+      <!-- an effect that does not -->
+      <text x="30" y="184" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">effect 0.02</text>
+      <g class="m-rise" style="--m-rise: 12px; --m-duration: 0.7s; --m-delay: 0.8s;">
+        <rect x="60" y="168" width="83" height="24" fill="var(--color-ink-45)" />
+      </g>
+      <text x="153" y="180" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">0.02</text>
+      <text x="153" y="196" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">inside the floor</text>
+
+      <!-- the floor, drawn by the repeats -->
+      <line x1="60" y1="219" x2="60" y2="233" stroke="var(--color-ink-45)" stroke-width="1" />
+      <line x1="268" y1="219" x2="268" y2="233" stroke="var(--color-ink-45)" stroke-width="1" />
+      <path
+        class="m-draw"
+        style="--m-length: 220; --m-duration: 1.2s;"
+        d="M 60 226 H 268"
+        fill="none"
+        stroke="var(--color-ink-45)"
+        stroke-width="1"
+      />
+      <text x="30" y="252" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">noise floor 0.05</text>
+      <text x="30" y="268" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">one provider's probabilities jitted by about 0.05; another's repeats came back byte-identical</text>
+
+      <!-- what else the run has to pin down -->
+      <rect x="30" y="282" width="580" height="52" fill="var(--color-ground-deep)" stroke="var(--color-rule)" stroke-width="1" />
+      <text x="42" y="302" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-70)">3 repeats: one raw line per call, so the jitter is in the file, not in your head</text>
+      <text x="42" y="318" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-70)">24 labelled cases is a small denominator: an observation, not a ranking</text>
+      <text x="42" y="332" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">spend cap 0.25, on a plan of 160 tokens per call</text>
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L91</span>
+    <span class="fig__caption-text">Repeats measure the floor: on a provider that jitters by about 0.05, an effect of 0.10 is visible and an effect of 0.02 is not.</span>
+  </figcaption>
+</figure>
+
+<style>
+  /* scoped to this figure */
+  .fig__svg {
+    font-variant-numeric: tabular-nums;
+  }
+</style>

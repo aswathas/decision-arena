@@ -1,0 +1,75 @@
+---
+/* L90 - what is already on the map, and the blank part of it. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L90.jpg`}
+      alt="A line drawing of a framed grid map whose left half is crowded with pins, while a hand places a new pin in the empty right half."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L90-fig-title L90-fig-desc"
+    >
+      <title id="L90-fig-title">The axis that is already on the map, and the gap that is not</title>
+      <desc id="L90-fig-desc">
+        Two panels. The left panel, headed published work on synthetic states, holds
+        three bars for the same refund request in three serialisations: prose at
+        0.90, flat at 0.86 and nested at 0.09. The right panel, headed the gap on
+        your own tickets, is drawn as an empty frame and contains the plan: 20 real
+        tickets, three serialisations by three repeats equals 180 calls, about
+        $0.001 at $0.038 per million tokens, kill criteria written before the run,
+        and the words no source found.
+      </desc>
+
+      <!-- published work -->
+      <text x="30" y="42" font-family="var(--font-mono)" font-size="10" letter-spacing="0.09em" fill="var(--color-ink-45)">PUBLISHED - SYNTHETIC STATES</text>
+      <line x1="30" y1="230" x2="300" y2="230" stroke="var(--color-ink-45)" stroke-width="1" />
+      <rect x="44" y="100" width="60" height="130" fill="var(--color-ink)" />
+      <text x="74" y="92" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">0.90</text>
+      <rect x="118" y="106" width="60" height="124" fill="var(--color-ink)" />
+      <text x="148" y="98" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">0.86</text>
+      <rect x="192" y="217" width="60" height="13" fill="var(--color-prussian)" />
+      <text x="222" y="209" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="var(--color-prussian)">0.09</text>
+      <text x="74" y="246" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">prose</text>
+      <text x="148" y="246" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">flat</text>
+      <text x="222" y="246" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">nested</text>
+      <text x="30" y="272" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">the same refund request, already measured</text>
+
+      <!-- the gap -->
+      <text x="330" y="42" font-family="var(--font-mono)" font-size="10" letter-spacing="0.09em" fill="var(--color-ink-45)">THE GAP - YOUR OWN TICKETS</text>
+      <path
+        class="m-draw"
+        style="--m-length: 540; --m-duration: 1.6s;"
+        d="M 330 56 H 610 V 250 H 330 Z"
+        fill="none"
+        stroke="var(--color-prussian)"
+        stroke-width="1"
+      />
+      <text x="346" y="86" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-70)">20 real tickets</text>
+      <text x="346" y="108" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-70)">3 serialisations x 3 repeats = 180 calls</text>
+      <text x="346" y="130" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-70)">about $0.001 at $0.038/Mtok</text>
+      <text x="346" y="152" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">kill criteria written before the run</text>
+      <text x="470" y="200" text-anchor="middle" font-family="var(--font-mono)" font-size="12" fill="var(--color-prussian)">no source found</text>
+      <text x="330" y="272" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">not measured: real tickets, one provider</text>
+
+      <text x="30" y="302" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">prior work: 24 labelled cases, 96% / 92% -&gt; 83% / 79%, 159-call battery, 6 of 6 injection probes</text>
+      <text x="30" y="324" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">novelty is a delta, not a topic: the same axis, your own data, the raw probability committed</text>
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L90</span>
+    <span class="fig__caption-text">The format axis is already measured on synthetic states; the blank panel is the same axis on your own tickets, and it costs about a tenth of a cent.</span>
+  </figcaption>
+</figure>
+
+<style>
+  /* scoped to this figure */
+  .fig__svg {
+    font-variant-numeric: tabular-nums;
+  }
+</style>

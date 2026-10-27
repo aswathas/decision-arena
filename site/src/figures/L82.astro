@@ -1,0 +1,87 @@
+---
+/* L82 - a single threshold flickers, a band does not. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L82.jpg`}
+      alt="A line drawing of a swing gate between two dark posts, with a pale ramp behind it and two round tickets resting on either side."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L82-fig-title L82-fig-desc"
+    >
+      <title id="L82-fig-title">The same five readings, under one threshold and under a band</title>
+      <desc id="L82-fig-desc">
+        At the top, a probability axis from 0 to 1 with a dashed threshold at 0.5
+        labelled is_billing, a second dashed line at 0.6 labelled team, and a
+        prussian-tinted band from 0.45 to 0.55 around the 0.5 line. Below, the same
+        five readings - 0.49, 0.51, 0.48, 0.52 and 0.50 - are drawn twice. Under a
+        single 0.5 threshold the action trace flips between act and escalate four
+        times in five readings. Under a 0.5 threshold with a 0.05 margin all five
+        readings fall inside the band, and the action stays as it was: no action
+        changes.
+      </desc>
+
+      <!-- the threshold geometry -->
+      <text x="314" y="28" text-anchor="end" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-70)">is_billing 0.5</text>
+      <text x="380" y="28" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">team 0.6</text>
+      <rect x="294" y="38" width="52" height="42" fill="var(--color-prussian-tint)" stroke="var(--color-rule)" stroke-width="1" />
+      <line x1="320" y1="32" x2="320" y2="80" stroke="var(--color-ink)" stroke-width="1" stroke-dasharray="5 4" />
+      <line x1="372" y1="44" x2="372" y2="80" stroke="var(--color-ink-45)" stroke-width="1" stroke-dasharray="5 4" />
+      <line x1="60" y1="80" x2="580" y2="80" stroke="var(--color-ink-45)" stroke-width="1" />
+      <text x="60" y="98" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">0</text>
+      <text x="320" y="98" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">0.5</text>
+      <text x="372" y="98" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">0.6</text>
+      <text x="580" y="98" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">1</text>
+      <text x="60" y="118" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">probability</text>
+      <text x="320" y="118" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--color-prussian)">band 0.45 - 0.55</text>
+
+      <!-- one threshold -->
+      <text x="30" y="152" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">single threshold 0.5</text>
+      <text x="100" y="170" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">0.49</text>
+      <text x="200" y="170" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">0.51</text>
+      <text x="300" y="170" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">0.48</text>
+      <text x="400" y="170" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">0.52</text>
+      <text x="500" y="170" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">0.50</text>
+      <path
+        class="m-draw"
+        style="--m-length: 440; --m-duration: 1.4s;"
+        d="M 100 228 L 200 190 L 300 228 L 400 190 L 500 190"
+        fill="none"
+        stroke="var(--color-prussian)"
+        stroke-width="1"
+      />
+      <text x="545" y="194" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">act</text>
+      <text x="545" y="232" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">escalate</text>
+
+      <!-- a band instead of a line -->
+      <text x="30" y="262" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">threshold 0.5, margin 0.05</text>
+      <text x="100" y="280" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">0.49</text>
+      <text x="200" y="280" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">0.51</text>
+      <text x="300" y="280" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">0.48</text>
+      <text x="400" y="280" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">0.52</text>
+      <text x="500" y="280" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">0.50</text>
+      <rect x="90" y="288" width="420" height="22" fill="var(--color-prussian-tint)" stroke="var(--color-rule)" stroke-width="1" />
+      <line x1="100" y1="299" x2="500" y2="299" stroke="var(--color-prussian)" stroke-width="1" />
+      <text x="520" y="303" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">keep previous</text>
+
+      <text x="30" y="330" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">the same five readings: a line flips the action, the band holds it - zero action changes</text>
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L82</span>
+    <span class="fig__caption-text">Five readings that wobble around 0.5 flip the action under a single threshold, and change nothing under a 0.05 margin.</span>
+  </figcaption>
+</figure>
+
+<style>
+  /* scoped to this figure */
+  .fig__svg {
+    font-variant-numeric: tabular-nums;
+  }
+</style>

@@ -1,0 +1,84 @@
+---
+/* L92 - the finding: one checkable sentence, and the line between measured and inferred. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L92.jpg`}
+      alt="A line drawing of a desk with a stamp, a fountain pen and a sheet of paper carrying two ruled lines, beside a stack of printed forms."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L92-fig-title L92-fig-desc"
+    >
+      <title id="L92-fig-title">One sentence, and the line between what you measured and what you inferred</title>
+      <desc id="L92-fig-desc">
+        A single box at the top holds the claim: on 3 cases and 9 questions the mean
+        spread was 0.42 and 4 questions changed side at 0.5. Below it, a prussian
+        vertical rule separates two lists. The left list, measured, holds the mean
+        spread 0.42, the max spread 0.9271, 4 of 9 questions changing side at 0.5,
+        3 cases and 9 questions, the run id 20261025-040448-friction-mock and a cost
+        of $0.0001. The right list, inferred, holds four conclusions: why the
+        probability moved, whether other models behave the same, what it means for
+        your own system, and the mechanism behind the number. Under the left list a
+        VERIFIED label; under the right, a CLAIM label for a vendor table nobody
+        checked.
+      </desc>
+
+      <!-- the claim -->
+      <rect x="30" y="46" width="580" height="46" fill="var(--color-ground-deep)" stroke="var(--color-rule)" stroke-width="1" />
+      <text x="44" y="64" font-family="var(--font-mono)" font-size="10" letter-spacing="0.09em" fill="var(--color-ink-45)">THE CLAIM, IN ONE CHECKABLE SENTENCE</text>
+      <text x="44" y="82" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink)">on 3 cases and 9 questions, mean spread 0.42, and 4 questions changed side at 0.5</text>
+
+      <!-- the two lists -->
+      <text x="30" y="118" font-family="var(--font-mono)" font-size="10" letter-spacing="0.09em" fill="var(--color-ink-45)">MEASURED - IN THE RAW FILE</text>
+      <text x="360" y="118" font-family="var(--font-mono)" font-size="10" letter-spacing="0.09em" fill="var(--color-ink-45)">INFERRED - YOUR CONCLUSION</text>
+
+      <text x="30" y="142" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">mean spread 0.42</text>
+      <text x="30" y="164" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">max spread 0.9271</text>
+      <text x="30" y="186" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">4 of 9 questions change side at 0.5</text>
+      <text x="30" y="208" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">3 cases, 9 questions</text>
+      <text x="30" y="230" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">run 20261025-040448-friction-mock</text>
+      <text x="30" y="252" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">cost $0.0001</text>
+
+      <text x="360" y="142" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink)">why the probability moved</text>
+      <text x="360" y="164" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink)">whether other models behave the same</text>
+      <text x="360" y="186" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink)">what it means for your own system</text>
+      <text x="360" y="208" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink)">the mechanism behind the number</text>
+
+      <!-- the one authored motion: the line that separates the two lists -->
+      <path
+        class="m-draw"
+        style="--m-length: 170; --m-duration: 1.2s;"
+        d="M 340 108 V 268"
+        fill="none"
+        stroke="var(--color-prussian)"
+        stroke-width="1"
+      />
+
+      <!-- status labels -->
+      <rect x="30" y="284" width="300" height="44" fill="var(--color-ground)" stroke="var(--color-rule)" stroke-width="1" />
+      <text x="42" y="302" font-family="var(--font-mono)" font-size="11" fill="var(--color-prussian)">VERIFIED</text>
+      <text x="42" y="318" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">your measurement, raw evidence committed</text>
+
+      <rect x="360" y="284" width="250" height="44" fill="var(--color-ground)" stroke="var(--color-rule)" stroke-width="1" />
+      <text x="372" y="302" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-45)">CLAIM</text>
+      <text x="372" y="318" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">a vendor table nobody checked</text>
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L92</span>
+    <span class="fig__caption-text">The numbers a reader can open the raw file and count, kept on one side of a line, and the conclusions you draw, kept on the other.</span>
+  </figcaption>
+</figure>
+
+<style>
+  /* scoped to this figure */
+  .fig__svg {
+    font-variant-numeric: tabular-nums;
+  }
+</style>
