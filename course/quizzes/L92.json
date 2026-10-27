@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L92",
+  "title": "Writing a finding other people can check",
+  "questions": [
+    {
+      "id": "L92.q1",
+      "concept": "finding",
+      "prompt": "What makes the first sentence of a finding checkable?",
+      "options": [
+        "It uses confident, authoritative language",
+        "It names the battery, the denominators, the metric and the numbers, so a reader can open a file and count",
+        "It is short enough to fit in a headline",
+        "It quotes the vendor's benchmark for context"
+      ],
+      "answer": 1,
+      "explain": "A checkable sentence carries everything a reader needs to disagree with it: what was measured (the battery), over how much (the denominators), by what measure (the metric), and the result. The tempting wrong answers are all about presentation rather than content - confidence, brevity and borrowed authority add nothing a reader can check, and quoting a vendor's table inside your own sentence muddies which number is yours."
+    },
+    {
+      "id": "L92.q2",
+      "concept": "claim-status",
+      "prompt": "Under the vault's status key (VERIFIED / CLAIM / UNCERTAIN / CONFLICT), how is a vendor's benchmark number that you have not independently checked labelled?",
+      "options": [
+        "VERIFIED",
+        "CLAIM",
+        "UNCERTAIN",
+        "CONFLICT"
+      ],
+      "answer": 1,
+      "explain": "CLAIM means asserted by a vendor, blog post or announcement and not independently checked by you. VERIFIED is for something you confirmed in a primary source - official docs, a model card, or a reproducible run with committed raw evidence. The tempting wrong answers are the tempting ones because they sound cautious: UNCERTAIN is for claims that are contested, ambiguous, or that you could not confirm at all, while CONFLICT is for two sources that disagree, and neither describes a vendor number that simply has not been checked yet."
+    },
+    {
+      "id": "L92.q3",
+      "concept": "limitations",
+      "prompt": "Why does the prior harness's injection result carry the label \"VERIFIED (two probes only)\"?",
+      "options": [
+        "Because two probes is the minimum number the protocol requires",
+        "Because the parenthetical bounds the claim: it was checked, and it was small",
+        "Because the probes were unusually slow",
+        "Because it was later retracted"
+      ],
+      "answer": 1,
+      "explain": "The label does two jobs at once: VERIFIED says the probes really were run and held, and the parenthetical says how much that buys you - two probes is two probes, not a guarantee. That is the pattern your own finding should copy, because a limitation you state is a limit a reader can weigh, while the same limitation found by a reviewer is a hole in your work. The other options are the tempting wrong answers because they sound like procedural facts; the claims ledger records no minimum number of probes, no latency note, and no retraction."
+    },
+    {
+      "id": "L92.q4",
+      "concept": "reproducibility",
+      "prompt": "Which identifiers must a finding quote so that a reader can actually find the evidence behind it?",
+      "options": [
+        "The provider's marketing tagline, the author's name and the date",
+        "The run id, the battery_hash, the provider and model version, and the path of the raw .jsonl file",
+        "The accuracy, the mean ECE and the mean Brier score",
+        "The spend cap and the run uuid"
+      ],
+      "answer": 1,
+      "explain": "The run id names the run, the battery_hash proves it was measured against the same cases, the provider and model version name the subject, and the .jsonl path is the evidence the number is derived from - all of them are in the run's meta.json and in the file names. The tempting wrong answers mix up three different things: a name and a tagline are not identifiers of evidence, the metrics in the third option are the result rather than its handle, and the fourth option names two real fields that do not let a reader find the cases or the subject."
+    }
+  ]
+}

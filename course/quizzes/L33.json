@@ -1,0 +1,70 @@
+{
+  "lesson_id": "L33",
+  "title": "Calibration - when a confident model is wrong",
+  "questions": [
+    {
+      "id": "L33.q1",
+      "concept": "overconfidence",
+      "prompt": "A model says 0.99 on a prediction and is wrong 60% of the time. What is the model doing, and why does it matter operationally?",
+      "options": [
+        "It is well calibrated, because 0.99 sounds confident",
+        "It is badly overconfident: when it says 99% it is right only 40% of the time, so a threshold set at 0.99 would let through a large fraction of wrong decisions",
+        "It is underconfident, because 0.99 is too high a number to be accurate",
+        "Nothing can be concluded from a single confidence value"
+      ],
+      "answer": 1,
+      "explain": "Calibration means the stated confidence matches the observed frequency of being right. Stating 0.99 and being right 40% of the time is overconfidence, and it is the dangerous direction: a decision rule that trusts the 0.99 case is wrong four times in ten. The tempting wrong answer is the third one - underconfident would mean the model hedges more than it should, for example claiming 0.6 and being right 90% of the time."    },
+    {
+      "id": "L33.q2",
+      "concept": "calibration",
+      "prompt": "Why is calibration a property of the DATA and the deployment, not only of the model?",
+      "options": [
+        "Because the model's parameter count decides how sharp its softmax is",
+        "Because calibration is only defined for models trained on more than a million examples",
+        "Because a model can be calibrated on clean test tickets and overconfident on the messy tickets that actually reach it in production, with nothing changing inside the model",
+        "Because calibration is a property of the tokenizer"
+      ],
+      "answer": 2,
+      "explain": "Calibration is always a claim about a distribution: 'when this model says X% on THIS workload, is it right X% of the time'. Change the workload - the production traffic, the routing rules that decide which tickets reach the model - and the same model, unchanged, is calibrated on one set and overconfident on the other. The tempting wrong answer is the first one: the parameter count does not enter the definition at all."
+    },
+    {
+      "id": "L33.q3",
+      "concept": "reliability",
+      "prompt": "What does a reliability diagram show, and why does ECE bucket by confidence rather than by predicted class?",
+      "options": [
+        "It shows the loss curve; ECE buckets by class because the loss is per class",
+        "It shows, for each confidence band, the average stated confidence against the observed accuracy - because calibration is about the link between a stated confidence and how often the model is right",
+        "It shows which classes the model confuses; ECE buckets by class because confusion is the signal",
+        "It shows the latency per confidence band"
+      ],
+      "answer": 1,
+      "explain": "reliability_bins() in decisionarena/metrics.py returns, per confidence band, the count, the mean confidence and the mean accuracy. Bucketing by confidence is what makes it a calibration view: the question is always 'when it says X%, is it right X% of the time?'. The tempting wrong answer is the third one - a confusion matrix is a different and also useful diagram, but calibration is not about which class wins."
+    },
+    {
+      "id": "L33.q4",
+      "concept": "ece-intro",
+      "prompt": "What does an ECE of 0 mean, and what does the 0.3 in _ece() in decisionarena/metrics.py actually measure?",
+      "options": [
+        "0 means the model is 30% accurate; 0.3 is the average probability error",
+        "0 means no predictions were made; 0.3 means 30% of predictions were wrong",
+        "0 means perfect calibration; 0.3 means that in the confidence buckets people actually use, the stated confidence is off by about 30 percentage points on average",
+        "0 means the model is deterministic; 0.3 is the number of buckets used"
+      ],
+      "answer": 2,
+      "explain": "ECE is the bucket-size-weighted average of |average confidence - accuracy| over the confidence buckets, so 0 means the model is calibrated everywhere it is measured, and 0.3 means the gap is about 30 percentage points in the buckets that carry most of the predictions. The tempting wrong answer is the fourth one: the bucket count is the bins parameter, which defaults to 10 and is unrelated to the value of the ECE."
+    },
+    {
+      "id": "L33.q5",
+      "concept": "overconfidence",
+      "prompt": "You find a model is badly overconfident on your routing workload. What is the cheapest fix, and why is it attractive for a decision-model API?",
+      "options": [
+        "Retrain the model with a different architecture",
+        "Collect more labelled tickets",
+        "Round the probabilities to two decimal places",
+        "Apply temperature to flatten the distribution - a deployment-time dial that needs no retraining and does not change the ranking of the options"
+      ],
+      "answer": 3,
+      "explain": "Temperature divides the logits before the softmax, which flattens the distribution and pulls the confidence back toward calibrated without touching the ranking or requiring a retrain. That is exactly why a decision-model API that exposes probabilities is worth paying for: you get the dial. The tempting wrong answer is the first one - retraining is the expensive fix and examples/03_train_linear.py's closing block puts temperature first for good reason."
+    }
+  ]
+}

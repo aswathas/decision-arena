@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L02",
+  "title": "The wire protocol - state in, answers out",
+  "questions": [
+    {
+      "id": "L02.q1",
+      "concept": "wire-protocol",
+      "prompt": "What are the three keys of the request payload that this repo sends to a decision-model API?",
+      "options": [
+        "model, state, questions",
+        "prompt, context, options",
+        "input, parameters, response_format",
+        "state, questions, thresholds"
+      ],
+      "answer": 0,
+      "explain": "JevProvider.decide() and ClefProvider.decide() both build exactly {\"model\": ..., \"state\": ..., \"questions\": ...}. The second option is the shape you would invent from scratch; the third is an OpenAI-style payload, and while OpenAICompatibleProvider does nest the same three keys inside a prompt object, that is the adapter's workaround, not the protocol. The fourth option is wrong because thresholds are ours, not the provider's - they stay in the case file."
+    },
+    {
+      "id": "L02.q2",
+      "concept": "state",
+      "prompt": "Why does the harness pass the state through untouched instead of formatting it into a prompt?",
+      "options": [
+        "To save tokens on the request",
+        "Because the shape of the state is one of the things being measured - prose, flat JSON and nested JSON are three different inputs",
+        "Because providers reject any string longer than 500 characters",
+        "Because the questions already contain the text of the ticket"
+      ],
+      "answer": 1,
+      "explain": "cases/format_variants.json holds the same content in three shapes - prose, a flat dict and a nested dict - and run_format_friction() measures how far the probability moves between them. If the harness normalised the state, that experiment would be impossible. The first option is wrong because the state is usually a small fraction of the payload. The third is invented; no such limit exists in this repo. The fourth is wrong because the questions are instructions like 'Is this about a payment?' - they carry no ticket text."
+    },
+    {
+      "id": "L02.q3",
+      "concept": "normalisation",
+      "prompt": "What are the four keys of the answer shape that normalise_answers() produces for every question?",
+      "options": [
+        "type, noul, choice, score",
+        "kind, value, probabilities, confidence",
+        "question, answer, score, reason",
+        "label, number, distribution, certainty"
+      ],
+      "answer": 1,
+      "explain": "normalise_answers() returns {qid: {\"kind\", \"value\", \"probabilities\", \"confidence\"}} for every answer, and metrics.collect_scored() reads exactly those four. The first option lists the raw wire keys - those vary by vendor, which is why they get flattened. The third and fourth are made up; the fourth is especially tempting because 'label' and 'certainty' sound right, but the repo's names are kind and confidence, and confidence is separate from probability on purpose (lesson L04)."
+    },
+    {
+      "id": "L02.q4",
+      "concept": "json",
+      "prompt": "A provider returns {\"answers\": {\"q1\": {\"type\": \"noul\", \"noul\": 0.9}, \"q2\": {\"type\": \"choice\", \"choice\": \"billing\", \"probabilities\": {\"billing\": 0.7}}}}. How does the harness get from that to the shape the metrics read?",
+      "options": [
+        "It unwraps the \"answers\" key and normalises each answer inside it",
+        "It reads the top-level keys as question ids and treats \"answers\" as a question id",
+        "It converts the whole response to a string and parses it as JSON a second time",
+        "It sends the response back to the provider with wire_keyword set"
+      ],
+      "answer": 0,
+      "explain": "Each adapter does exactly this: resp.get(\"answers\") or {} is passed to normalise_answers(), which returns the flattened dict of {kind, value, probabilities, confidence}. The second option is wrong because the question ids live one level deeper, inside the answers wrapper. The third option describes the OpenAI-compatible adapter's problem - a chat endpoint returns text, so that adapter parses JSON out of the message - but it is not what happens with a native decision-model API. The fourth is wrong because normalise_questions() is for outgoing requests, not for incoming answers."
+    }
+  ]
+}

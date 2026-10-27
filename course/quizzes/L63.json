@@ -1,0 +1,71 @@
+{
+  "lesson_id": "L63",
+  "title": "Determinism - same input, same output, twice",
+  "questions": [
+    {
+      "id": "L63.q1",
+      "concept": "determinism",
+      "prompt": "What does temperature 0 remove, and what does it NOT remove?",
+      "options": [
+        "It makes the model deterministic in every respect, including across hardware and across model versions",
+        "It removes sampling randomness - the model always emits the highest-probability token - but it does not remove batching or floating-point differences, and it does not protect you from the provider changing the model",
+        "It only affects the cost of the call, not the output",
+        "It removes the randomness in the harness's own scoring code"
+      ],
+      "answer": 1,
+      "explain": "Temperature above 0 means 'sample from this distribution'; temperature 0 means 'always take the most likely token', which removes sampling noise. It says nothing about request batching (identical prompts can sit in different batches, and floating-point addition is not associative) nor about the provider silently updating the model behind the same API name. It is not a cost setting - OpenAICompatibleProvider.decide() sends temperature: 0 alongside the normal request. And the harness's scoring code is deterministic by construction; the randomness that matters is in the model's output, which is why run_battery() writes every repeat to the JSONL so you can compare them."
+    },
+    {
+      "id": "L63.q2",
+      "concept": "repeatability",
+      "prompt": "A model gives a different answer to the same ticket on 3% of repeats. Why can it never be certified to a threshold?",
+      "options": [
+        "Because 3% is above the legal limit for any threshold",
+        "Because thresholds only work on deterministic models",
+        "Because a certification promises bounded behaviour, and on 3% of runs the same input produces a different action - so the behaviour you certified is not always the behaviour you get",
+        "Because the harness refuses to write the report when the answers differ"
+      ],
+      "answer": 2,
+      "explain": "Certification means you promise a bound on behaviour - for example 'escalate when confidence is below 0.6'. If the confidence number itself moves between repeats of the same case, that guardrail is a coin flip 3% of the time. There is no legal limit involved. Thresholds work fine on non-deterministic models - they are simply applied to a number that wobbles. And the harness does not refuse: run_report() prints a Determinism section like '3/5 cases returned byte-identical answers across repeats' and shows you exactly which cases were not identical, which is precisely the information you need."
+    },
+    {
+      "id": "L63.q3",
+      "concept": "non-determinism",
+      "prompt": "Why is the mock's 100% determinism not evidence about real providers?",
+      "options": [
+        "Because the mock is too simple to ever be non-deterministic",
+        "Because the mock's outputs are randomly generated at import time",
+        "Because the mock runs on a different architecture than the cloud providers",
+        "Because MockProvider.decide() derives its probability from a SHA-256 hash of the seed, the question id and the state - determinism is built in by construction, so it tests the harness and says nothing about a real model"
+      ],
+      "answer": 3,
+      "explain": "The mock computes a hash of its inputs, so the same input always yields the same output - determinism by construction, exactly as the class docstring says ('probabilities are drawn from a hash of the state so repeats are stable'). That is what makes it useful offline, and it is the same reason it cannot tell you anything about a real model: real models sample, batch and get updated. It is not random at import time (that would make the harness tests flaky, and the committed runs are stable). And architecture is not the issue here."
+    },
+    {
+      "id": "L63.q4",
+      "concept": "determinism",
+      "prompt": "Name the mechanism that breaks determinism even when temperature is 0.",
+      "options": [
+        "The harness writing the answers to JSONL",
+        "The spend cap aborting the run",
+        "Batching: the same prompt can land in a batch with different neighbours, and floating-point addition is not associative, so the last bits can differ",
+        "The provider's HTTP client adding a timestamp header"
+      ],
+      "answer": 2,
+      "explain": "Servers batch requests to keep the GPU busy, and a + b + c and c + b + a can differ in the last bits of a float - so the same prompt can produce a different output purely because of who it was batched with. That is why 'runs on my machine' is not a reproducibility argument. The JSONL write is just serialisation and cannot change the model. The spend cap stops the run; it does not alter answers. And a request header does not reach the model at all."
+    },
+    {
+      "id": "L63.q5",
+      "concept": "repeatability",
+      "prompt": "Connect this to the repo: how does the harness turn '--repeats 3' into a determinism measurement?",
+      "options": [
+        "run_battery() calls the provider three times and keeps only the last answer, then prints a determinism verdict",
+        "run_battery() loops for rep in range(repeats), writing one JSONL record per repeat with a 'repeat' field; report.run_report() groups the records by case_id and compares json.dumps(answers, sort_keys=True) across repeats to decide byte-identity",
+        "The provider is asked to return three answers in one call, and the harness measures the gap between them",
+        "The metrics module computes the variance of the accuracies and calls it determinism"
+      ],
+      "answer": 1,
+      "explain": "The inner loop for rep in range(repeats) is the whole mechanism: each repeat becomes its own record with 'repeat': 0, 1, 2 and the same case_id, so the raw file holds every observation. Then run_report() groups by case_id, serialises each record's answers with sorted keys and compares the distinct strings - byte-identical means one distinct string across the repeats. Keeping only the last answer would destroy the evidence (option 2). Asking for three answers in one call changes what you are measuring - provider-side batching, not repeatability. And variance of accuracy is a different statistic from repeatability of answers: the Determinism section compares the answer payloads, not the metrics."
+    }
+  ]
+}

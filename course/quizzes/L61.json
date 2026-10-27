@@ -1,0 +1,71 @@
+{
+  "lesson_id": "L61",
+  "title": "Format friction - the cheapest experiment in the field",
+  "questions": [
+    {
+      "id": "L61.q1",
+      "concept": "format-friction",
+      "prompt": "A battery of nine questions has mean spread 0.42 but flips_at_0.5 = 0. Another battery has mean spread 0.05 and flips_at_0.5 = 1. Which deserves your attention, and why?",
+      "options": [
+        "The second one: a flip is a decision changing, not a number moving - a probability crossing 0.5 changes what the system does",
+        "The first one: the mean is averaged over more questions, so it is the more reliable summary",
+        "Both equally; spread and flips are just two ways of reporting the same thing",
+        "Neither; without labels you cannot tell whether either change was wrong"
+      ],
+      "answer": 0,
+      "explain": "flips_at_0.5 is the number that matters, not the mean spread. A flip means the decision itself changed - the answer moved from one side of the threshold to the other, so a customer gets routed differently. The mean is a smell test: it says how much movement there is on average, but movement between 0.41 and 0.49 changes nothing. Averaging over more questions does not make the mean more trustworthy for this purpose - it dilutes the one case you care about. And note the trap in the last option: you do not need labels to know a *decision changed*. Labels are only needed to know whether the decision was right."
+    },
+    {
+      "id": "L61.q2",
+      "concept": "serialisation",
+      "prompt": "Why is this called the cheapest experiment in the field?",
+      "options": [
+        "Because the API calls themselves cost nothing",
+        "Because it needs no outcome labels at all - no human annotation, no adjudication - just one API call per shape (three for the three shapes in this battery), while every accuracy-style experiment needs a labelled gold set",
+        "Because it requires only one provider and no comparison",
+        "Because it can be run entirely offline with the mock provider"
+      ],
+      "answer": 1,
+      "explain": "run_format_friction() never looks at a gold label - there is no gold key anywhere in cases/format_variants.json. The expensive part of an accuracy experiment is not the calls, it is producing and defending a labelled gold set; this experiment skips that entirely and needs only one call per shape being compared - three per case for prose, flat and nested. 'The calls cost nothing' is false - real providers cost money, that is why the harness has a spend cap. It does not need two providers - that is the swap experiment. And it is not offline: the mock runs offline, but a claim about a real model requires a real provider, which costs money."
+    },
+    {
+      "id": "L61.q3",
+      "concept": "state-shape",
+      "prompt": "In cases/format_variants.json, what must be true for a case to be a valid format-friction case?",
+      "options": [
+        "The nested variant must contain strictly more information than the flat one",
+        "Each variant must use a different vocabulary from the others",
+        "The prose, flat and nested variants must carry the same content in different shapes - otherwise you are measuring a content change, not a shape change",
+        "The three variants must have different lengths, so that shape and length do not get confused"
+      ],
+      "answer": 2,
+      "explain": "The whole experiment holds the content fixed and changes only the shape. If the flat variant says 'subscription' and the nested variant says 'monthly subscription plan', you have measured two different inputs, not two shapes - the difference could be the wording. Look at fmt-001-refund: the same complaint appears in all three variants, with the same subject line, just arranged differently. The nested version should genuinely nest (email.body, email.headers.from) rather than being a flat dict with different key names. Same-length or deliberately different-length variants are not a requirement, and using different vocabulary would break the control."
+    },
+    {
+      "id": "L61.q4",
+      "concept": "hypothesis",
+      "prompt": "You run the friction battery against the mock and see a large spread and four flips out of nine questions. What have you demonstrated?",
+      "options": [
+        "That decision models are highly sensitive to the shape of their input",
+        "That the reported 0.90 vs 0.09 finding has been reproduced",
+        "That the mock's probabilities are realistic",
+        "That the harness measures what it claims to measure - the mock's FORMAT_SHIFT is built in, so its numbers are a pipeline test, not evidence about any real model"
+      ],
+      "answer": 3,
+      "explain": "MockProvider.FORMAT_SHIFT is {'prose': 0.0, 'flat': -0.04, 'nested': -0.81} - the sensitivity is designed in so the pipeline can be exercised offline. What you have shown is that run_format_friction(), the metrics and the report all work end to end. You have NOT shown that real models are shape-sensitive (that needs a real provider run), you have NOT reproduced the published 0.90 / 0.86 / 0.09 finding (which came from rmax-ai/jev-vs-clef on real models), and you have NOT shown the mock is realistic - the harness's own rule is that the mock's numbers must never be published as a model evaluation."
+    },
+    {
+      "id": "L61.q5",
+      "concept": "format-friction",
+      "prompt": "Connect this to the repo: in run_format_friction(), what exactly is 'spread' computed from, and what does 'flips_at_0.5' count?",
+      "options": [
+        "spread = max minus min of the probability across the formats for one question; flips_at_0.5 = whether the formats do not all fall on the same side of 0.5 for that question",
+        "spread = the difference in latency between the fastest and slowest format; flips_at_0.5 = how many cases had an error",
+        "spread = the difference between the model's probability and the gold answer; flips_at_0.5 = the number of questions with a score question",
+        "spread = the standard deviation over all repeats; flips_at_0.5 = the count of cases with more than three questions"
+      ],
+      "answer": 0,
+      "explain": "run_format_friction() collects one value per format per question (the noul probability, or the top probability for choice/score), then computes spread = max(values) - min(values) and sets flips_at_0.5 when the set of 'is it at or above 0.5' answers has more than one element. It is not latency - latency is recorded separately per format and never enters the spread. It is not a comparison to gold - there is no gold in this battery. And it is not a standard deviation over repeats - the friction experiment does not repeat; that is the determinism experiment in L63."
+    }
+  ]
+}

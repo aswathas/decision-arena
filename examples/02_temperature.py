@@ -113,10 +113,10 @@ def main() -> int:
 
         cases/routing.json -> "team": {"thresholds": {"team": 0.6}}
 
-    So the same model, at T = 0.1, gives billing p = 0.99 and acts.
-    At T = 5.0, billing p = 0.43 and the harness records "did not act",
-    even though billing is STILL the top option. The ranking never changed.
-    The ACTION changed.
+    So the same model, at T = 0.1, gives billing p = 1.0000 (to four
+    places) and acts. At T = 5.0, billing p = 0.3907 and the harness records
+    "did not act", even though billing is STILL the top option. The ranking
+    never changed. The ACTION changed.
 
     That is the whole point of the harness's action_change_rate() metric: it
     measures whether swapping a provider changes what you DO, not whether it

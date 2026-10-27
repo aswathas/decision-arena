@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L14",
+  "title": "Logits, argmax and why temperature never changes the ranking",
+  "questions": [
+    {
+      "id": "L14.q1",
+      "concept": "logits",
+      "prompt": "What is a logit?",
+      "options": [
+        "A probability in [0, 1] before it is rounded",
+        "A raw, uncalibrated score that the softmax turns into a probability",
+        "The name of the option with the highest probability",
+        "A log file entry from the provider"
+      ],
+      "answer": 1,
+      "explain": "A logit is the raw score a model produces per option - unbounded, possibly negative, and not summing to anything meaningful. The softmax is what turns it into a probability. The first option is wrong because a probability is exactly what a logit is not. The third option describes the argmax, not the logit. The fourth option is a pun, not a definition."
+    },
+    {
+      "id": "L14.q2",
+      "concept": "argmax",
+      "prompt": "You have a probability dict {\"billing\": 0.4, \"technical\": 0.35, \"sales\": 0.25}. What does argmax give you, and what does it not give you?",
+      "options": [
+        "The name \"billing\" and its probability 0.4",
+        "The sum of the probabilities, which is 1.0",
+        "The index of the largest value, which you then use to look up the name",
+        "The value that would change if every probability were multiplied by 3"
+      ],
+      "answer": 2,
+      "explain": "argmax returns a position - the index of the largest element - so you look the name up yourself in the same ordering you ranked. The first option describes the finished answer rather than the operation, and it is the source of a classic bug: if the name list and the probability list are in different orders, the position points at the wrong option. The second option is a property of the distribution, not of the argmax. The fourth is nonsense - and in any case the ranking is invariant to positive scaling."
+    },
+    {
+      "id": "L14.q3",
+      "concept": "ranking-invariance",
+      "prompt": "You multiply every logit by 3 before the softmax. What happens to the ranking of the options?",
+      "options": [
+        "The ranking changes, because the bigger logits now dominate the smaller ones",
+        "The ranking is unchanged, but only if all the original logits were positive",
+        "The ranking changes only for score-type questions, where the answer is an index",
+        "The ranking is unchanged, because multiplying every value by the same positive constant cannot reorder them"
+      ],
+      "answer": 3,
+      "explain": "If z_i > z_j then 3 z_i > 3 z_j, so every pairwise comparison comes out the same way and the whole order survives - the argmax is unchanged. Note that the sharpness of the distribution does change (that is exactly what a temperature below 1 does); it is the order that is invariant. The first option is the tempting one, confusing magnitude with order. The second is wrong because a positive constant preserves order whatever the signs of the values. The third is wrong because the rule is about the values, not about the question type."
+    },
+    {
+      "id": "L14.q4",
+      "concept": "ranking-invariance",
+      "prompt": "A provider reports value = \"billing\" for a choice question, but its probability dict peaks at \"technical\". In decisionarena/metrics.py, collect_scored() uses which of the two for which purpose?",
+      "options": [
+        "The value for the probability of the gold option, and the probabilities for the correctness outcome",
+        "The probabilities for the probability of the gold option, and the value for the correctness outcome",
+        "Both from the value, because the probabilities are only used for reporting",
+        "Neither - the harness rejects an answer whose value disagrees with its own argmax"
+      ],
+      "answer": 1,
+      "explain": "collect_scored() takes p = float(dist.get(gold_value, 0.0)) from the probabilities dict, and o = int(a[\"value\"] == gold_value) from the reported value. So the probability of the gold option and the correctness verdict come from different fields, and can disagree - which is exactly the kind of inconsistency a third-party harness should be able to see rather than hide. The third option is wrong because the probabilities dict is the input to Brier and ECE, not decoration. The fourth is wrong because the harness never validates a provider's internal consistency; it records what came back."
+    }
+  ]
+}

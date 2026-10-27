@@ -1,0 +1,82 @@
+{
+  "placement_id": "decision-arena-placement-v1",
+  "title": "Placement - where should the course start?",
+  "instructions": "Five questions. Ask ALL of them before revealing any answer. Do not hint. Do not say which answer is right. Lettered options, one letter per reply.",
+  "scoring": {
+    "method": "Add the level_points of every question answered correctly.",
+    "level_points": {"beginner": 1, "foundations": 2, "provider-live": 3},
+    "rules": [
+      "score <= 3 -> path 'beginner'",
+      "score 4 to 7 inclusive -> path 'foundations'",
+      "score >= 8 -> path 'provider-live'"
+    ],
+    "note": "If the learner says they already know where they want to start, honour it and skip this. Record the path as self-selected."
+  },
+  "questions": [
+    {
+      "id": "P1",
+      "level": "beginner",
+      "prompt": "A large language model is best described as:",
+      "options": [
+        "A program that looks up the correct answer in a big table",
+        "A function fitted to a lot of text that turns a prompt into a probability distribution over what could come next",
+        "A hand-written set of rules for each question type",
+        "A database of customer tickets and their answers"
+      ],
+      "answer": 1,
+      "explain": "An LLM learns statistical structure from text and produces probabilities over continuations. That is why it can write a sentence nobody wrote, and why it can also be confidently wrong - the output is a distribution, not a lookup."
+    },
+    {
+      "id": "P2",
+      "level": "beginner",
+      "prompt": "A model returns probabilities for four possible answers. What must be true about those four numbers?",
+      "options": [
+        "They sum to 1",
+        "They are all different",
+        "They are all above 0.5",
+        "They are all integers"
+      ],
+      "answer": 0,
+      "explain": "Probabilities from a single distribution always sum to 1 - that is what makes them probabilities rather than scores. They can be equal, they can all be below 0.5, and they are never integers."
+    },
+    {
+      "id": "P3",
+      "level": "foundations",
+      "prompt": "Softmax converts a list of raw scores (logits) into:",
+      "options": [
+        "A probability distribution that sums to 1",
+        "A list of whole numbers",
+        "The gradient of the loss",
+        "A list of text tokens"
+      ],
+      "answer": 0,
+      "explain": "Softmax exponentiates the scores and normalises them, so the result is positive and sums to 1. Gradients come from the chain rule on the loss; tokens come from the tokenizer."
+    },
+    {
+      "id": "P4",
+      "level": "foundations",
+      "prompt": "You raise the temperature above 1 when sampling. What happens to the distribution?",
+      "options": [
+        "It becomes sharper - the top option takes more of the probability mass",
+        "It becomes flatter - the mass spreads across more options",
+        "The options get re-sorted alphabetically",
+        "The smallest probability is rounded to zero"
+      ],
+      "answer": 1,
+      "explain": "Temperature above 1 divides the logits, shrinking the gaps between them, so the softmax is flatter. Below 1 it sharpens. The ranking never changes either way - only the mass does."
+    },
+    {
+      "id": "P5",
+      "level": "provider-live",
+      "prompt": "You want to compare two model providers on your own support tickets. What do you need before any comparison means anything?",
+      "options": [
+        "Your tickets with the correct answer attached to each one",
+        "A larger GPU",
+        "A bigger model than both providers offer",
+        "The vendor's published benchmark table"
+      ],
+      "answer": 0,
+      "explain": "Without outcome labels there is nothing to be right or wrong against - you can measure agreement between providers, but not accuracy. A vendor benchmark measures the vendor's workload, which is not yours."
+    }
+  ]
+}

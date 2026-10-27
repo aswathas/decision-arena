@@ -1,0 +1,71 @@
+{
+  "lesson_id": "L70",
+  "title": "Designing cases - state, questions, gold and thresholds",
+  "questions": [
+    {
+      "id": "L70.q1",
+      "concept": "case-design",
+      "prompt": "What are the seven fields of a case in cases/routing.json?",
+      "options": [
+        "id, group, class, state, questions, gold, thresholds",
+        "id, name, question, answer, score, notes, timestamp",
+        "id, group, class, state, questions, expected, limits",
+        "id, class, prompt, options, label, threshold, notes"
+      ],
+      "answer": 0,
+      "explain": "Look at routing-001: it has id, group, class, state, questions, gold and thresholds - seven fields. Option 2 invents a name/score/timestamp structure that does not exist. Option 3 renames gold to 'expected' and thresholds to 'limits', which would break the runner: run_battery() reads case.get('gold') and case.get('class'), and the CLI reads case.get('thresholds'). Option 4 renames 'questions' to 'prompt' and 'options' - but the runner calls provider.decide(case['state'], case['questions']) and expects a dict of question objects."
+    },
+    {
+      "id": "L70.q2",
+      "concept": "gold-labels",
+      "prompt": "In cases/routing.json, what does the gold for the 'severity' question look like, and why?",
+      "options": [
+        "A probability between 0 and 1, for example 'severity': 0.3",
+        "The level string itself, for example 'severity': 'Minor'",
+        "A number that is the INDEX of the level in the score question's criteria list - so 'severity': 1 means the second level, 'Minor'",
+        "A list of every acceptable level, for example 'severity': ['Minor', 'Major']"
+      ],
+      "answer": 2,
+      "explain": "For a score question the gold is the level index, counted from zero: routing-002 has 'severity': 3, which is the fourth level in [\"No impact\", \"Minor\", \"Major\", \"Critical\"], i.e. Critical. collect_scored() reads the gold as a level index and compares it with abs(float(a['value']) - float(gold_value)) < 0.5, so a string gold would be coerced to 0.0 and the comparison would silently fail. A probability is not a label at all - it is what the model predicts, and metrics.collect_scored() would then compare the model's probability to your probability. A list of acceptable levels would break the comparison too."
+    },
+    {
+      "id": "L70.q3",
+      "concept": "thresholds",
+      "prompt": "Why does every choice question in cases/routing.json include an 'other' option meaning 'none of the above - needs human triage'?",
+      "options": [
+        "So that the model has a place to put its uncertainty, which raises its accuracy",
+        "So the options are mutually exclusive and collectively exhaustive - without it, a correct answer can be forced into a wrong bucket and you measure your taxonomy instead of the model",
+        "Because the provider API requires at least four options",
+        "Because the swap command needs a fourth provider"
+      ],
+      "answer": 1,
+      "explain": "A choice question's criteria must be mutually exclusive and collectively exhaustive. The 'other' option closes the set: if the ticket genuinely belongs to none of billing, technical or sales, there is a correct answer for it, instead of the model being forced to pick the least-wrong real team and being marked wrong for it. Without 'other', accuracy measures your taxonomy rather than the model - and a 'refuse' path that does not exist in the criteria is a policy hole. It does not raise accuracy (it may lower it, honestly). The provider API does not require four options. And the swap command compares two providers, not four options."
+    },
+    {
+      "id": "L70.q4",
+      "concept": "case-design",
+      "prompt": "What is the 'class' field on a case for, given that 'group' already buckets the cases?",
+      "options": [
+        "It is the Python class used to build the case, for object-oriented dispatch",
+        "It lets you slice the results by difficulty and kind - clear-cut, borderline, spam - so you can see that a model is 100% on easy cases and 30% on hard ones",
+        "It decides which provider runs the case",
+        "It is a leftover field with no effect on the results"
+      ],
+      "answer": 1,
+      "explain": "The classes in cases/routing.json are 'clear-cut', 'borderline' and 'spam' - a slice within the 'routing' group. run_report() groups scores by 'group', so the class is what lets you go finer: a model can look fine overall and be terrible on borderline cases, and a degenerate model that always answers the most common class will show up as a suspicious pattern in the clear-cut slice. It is a JSON string, not a Python class - there is no dispatch on it anywhere in the code. It does not select a provider (the CLI selects providers per run, not per case), and it is not inert: it is written into every JSONL record as 'case_class', so it is visible in the raw evidence."
+    },
+    {
+      "id": "L70.q5",
+      "concept": "question-set",
+      "prompt": "Connect this to the repo: why does a case carry several questions of different types instead of one?",
+      "options": [
+        "So that the run takes longer and the latency numbers look realistic",
+        "Because the provider API charges per question, so more questions means a fairer cost comparison",
+        "Because 'questions' is a required field, so it cannot be empty",
+        "So a model cannot pass the battery by guessing one way - the case tests a yes/no judgement, a categorical choice and an ordered level, and the metrics can then compute accuracy, Brier and ECE from all of them"
+      ],
+      "answer": 3,
+      "explain": "The three types probe different things and produce the (probability, outcome) pairs that metrics.collect_scored() needs: a noul question gives a calibrated probability against a boolean, a choice question gives a distribution against an option key, a score question gives a level against an index. Asking only one type lets a model game the battery - always answering 'billing' looks great on a billing-heavy set of choice questions. Latency is a side effect of work, not a design goal. Cost per question does matter for spend, but that is not why the battery is designed this way. And the field being required is a weaker reason: the point is coverage, and the metadata is there to make coverage possible."
+    }
+  ]
+}

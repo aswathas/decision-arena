@@ -34,6 +34,12 @@ safety** — because every vendor publishes a benchmark where they win.
 6. **One writer per file.** If you parallelise work, give each agent disjoint files.
 7. **Update `AI-CONTEXT.md` in the same change as the change it describes.**
    A stale brief is worse than no brief.
+8. **The learner writes the exercise code.** In `course/`, an agent may
+   scaffold, explain, review, quiz and log — never write the exercise
+   implementation, never paste a reference solution. A lesson that ships its
+   own answer is a broken lesson.
+9. **The course gate must pass.** `python tools/course_check.py --check`
+   fails a commit that breaks a lesson, a quiz or the generated index.
 
 ## Conventions
 
@@ -51,8 +57,19 @@ safety** — because every vendor publishes a benchmark where they win.
 decisionarena/      the library (providers, harness, metrics, report, cli)
 cases/              batteries: routing / injection / format_variants (JSON)
 examples/           the learning path — 00_read_the_code … 04_attention_numpy
+course/             Decision Arena Academy — the beginner course
+  lessons/          one brief per lesson (source of truth)
+  quizzes/          one answer-key file per lesson
+  curriculum.json   GENERATED index of the whole course
+  FORMAT.md         the authoring contract for lessons and quizzes
+  placement.json    the placement quiz
+skills/             the Academy's skills (learn, arena-coach, course-author)
+learning/           the learner's state: progress.json + build_log.md
 tests/              stdlib unittest
 tools/              check_links.py (vault link gate), sync_brief.py
+                    course_check.py (course gate), learn_state.py (progress engine)
+                    install_skills.py (install skills into a host)
+                    hooks/ (session_start.py, stop.py)
 docs/               architecture-graph.md (graphify AST graph), decision-log.md
 runs/               committed evidence: jsonl + meta.json + .md report
 laya-lab/           local Laya experiments (separate venv, torch)
@@ -66,6 +83,16 @@ python -m decisionarena providers           # what is configured on this machine
 python -m decisionarena run --provider mock --battery all
 python -m decisionarena friction --provider mock
 python -m decisionarena swap --provider a=jev --provider b=clef:clef-flash
+
+# Decision Arena Academy — the beginner course
+python tools/course_check.py --index        # regenerate course/curriculum.json
+python tools/course_check.py --check        # the course gate
+python tools/learn_state.py init --learner aswath --path beginner
+python tools/learn_state.py next            # what to learn next, and why
+python tools/learn_state.py status          # progress report
+python tools/learn_state.py review          # what to go back to
+python tools/learn_state.py feedback        # the closing feedback note
+python tools/install_skills.py              # install the skills into .claude/skills/
 ```
 
 ## The knowledge map (graphify)

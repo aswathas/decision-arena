@@ -1,0 +1,1212 @@
+{
+  "generated_from": "course/lessons",
+  "total_lessons": 46,
+  "paths": [
+    {
+      "id": "beginner",
+      "label": "Absolute beginner - no LLM knowledge assumed",
+      "lessons": [
+        "L00",
+        "L10",
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L11",
+        "L12",
+        "L13",
+        "L14",
+        "L20",
+        "L21",
+        "L22",
+        "L23",
+        "L24",
+        "L30",
+        "L31",
+        "L32",
+        "L33",
+        "L40",
+        "L41",
+        "L42",
+        "L43",
+        "L44",
+        "L45",
+        "L50",
+        "L51",
+        "L52",
+        "L53",
+        "L54",
+        "L60",
+        "L61",
+        "L62",
+        "L63",
+        "L70",
+        "L71",
+        "L72",
+        "L73",
+        "L80",
+        "L81",
+        "L82",
+        "L83",
+        "L90",
+        "L91",
+        "L92",
+        "L93"
+      ]
+    },
+    {
+      "id": "foundations",
+      "label": "Foundations - the maths under the model",
+      "lessons": [
+        "L10",
+        "L11",
+        "L12",
+        "L13",
+        "L14",
+        "L20",
+        "L21",
+        "L22",
+        "L23",
+        "L24",
+        "L30",
+        "L31",
+        "L32",
+        "L33",
+        "L50",
+        "L51",
+        "L52",
+        "L53",
+        "L54"
+      ]
+    },
+    {
+      "id": "provider-live",
+      "label": "Provider track - hands on Jev, Clef and local Laya",
+      "lessons": [
+        "L00",
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L40",
+        "L41",
+        "L42",
+        "L43",
+        "L44",
+        "L45",
+        "L50",
+        "L51",
+        "L52",
+        "L53",
+        "L54",
+        "L60",
+        "L61",
+        "L62",
+        "L63",
+        "L70",
+        "L71",
+        "L72",
+        "L73",
+        "L80",
+        "L81",
+        "L82",
+        "L83",
+        "L90",
+        "L91",
+        "L92",
+        "L93"
+      ]
+    }
+  ],
+  "phases": [
+    {
+      "id": 0,
+      "title": "Orientation - what is this thing?",
+      "lessons": [
+        {
+          "id": "L00",
+          "title": "What this repo is - and what a decision model is not",
+          "minutes": 25,
+          "order": 1,
+          "concepts": [
+            "decision-model",
+            "evaluation",
+            "evidence"
+          ],
+          "prereqs": [],
+          "paths": [
+            "beginner",
+            "provider-live"
+          ],
+          "exercise_file": "docs/notes/L00-what-is-a-decision-model.md",
+          "quiz": "L00",
+          "file": "course/lessons/L00-what-is-a-decision-model.md"
+        },
+        {
+          "id": "L10",
+          "title": "Lists, dicts and floats - the shapes you handle all course",
+          "minutes": 35,
+          "order": 2,
+          "concepts": [
+            "python-data-shapes",
+            "dicts",
+            "lists",
+            "indexing"
+          ],
+          "prereqs": [],
+          "paths": [
+            "beginner",
+            "foundations"
+          ],
+          "exercise_file": "exercises/L10_shapes.py",
+          "quiz": "L10",
+          "file": "course/lessons/L10-data-shapes.md"
+        },
+        {
+          "id": "L01",
+          "title": "The three question types - noul, choice, score",
+          "minutes": 30,
+          "order": 3,
+          "concepts": [
+            "noul",
+            "choice",
+            "score",
+            "decision-types"
+          ],
+          "prereqs": [
+            "L00",
+            "L10"
+          ],
+          "paths": [
+            "beginner",
+            "provider-live"
+          ],
+          "exercise_file": "exercises/L01_question_types.py",
+          "quiz": "L01",
+          "file": "course/lessons/L01-question-types.md"
+        },
+        {
+          "id": "L02",
+          "title": "The wire protocol - state in, answers out",
+          "minutes": 35,
+          "order": 4,
+          "concepts": [
+            "wire-protocol",
+            "state",
+            "json",
+            "normalisation"
+          ],
+          "prereqs": [
+            "L01"
+          ],
+          "paths": [
+            "beginner",
+            "provider-live"
+          ],
+          "exercise_file": "exercises/L02_wire_protocol.py",
+          "quiz": "L02",
+          "file": "course/lessons/L02-wire-protocol.md"
+        },
+        {
+          "id": "L03",
+          "title": "What a probability means here - and what it does not",
+          "minutes": 25,
+          "order": 5,
+          "concepts": [
+            "probability",
+            "uncertainty",
+            "odds"
+          ],
+          "prereqs": [
+            "L02",
+            "L10"
+          ],
+          "paths": [
+            "beginner",
+            "provider-live"
+          ],
+          "exercise_file": "docs/notes/L03-probability-meaning.md",
+          "quiz": "L03",
+          "file": "course/lessons/L03-probability-meaning.md"
+        },
+        {
+          "id": "L04",
+          "title": "Confidence is not probability - the first trap",
+          "minutes": 30,
+          "order": 6,
+          "concepts": [
+            "confidence-vs-probability",
+            "calibration",
+            "overconfidence"
+          ],
+          "prereqs": [
+            "L03"
+          ],
+          "paths": [
+            "beginner",
+            "provider-live"
+          ],
+          "exercise_file": "exercises/L04_confidence.py",
+          "quiz": "L04",
+          "file": "course/lessons/L04-confidence.md"
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "title": "The numbers under the model",
+      "lessons": [
+        {
+          "id": "L11",
+          "title": "Numbers you can trust - tolerance, rounding and the 0.1+0.2 trap",
+          "minutes": 30,
+          "order": null,
+          "concepts": [
+            "float-precision",
+            "tolerance",
+            "rounding",
+            "comparison"
+          ],
+          "prereqs": [
+            "L10"
+          ],
+          "paths": [
+            "beginner",
+            "foundations"
+          ],
+          "exercise_file": "exercises/L11_numbers.py",
+          "quiz": "L11",
+          "file": "course/lessons/L11-numbers.md"
+        },
+        {
+          "id": "L12",
+          "title": "Softmax - from raw scores to probabilities",
+          "minutes": 30,
+          "order": null,
+          "concepts": [
+            "logits",
+            "softmax",
+            "normalisation",
+            "numerical-stability"
+          ],
+          "prereqs": [
+            "L10",
+            "L11"
+          ],
+          "paths": [
+            "beginner",
+            "foundations"
+          ],
+          "exercise_file": "exercises/L12_softmax.py",
+          "quiz": "L12",
+          "file": "course/lessons/L12-softmax.md"
+        },
+        {
+          "id": "L13",
+          "title": "Temperature - sharpening and flattening a distribution",
+          "minutes": 30,
+          "order": null,
+          "concepts": [
+            "temperature",
+            "softmax",
+            "sharpness",
+            "sampling"
+          ],
+          "prereqs": [
+            "L12"
+          ],
+          "paths": [
+            "beginner",
+            "foundations"
+          ],
+          "exercise_file": "examples/02_temperature.py",
+          "quiz": "L13",
+          "file": "course/lessons/L13-temperature.md"
+        },
+        {
+          "id": "L14",
+          "title": "Logits, argmax and why temperature never changes the ranking",
+          "minutes": 30,
+          "order": null,
+          "concepts": [
+            "logits",
+            "argmax",
+            "ranking-invariance"
+          ],
+          "prereqs": [
+            "L12",
+            "L13"
+          ],
+          "paths": [
+            "beginner",
+            "foundations"
+          ],
+          "exercise_file": "exercises/L14_argmax.py",
+          "quiz": "L14",
+          "file": "course/lessons/L14-argmax.md"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "How a model actually decides",
+      "lessons": [
+        {
+          "id": "L20",
+          "title": "Tokens - how text becomes numbers",
+          "minutes": 30,
+          "order": null,
+          "concepts": [
+            "tokenization",
+            "vocabulary",
+            "token-ids",
+            "attention-window"
+          ],
+          "prereqs": [
+            "L10"
+          ],
+          "paths": [
+            "beginner",
+            "foundations"
+          ],
+          "exercise_file": "exercises/L20_tokens.py",
+          "quiz": "L20",
+          "file": "course/lessons/L20-tokens.md"
+        },
+        {
+          "id": "L21",
+          "title": "Embeddings - numbers as places in space",
+          "minutes": 35,
+          "order": null,
+          "concepts": [
+            "embeddings",
+            "vectors",
+            "similarity",
+            "geometry"
+          ],
+          "prereqs": [
+            "L20"
+          ],
+          "paths": [
+            "beginner",
+            "foundations"
+          ],
+          "exercise_file": "exercises/L21_embeddings.py",
+          "quiz": "L21",
+          "file": "course/lessons/L21-embeddings.md"
+        },
+        {
+          "id": "L22",
+          "title": "Attention - which words look at which",
+          "minutes": 40,
+          "order": null,
+          "concepts": [
+            "attention",
+            "scaled-dot-product",
+            "context",
+            "queries-keys-values"
+          ],
+          "prereqs": [
+            "L21",
+            "L12"
+          ],
+          "paths": [
+            "beginner",
+            "foundations"
+          ],
+          "exercise_file": "examples/04_attention_numpy.py",
+          "quiz": "L22",
+          "file": "course/lessons/L22-attention.md"
+        },
+        {
+          "id": "L23",
+          "title": "The transformer block - attention, MLP, residual and layer norm",
+          "minutes": 40,
+          "order": null,
+          "concepts": [
+            "transformer-block",
+            "residual-connection",
+            "layer-norm",
+            "mlp"
+          ],
+          "prereqs": [
+            "L22"
+          ],
+          "paths": [
+            "beginner",
+            "foundations"
+          ],
+          "exercise_file": "exercises/L23_block.py",
+          "quiz": "L23",
+          "file": "course/lessons/L23-block.md"
+        },
+        {
+          "id": "L24",
+          "title": "From logits to a decision - argmax, sampling and generation",
+          "minutes": 35,
+          "order": null,
+          "concepts": [
+            "sampling",
+            "generation",
+            "decoding",
+            "temperature-applied"
+          ],
+          "prereqs": [
+            "L13",
+            "L23"
+          ],
+          "paths": [
+            "beginner",
+            "foundations"
+          ],
+          "exercise_file": "exercises/L24_decoding.py",
+          "quiz": "L24",
+          "file": "course/lessons/L24-decoding.md"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Learning - how models get their answers",
+      "lessons": [
+        {
+          "id": "L30",
+          "title": "Loss - cross-entropy as surprise",
+          "minutes": 35,
+          "order": null,
+          "concepts": [
+            "cross-entropy",
+            "log-loss",
+            "surprise",
+            "negative-log-likelihood"
+          ],
+          "prereqs": [
+            "L12"
+          ],
+          "paths": [
+            "beginner",
+            "foundations"
+          ],
+          "exercise_file": "exercises/L30_loss.py",
+          "quiz": "L30",
+          "file": "course/lessons/L30-loss.md"
+        },
+        {
+          "id": "L31",
+          "title": "Gradient - the direction of steepest ascent",
+          "minutes": 35,
+          "order": null,
+          "concepts": [
+            "gradient",
+            "derivative",
+            "chain-rule",
+            "partial-derivative"
+          ],
+          "prereqs": [
+            "L30",
+            "L11"
+          ],
+          "paths": [
+            "beginner",
+            "foundations"
+          ],
+          "exercise_file": "exercises/L31_gradient.py",
+          "quiz": "L31",
+          "file": "course/lessons/L31-gradient.md"
+        },
+        {
+          "id": "L32",
+          "title": "Training one neuron with gradient descent",
+          "minutes": 40,
+          "order": null,
+          "concepts": [
+            "gradient-descent",
+            "learning-rate",
+            "training-loop",
+            "loss-curve"
+          ],
+          "prereqs": [
+            "L31"
+          ],
+          "paths": [
+            "beginner",
+            "foundations"
+          ],
+          "exercise_file": "examples/03_train_linear.py",
+          "quiz": "L32",
+          "file": "course/lessons/L32-training.md"
+        },
+        {
+          "id": "L33",
+          "title": "Calibration - when a confident model is wrong",
+          "minutes": 35,
+          "order": null,
+          "concepts": [
+            "calibration",
+            "overconfidence",
+            "reliability",
+            "ece-intro"
+          ],
+          "prereqs": [
+            "L32",
+            "L12"
+          ],
+          "paths": [
+            "beginner",
+            "foundations"
+          ],
+          "exercise_file": "exercises/L33_calibration.py",
+          "quiz": "L33",
+          "file": "course/lessons/L33-calibration.md"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Talking to a real model",
+      "lessons": [
+        {
+          "id": "L40",
+          "title": "Anatomy of a provider adapter",
+          "minutes": 35,
+          "order": null,
+          "concepts": [
+            "provider-adapter",
+            "wire-protocol",
+            "usage-accounting",
+            "base-url"
+          ],
+          "prereqs": [
+            "L02",
+            "L12"
+          ],
+          "paths": [
+            "beginner",
+            "provider-live"
+          ],
+          "exercise_file": "exercises/L40_provider_anatomy.py",
+          "quiz": "L40",
+          "file": "course/lessons/L40-provider-anatomy.md"
+        },
+        {
+          "id": "L41",
+          "title": "Build your own provider - the mock, and what it is not",
+          "minutes": 35,
+          "order": null,
+          "concepts": [
+            "mock-provider",
+            "determinism",
+            "harness-testing",
+            "seed"
+          ],
+          "prereqs": [
+            "L40"
+          ],
+          "paths": [
+            "beginner",
+            "provider-live"
+          ],
+          "exercise_file": "exercises/L41_mock_provider.py",
+          "quiz": "L41",
+          "file": "course/lessons/L41-mock-provider.md"
+        },
+        {
+          "id": "L42",
+          "title": "Credentials, cost and the spend cap",
+          "minutes": 30,
+          "order": null,
+          "concepts": [
+            "credentials",
+            "cost-model",
+            "spend-cap",
+            "tokens"
+          ],
+          "prereqs": [
+            "L40"
+          ],
+          "paths": [
+            "beginner",
+            "provider-live"
+          ],
+          "exercise_file": "exercises/L42_cost.py",
+          "quiz": "L42",
+          "file": "course/lessons/L42-cost-and-credentials.md"
+        },
+        {
+          "id": "L43",
+          "title": "Jev - TypeSafe System One",
+          "minutes": 35,
+          "order": null,
+          "concepts": [
+            "jev",
+            "system-one",
+            "decision-model-api",
+            "api-key"
+          ],
+          "prereqs": [
+            "L40"
+          ],
+          "paths": [
+            "beginner",
+            "provider-live"
+          ],
+          "exercise_file": "docs/notes/L43-jev.md",
+          "quiz": "L43",
+          "file": "course/lessons/L43-jev-typesafe.md"
+        },
+        {
+          "id": "L44",
+          "title": "Clef - Cloudflare Workers AI",
+          "minutes": 35,
+          "order": null,
+          "concepts": [
+            "clef",
+            "workers-ai",
+            "open-weights",
+            "account-token"
+          ],
+          "prereqs": [
+            "L40",
+            "L43"
+          ],
+          "paths": [
+            "beginner",
+            "provider-live"
+          ],
+          "exercise_file": "docs/notes/L44-clef.md",
+          "quiz": "L44",
+          "file": "course/lessons/L44-clef-cloudflare.md"
+        },
+        {
+          "id": "L45",
+          "title": "Laya - a local model on your own GPU",
+          "minutes": 35,
+          "order": null,
+          "concepts": [
+            "laya",
+            "local-inference",
+            "latency",
+            "weights"
+          ],
+          "prereqs": [
+            "L40"
+          ],
+          "paths": [
+            "beginner",
+            "provider-live"
+          ],
+          "exercise_file": "laya-lab/README.md",
+          "quiz": "L45",
+          "file": "course/lessons/L45-laya-local.md"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Measuring - accuracy is not enough",
+      "lessons": [
+        {
+          "id": "L50",
+          "title": "Accuracy and why it is not enough",
+          "minutes": 30,
+          "order": null,
+          "concepts": [
+            "accuracy",
+            "base-rate",
+            "class-imbalance",
+            "precision-recall"
+          ],
+          "prereqs": [
+            "L40",
+            "L10"
+          ],
+          "paths": [
+            "beginner",
+            "foundations",
+            "provider-live"
+          ],
+          "exercise_file": "exercises/L50_accuracy.py",
+          "quiz": "L50",
+          "file": "course/lessons/L50-accuracy.md"
+        },
+        {
+          "id": "L51",
+          "title": "The Brier score - probability quality",
+          "minutes": 35,
+          "order": null,
+          "concepts": [
+            "brier-score",
+            "probability-quality",
+            "squared-error"
+          ],
+          "prereqs": [
+            "L50",
+            "L12"
+          ],
+          "paths": [
+            "beginner",
+            "foundations",
+            "provider-live"
+          ],
+          "exercise_file": "decisionarena/metrics.py",
+          "quiz": "L51",
+          "file": "course/lessons/L51-brier-score.md"
+        },
+        {
+          "id": "L52",
+          "title": "ECE and the reliability curve",
+          "minutes": 40,
+          "order": null,
+          "concepts": [
+            "ece",
+            "reliability-curve",
+            "calibration-error",
+            "binning"
+          ],
+          "prereqs": [
+            "L51",
+            "L33"
+          ],
+          "paths": [
+            "beginner",
+            "foundations",
+            "provider-live"
+          ],
+          "exercise_file": "exercises/L52_ece.py",
+          "quiz": "L52",
+          "file": "course/lessons/L52-ece-reliability.md"
+        },
+        {
+          "id": "L53",
+          "title": "Agreement between two providers",
+          "minutes": 30,
+          "order": null,
+          "concepts": [
+            "agreement",
+            "inter-provider",
+            "variance"
+          ],
+          "prereqs": [
+            "L50"
+          ],
+          "paths": [
+            "beginner",
+            "foundations",
+            "provider-live"
+          ],
+          "exercise_file": "exercises/L53_agreement.py",
+          "quiz": "L53",
+          "file": "course/lessons/L53-agreement.md"
+        },
+        {
+          "id": "L54",
+          "title": "Action-change rate - swap safety",
+          "minutes": 35,
+          "order": null,
+          "concepts": [
+            "action-change-rate",
+            "swap-safety",
+            "thresholds",
+            "hysteresis-intro"
+          ],
+          "prereqs": [
+            "L53",
+            "L02"
+          ],
+          "paths": [
+            "beginner",
+            "foundations",
+            "provider-live"
+          ],
+          "exercise_file": "exercises/L54_swap_safety.py",
+          "quiz": "L54",
+          "file": "course/lessons/L54-swap-safety.md"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Running experiments",
+      "lessons": [
+        {
+          "id": "L60",
+          "title": "The evidence contract - raw calls before conclusions",
+          "minutes": 35,
+          "order": null,
+          "concepts": [
+            "evidence-contract",
+            "jsonl",
+            "provenance",
+            "reproducibility"
+          ],
+          "prereqs": [
+            "L42"
+          ],
+          "paths": [
+            "beginner",
+            "provider-live"
+          ],
+          "exercise_file": "decisionarena/harness.py",
+          "quiz": "L60",
+          "file": "course/lessons/L60-evidence-contract.md"
+        },
+        {
+          "id": "L61",
+          "title": "Format friction - the cheapest experiment in the field",
+          "minutes": 40,
+          "order": null,
+          "concepts": [
+            "format-friction",
+            "serialisation",
+            "state-shape",
+            "hypothesis"
+          ],
+          "prereqs": [
+            "L60"
+          ],
+          "paths": [
+            "beginner",
+            "provider-live"
+          ],
+          "exercise_file": "cases/format_variants.json",
+          "quiz": "L61",
+          "file": "course/lessons/L61-format-friction.md"
+        },
+        {
+          "id": "L62",
+          "title": "Injection resistance - state versus instruction",
+          "minutes": 40,
+          "order": null,
+          "concepts": [
+            "prompt-injection",
+            "state-vs-instruction",
+            "adversarial",
+            "guardrail"
+          ],
+          "prereqs": [
+            "L60"
+          ],
+          "paths": [
+            "beginner",
+            "provider-live"
+          ],
+          "exercise_file": "cases/injection.json",
+          "quiz": "L62",
+          "file": "course/lessons/L62-injection-resistance.md"
+        },
+        {
+          "id": "L63",
+          "title": "Determinism - same input, same output, twice",
+          "minutes": 30,
+          "order": null,
+          "concepts": [
+            "determinism",
+            "repeatability",
+            "temperature-zero",
+            "non-determinism"
+          ],
+          "prereqs": [
+            "L60"
+          ],
+          "paths": [
+            "beginner",
+            "provider-live"
+          ],
+          "exercise_file": "exercises/L63_determinism.py",
+          "quiz": "L63",
+          "file": "course/lessons/L63-determinism.md"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Building your own harness",
+      "lessons": [
+        {
+          "id": "L70",
+          "title": "Designing cases - state, questions, gold and thresholds",
+          "minutes": 35,
+          "order": null,
+          "concepts": [
+            "case-design",
+            "gold-labels",
+            "thresholds",
+            "question-set"
+          ],
+          "prereqs": [
+            "L01",
+            "L60"
+          ],
+          "paths": [
+            "beginner",
+            "provider-live"
+          ],
+          "exercise_file": "cases/routing.json",
+          "quiz": "L70",
+          "file": "course/lessons/L70-case-design.md"
+        },
+        {
+          "id": "L71",
+          "title": "Gold labels - the scarcest resource",
+          "minutes": 35,
+          "order": null,
+          "concepts": [
+            "label-quality",
+            "outcome-labels",
+            "disagreement",
+            "adjudication"
+          ],
+          "prereqs": [
+            "L70"
+          ],
+          "paths": [
+            "beginner",
+            "provider-live"
+          ],
+          "exercise_file": "exercises/L71_gold.py",
+          "quiz": "L71",
+          "file": "course/lessons/L71-gold-labels.md"
+        },
+        {
+          "id": "L72",
+          "title": "Running a battery end to end",
+          "minutes": 40,
+          "order": null,
+          "concepts": [
+            "battery",
+            "runner",
+            "repeats",
+            "cli"
+          ],
+          "prereqs": [
+            "L70",
+            "L42"
+          ],
+          "paths": [
+            "beginner",
+            "provider-live"
+          ],
+          "exercise_file": "decisionarena/cli.py",
+          "quiz": "L72",
+          "file": "course/lessons/L72-running-a-battery.md"
+        },
+        {
+          "id": "L73",
+          "title": "Reading the report - and not over-reading it",
+          "minutes": 35,
+          "order": null,
+          "concepts": [
+            "report",
+            "metric-reading",
+            "interpretation",
+            "uncertainty"
+          ],
+          "prereqs": [
+            "L72",
+            "L52"
+          ],
+          "paths": [
+            "beginner",
+            "provider-live"
+          ],
+          "exercise_file": "decisionarena/report.py",
+          "quiz": "L73",
+          "file": "course/lessons/L73-reading-the-report.md"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Engineering the product",
+      "lessons": [
+        {
+          "id": "L80",
+          "title": "Choosing a provider - the decision table",
+          "minutes": 35,
+          "order": null,
+          "concepts": [
+            "provider-selection",
+            "latency",
+            "quality",
+            "cost"
+          ],
+          "prereqs": [
+            "L43",
+            "L44"
+          ],
+          "paths": [
+            "beginner",
+            "provider-live"
+          ],
+          "exercise_file": "docs/notes/L80-provider-decision-table.md",
+          "quiz": "L80",
+          "file": "course/lessons/L80-provider-decision-table.md"
+        },
+        {
+          "id": "L81",
+          "title": "Cost arithmetic and batching",
+          "minutes": 30,
+          "order": null,
+          "concepts": [
+            "cost-arithmetic",
+            "batching",
+            "token-accounting",
+            "unit-economics"
+          ],
+          "prereqs": [
+            "L42"
+          ],
+          "paths": [
+            "beginner",
+            "provider-live"
+          ],
+          "exercise_file": "exercises/L81_cost_arithmetic.py",
+          "quiz": "L81",
+          "file": "course/lessons/L81-cost-arithmetic.md"
+        },
+        {
+          "id": "L82",
+          "title": "The escape hatch - abstention, thresholds and hysteresis",
+          "minutes": 35,
+          "order": null,
+          "concepts": [
+            "abstention",
+            "hysteresis",
+            "thresholds",
+            "escalation"
+          ],
+          "prereqs": [
+            "L54"
+          ],
+          "paths": [
+            "beginner",
+            "provider-live"
+          ],
+          "exercise_file": "exercises/L82_abstention.py",
+          "quiz": "L82",
+          "file": "course/lessons/L82-abstention.md"
+        },
+        {
+          "id": "L83",
+          "title": "Shipping it - docs, versioning and the public repo",
+          "minutes": 30,
+          "order": null,
+          "concepts": [
+            "shipping",
+            "versioning",
+            "public-evidence",
+            "reproducibility"
+          ],
+          "prereqs": [
+            "L73",
+            "L60"
+          ],
+          "paths": [
+            "beginner",
+            "provider-live"
+          ],
+          "exercise_file": "docs/notes/L83-shipping.md",
+          "quiz": "L83",
+          "file": "course/lessons/L83-shipping.md"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Capstone - publish a finding",
+      "lessons": [
+        {
+          "id": "L90",
+          "title": "Choosing a hypothesis worth testing",
+          "minutes": 35,
+          "order": null,
+          "concepts": [
+            "hypothesis",
+            "novelty",
+            "kill-criteria",
+            "prior-work"
+          ],
+          "prereqs": [
+            "L61",
+            "L63"
+          ],
+          "paths": [
+            "beginner",
+            "provider-live"
+          ],
+          "exercise_file": "docs/notes/L90-hypothesis.md",
+          "quiz": "L90",
+          "file": "course/lessons/L90-hypothesis.md"
+        },
+        {
+          "id": "L91",
+          "title": "Running the experiment at scale",
+          "minutes": 40,
+          "order": null,
+          "concepts": [
+            "experiment-design",
+            "repeats",
+            "sampling",
+            "spend-cap"
+          ],
+          "prereqs": [
+            "L90",
+            "L72"
+          ],
+          "paths": [
+            "beginner",
+            "provider-live"
+          ],
+          "exercise_file": "exercises/L91_experiment.py",
+          "quiz": "L91",
+          "file": "course/lessons/L91-experiment.md"
+        },
+        {
+          "id": "L92",
+          "title": "Writing a finding other people can check",
+          "minutes": 35,
+          "order": null,
+          "concepts": [
+            "finding",
+            "reproducibility",
+            "claim-status",
+            "limitations"
+          ],
+          "prereqs": [
+            "L91",
+            "L73"
+          ],
+          "paths": [
+            "beginner",
+            "provider-live"
+          ],
+          "exercise_file": "docs/notes/L92-finding.md",
+          "quiz": "L92",
+          "file": "course/lessons/L92-finding.md"
+        },
+        {
+          "id": "L93",
+          "title": "Publishing - evidence before claims",
+          "minutes": 30,
+          "order": null,
+          "concepts": [
+            "publishing",
+            "evidence-contract",
+            "claim-status",
+            "review"
+          ],
+          "prereqs": [
+            "L92"
+          ],
+          "paths": [
+            "beginner",
+            "provider-live"
+          ],
+          "exercise_file": "docs/notes/L93-publication.md",
+          "quiz": "L93",
+          "file": "course/lessons/L93-publication.md"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L93",
+  "title": "Publishing - evidence before claims",
+  "questions": [
+    {
+      "id": "L93.q1",
+      "concept": "publishing",
+      "prompt": "What are the four things a published finding from this repo must contain?",
+      "options": [
+        "A post, a chart, a tag and a link",
+        "The raw runs, the report, the announcement and the licence",
+        "The repo, the command to run it, the raw evidence, and the one finding",
+        "The hypothesis, the plan, the run and the conclusion"
+      ],
+      "answer": 2,
+      "explain": "That package is what lets a stranger check you: the repo says what was measured, the command says how to reproduce it and what it costs, the raw runs/*.jsonl is the evidence, and the one finding is the sentence under test. The tempting wrong options each contain pieces of the real thing - a report is derived rather than raw, a hypothesis and a plan are the private road to the result rather than the result, and a link without the other three is a request to trust you."
+    },
+    {
+      "id": "L93.q2",
+      "concept": "evidence-contract",
+      "prompt": "What does the rule \"runs/*.jsonl - committed raw evidence, append-only\" forbid?",
+      "options": [
+        "Adding a new run to the directory",
+        "Editing or deleting a committed raw run file - including deleting a run whose result turned out to be wrong",
+        "Writing the derived Markdown report",
+        "Committing two runs of the same battery"
+      ],
+      "answer": 1,
+      "explain": "Append-only means the record only grows: you add runs, you never edit them and you never delete them. The tempting case is the one the rule exists for - if a result later proves wrong, the correction is appended (a new entry in the decision log, a note in the write-up) while the original run stays, because deleting it would leave the repository looking better than it is. The other options are all ordinary practice: new runs, derived reports and repeated batteries are exactly what the folder is for."
+    },
+    {
+      "id": "L93.q3",
+      "concept": "review",
+      "prompt": "Which of these belongs in the five-minute review you run before publishing?",
+      "options": [
+        "Recompute one number by hand from the raw .jsonl and check that the run id in the write-up resolves to a file in runs/",
+        "Rewrite the finding so that it reads more confidently",
+        "Delete the runs that are not interesting before publishing",
+        "Remove the SIMULATED RUN banner from a mock report so it reads cleanly"
+      ],
+      "answer": 0,
+      "explain": "The review is a set of checks a reader could carry out too: identifiers resolve, numbers recompute, the mock is labelled, the n is stated, no credential is committed, the repo's own gates pass, and the decision log has the entry. The tempting wrong answers are the three classic ways a publication goes wrong - editing for confidence, curating away inconvenient evidence, and removing the warning that stops a harness test being read as a model evaluation. All three destroy the thing that made the number checkable."
+    },
+    {
+      "id": "L93.q4",
+      "concept": "publishing",
+      "prompt": "Your experiment found no effect at all. What do you publish?",
+      "options": [
+        "Nothing - a null result is not a result",
+        "Only the hypothesis, so that nobody repeats the experiment",
+        "The same package - repo, command, raw evidence - with a finding sentence that reports no effect",
+        "A short summary of the null run, without the raw files"
+      ],
+      "answer": 2,
+      "explain": "A null result is checkable in exactly the same way as a positive one, and it is often the more valuable publication - it stops the next person spending a week and a few dollars re-running it. The evidence contract does not change: same repo, same command, same raw files, one sentence that reports what was and was not found. The tempting first option is the habit this lesson is trying to break - treating a flat result as a failure rather than as a result; the second and fourth options drop exactly the parts that make it checkable."
+    }
+  ]
+}

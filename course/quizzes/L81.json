@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L81",
+  "title": "Cost arithmetic and batching",
+  "questions": [
+    {
+      "id": "L81.q1",
+      "concept": "cost-arithmetic",
+      "prompt": "One call reads 500 input tokens on a provider priced at $0.038 per Mtok. Using the formula in Provider.estimate_cost, what does that call cost?",
+      "options": [
+        "$0.019",
+        "$0.000019",
+        "$19.00",
+        "$0.038"
+      ],
+      "answer": 1,
+      "explain": "The repo's formula is tokens * price_per_mtok / 1_000_000, so 500 * 0.038 / 1,000,000 = 0.000019 dollars. The tempting wrong answers are the classic misses: $0.019 forgets the division by a million, $19.00 multiplies without dividing and by the wrong magnitude, and $0.038 is just the price itself with the token count ignored. Get this one wrong by a factor of a million and every downstream number in the lesson is wrong too."
+    },
+    {
+      "id": "L81.q2",
+      "concept": "batching",
+      "prompt": "Why does asking three questions about one ticket in a single call cost fewer input tokens than making three separate calls about the same ticket?",
+      "options": [
+        "Providers give a discount on requests that carry more than one question",
+        "The model uses less memory when it answers several questions at once",
+        "Because the state only has to be sent once instead of once per question",
+        "Because the questions are cheaper when they travel together"
+      ],
+      "answer": 2,
+      "explain": "A decision model has no memory between calls, so every call re-sends the whole state. On routing-001 the mock's own rule gives 28 tokens of state and 133 tokens of questions: one batched call costs 161 tokens, three separate calls cost 3 x 28 + 133 = 216. The other three answers are the tempting ones because they sound like reasons but none of them is a mechanism - there is no multi-question discount in this repo's code, the questions travel the same way either way, and the saving comes entirely from what is on the wire."
+    },
+    {
+      "id": "L81.q3",
+      "concept": "token-accounting",
+      "prompt": "The committed run runs/20261025-040448-mock.jsonl records, for case routing-001, \"usage\": {\"input_tokens\": 161} and \"cost_usd\": 6.76e-06. Which price per Mtok does that imply?",
+      "options": [
+        "0.042 - the mock provider's default price_per_mtok",
+        "0.038 - clef-flash",
+        "0.24 - clef",
+        "0.02 - the OpenAI-compatible default"
+      ],
+      "answer": 0,
+      "explain": "161 * price / 1,000,000 = 0.00000676, so price = 0.042 - which is exactly MockProvider.__init__'s default price_per_mtok, and the same price recorded in the run's meta.json. The point of the question is that the raw file and the formula agree: the cost in the file is re-derivable from the token count and the price. If you got a different answer, you would be reading a run made by a different provider, not making an arithmetic error."
+    },
+    {
+      "id": "L81.q4",
+      "concept": "unit-economics",
+      "prompt": "One provider costs $0.02 per Mtok but needs four calls to answer one ticket; another costs $0.24 per Mtok and answers the same ticket in one call. What does this teach?",
+      "options": [
+        "The cheaper per-token provider is always the cheaper per ticket",
+        "Calls per ticket can dominate the per-token price, so the number to optimise is cost per ticket",
+        "Batching must be impossible on the cheaper provider",
+        "Price per Mtok is the only number that matters in a decision table"
+      ],
+      "answer": 1,
+      "explain": "Cost per ticket = calls per ticket x tokens per call x price per Mtok / 1,000,000. Four calls at $0.02 can easily beat one call at $0.24 once you count the state being re-sent. The first option is the tempting wrong answer because it treats the headline price as the whole story; the other two are wrong because nothing about batching follows from price, and price is only one column of the table."
+    }
+  ]
+}

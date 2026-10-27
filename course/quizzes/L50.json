@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L50",
+  "title": "Accuracy and why it is not enough",
+  "questions": [
+    {
+      "id": "L50.q1",
+      "concept": "base-rate",
+      "prompt": "Your workload is 100 tickets, 80 of them billing. A classifier that always answers \"billing\" gets 80 % accuracy. What is that 80 % called, and what does it tell you about a real model?",
+      "options": [
+        "The accuracy ceiling - no model on this workload can do better than 80 %",
+        "The base rate: any model that does not beat it is worth no more than always guessing",
+        "The majority-class error, which is what the model should be compared to for precision",
+        "The calibration error, because the model is always 80 % confident"
+      ],
+      "answer": 1,
+      "explain": "The fraction of the workload made up of the most common class is the base rate, and it is the floor that every model has to beat to be worth anything. A model at 80 % is indistinguishable from always guessing. The first option is wrong: 80 % is the floor, not the ceiling - a good model can exceed it by putting the 20 technical tickets in the right bucket. The third option confuses the base rate with precision and recall, which are properties of a model's *flagging behaviour*, not of the workload. The fourth option is nonsense: always answering the same label says nothing about any model's confidence."
+    },
+    {
+      "id": "L50.q2",
+      "concept": "class-imbalance",
+      "prompt": "Why does class imbalance let a model score 99 % accuracy while failing at the one case that hurt a customer?",
+      "options": [
+        "Because the rare class is usually harder and the metric secretly weights it more",
+        "Because accuracy is an average over all cases, so the many easy majority-class cases dilute the few rare wrong ones into invisibility",
+        "Because the model is trained on too little data",
+        "Because the threshold was set too low"
+      ],
+      "answer": 1,
+      "explain": "Accuracy is (TP + TN) / total, a single average over every case. If 99 % of the cases are one class, then even getting 100 % of the rare class wrong only moves the average by one point. The metric does not secretly weight anything - the dilution is arithmetic. The first option is wrong (accuracy weights nothing specially). The third and fourth options are real causes of bad models but they are not why the *metric* fails to reveal the failure. And the repo adds one more wrinkle worth knowing: `aggregate()` computes accuracy as the mean of the per-case accuracies, so a three-question case counts as much as a thirty-question case."
+    },
+    {
+      "id": "L50.q3",
+      "concept": "precision-recall",
+      "prompt": "A predictor flags 90 tickets as billing and 70 of them really are billing; there are 80 real billing tickets in total. What are its precision and its recall?",
+      "options": [
+        "Precision 78 %, recall 88 %",
+        "Precision 90 %, recall 70 %",
+        "Precision 80 %, recall 90 %",
+        "Precision 100 %, recall 88 %"
+      ],
+      "answer": 0,
+      "explain": "Precision is TP / (TP + FP) = 70 / 90 = 77.8 %, i.e. of the tickets it flagged, how many were really billing. Recall is TP / (TP + FN) = 70 / 80 = 87.5 %, i.e. of the 80 real billing tickets, how many it caught. The second option uses the raw counts without dividing by the total. The third option is the base rate of the workload, not a rate of this predictor. The fourth option is impossible - precision can only be 100 % if every flagged ticket was real, and 70 out of 90 is not that."
+    },
+    {
+      "id": "L50.q4",
+      "concept": "accuracy",
+      "prompt": "Two models both score 80 % accuracy on the same battery. One states 51 % confidence on every answer, the other states 99 %. What can you not tell from the accuracy numbers alone?",
+      "options": [
+        "Whether either model ever got a ticket right",
+        "How much damage each model would do if it were wrong - because accuracy ignores confidence entirely",
+        "Which model is larger",
+        "How many tickets there were"
+      ],
+      "answer": 1,
+      "explain": "Accuracy asks only \"was the answer right?\" and says nothing about how sure the model was. A model that is right 80 % of the time at 51 % confidence and one that is right 80 % of the time at 99 % confidence are different products: the second will send far more confidently-wrong tickets downstream. The first option is wrong - accuracy does tell you the right count. The third and fourth options are irrelevant to the metric. This is exactly the gap the Brier score and ECE fill, and why `report.py` prints accuracy, mean ECE and mean Brier in the same Headline table instead of accuracy alone."
+    }
+  ]
+}

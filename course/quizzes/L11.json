@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L11",
+  "title": "Numbers you can trust - tolerance, rounding and the 0.1+0.2 trap",
+  "questions": [
+    {
+      "id": "L11.q1",
+      "concept": "float-precision",
+      "prompt": "Why is 0.1 + 0.2 == 0.3 False in Python?",
+      "options": [
+        "Because Python rounds to 15 significant digits and 0.3 needs 16",
+        "Because 0.1 and 0.2 cannot be written exactly in binary, so the sum lands just above 0.3",
+        "Because == on floats is intentionally broken for a beginner's protection",
+        "Because 0.3 is not a valid float and gets parsed as a string"
+      ],
+      "answer": 1,
+      "explain": "The computer stores numbers in binary, and fractions like 0.1 and 0.2 have no finite binary expansion, so each is stored as the nearest binary approximation. Adding the two approximations lands just above 0.3, so the exact equality test fails on a difference of about 5.5e-17. The first option is wrong because this happens long before any display rounding. The third option is wrong because the behaviour is correct IEEE-754 arithmetic, not a Python quirk. The fourth is wrong because 0.3 is a perfectly good float."
+    },
+    {
+      "id": "L11.q2",
+      "concept": "tolerance",
+      "prompt": "You want to check that a probability distribution sums to 1. Which check is the right one?",
+      "options": [
+        "sum(probs) == 1.0",
+        "abs(sum(probs) - 1.0) < 1e-9",
+        "round(sum(probs), 4) == 1.0",
+        "sum(probs) >= 1.0"
+      ],
+      "answer": 1,
+      "explain": "Compare with a tolerance: the distance from 1.0 must be below a tiny threshold. This repo uses exactly this idiom - examples/01_softmax.py asserts abs(total - 1.0) < 1e-12. The first option fails for perfectly good distributions because of binary error. The third option rounds away the error you were trying to detect - it would also accept a sum of 1.0001, which is a real bug, not a float artefact. The fourth is not an equality check at all: a distribution that sums to 1.2 would pass it."
+    },
+    {
+      "id": "L11.q3",
+      "concept": "rounding",
+      "prompt": "When should you round a number in this repo?",
+      "options": [
+        "Before every comparison, so that the comparison is stable",
+        "Never - full precision is always carried through",
+        "At the edges: when writing a row, a headline metric or a printed report, never before a decision",
+        "Only when the number is very large"
+      ],
+      "answer": 2,
+      "explain": "Rounding is a presentation decision. metrics.collect_scored() rounds p_gold to four places when it writes a row, and report.run_report() formats the cost as ${cost:.6f} - but the arithmetic underneath runs at full precision. The first option is wrong because rounding before comparing can invent differences that were never there (and hide ones that were). The second is too strong: the repo deliberately rounds at the boundaries so run files stay readable. The fourth is nonsense."
+    },
+    {
+      "id": "L11.q4",
+      "concept": "comparison",
+      "prompt": "Two providers return probability dicts for the same question. Their values are already rounded to four decimals by the providers. Which tolerance should you use when asking whether an option's probability changed?",
+      "options": [
+        "1e-15, because floating point should be as precise as possible",
+        "0.0, because exact comparison is the only honest test",
+        "1e-9, because the numbers only carry four decimal places and anything below that is noise",
+        "0.5, because a difference of half a probability point never matters"
+      ],
+      "answer": 2,
+      "explain": "The tolerance should match the precision the numbers actually carry: with four-decimal inputs, anything below about 1e-9 is arithmetic noise rather than a real difference. The first option is wrong because it demands more precision than the data has. The second option would flag every pair as different whenever the rounding landed differently - which is exactly the false alarm this repo's determinism checks try to avoid. The fourth option is absurd: a 0.5 gap is the difference between acting and not acting when the threshold is 0.5."
+    }
+  ]
+}

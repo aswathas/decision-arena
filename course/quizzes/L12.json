@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L12",
+  "title": "Softmax - from raw scores to probabilities",
+  "questions": [
+    {
+      "id": "L12.q1",
+      "concept": "numerical-stability",
+      "prompt": "Why does the stable softmax subtract the maximum score before exponentiating?",
+      "options": [
+        "It changes the probabilities so that large scores are penalised",
+        "It keeps every exponent at or below 1 so exp() cannot overflow to Infinity",
+        "It makes the probabilities sum to exactly 1.0 in floating point",
+        "It speeds up the computation by using smaller numbers"
+      ],
+      "answer": 1,
+      "explain": "Subtracting max(z) makes every exponent <= exp(0) = 1, so no weight can overflow to Infinity. The total stays finite and no NaN appears. The probabilities are unchanged because softmax is invariant to a constant shift - which is exactly what makes the trick legal rather than a change of formula."
+    },
+    {
+      "id": "L12.q2",
+      "concept": "softmax",
+      "prompt": "You add the same constant 5 to every logit in a three-option question. What happens to the resulting probability distribution?",
+      "options": [
+        "The distribution shifts toward the option with the highest original logit",
+        "The distribution is unchanged, because softmax is invariant to a constant shift",
+        "The distribution becomes flatter, because every exponent is now larger",
+        "The distribution becomes sharper, because every logit is now larger"
+      ],
+      "answer": 1,
+      "explain": "softmax(z + c) == softmax(z). exp(z_i + c) = exp(z_i) * exp(c), so every numerator and the denominator gain the same factor exp(c) and it cancels. This invariance is the reason the stable implementation is allowed to subtract the maximum."
+    },
+    {
+      "id": "L12.q3",
+      "concept": "normalisation",
+      "prompt": "A choice answer returns {\"billing\": 0.72, \"technical\": 0.18, \"sales\": 0.10}. Which metric in this repo uses the probability of the correct option?",
+      "options": [
+        "action_change_rate, because it compares the top probability to a threshold",
+        "label_agreement, because it reads the probability values directly",
+        "battery_hash, because it hashes the probabilities for reproducibility",
+        "collect_scored, which pulls p_gold from the probabilities dict and feeds accuracy, Brier and ECE"
+      ],
+      "answer": 3,
+      "explain": "collect_scored() in decisionarena/metrics.py looks up the gold option inside the probabilities dict to get p_gold, and that probability is what accuracy, the Brier score and the ECE are computed from. If that dict were off, every downstream calibration number would be off."
+    },
+    {
+      "id": "L12.q4",
+      "concept": "logits",
+      "prompt": "What problem does exponentiating the scores solve, that dividing by the total alone does not?",
+      "options": [
+        "It removes the need for a normalising constant",
+        "It makes gaps between scores multiplicative, so a score gap of 3 becomes a weight gap of about 20",
+        "It guarantees the probabilities are rounded to four decimal places",
+        "It allows negative scores to produce positive weights"
+      ],
+      "answer": 1,
+      "explain": "exp() makes a gap of 1 in logit space become a gap of e (about 2.7) in weight space, and a gap of 3 become about 20. That is what lets a model express 'more confident' as larger logit gaps, and it is the mechanism temperature later scales. Dividing by the total alone would keep gaps linear, so exp() also handles negatives - but the multiplicative gap is the reason it is there."
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L40",
+  "title": "Anatomy of a provider adapter",
+  "questions": [
+    {
+      "id": "L40.q1",
+      "concept": "wire-protocol",
+      "prompt": "This repo's yes/no question type is called \"noul\", but Vercel's AI Gateway calls the same primitive \"boolean\" and rejects \"noul\". Where does that translation have to happen, and why there?",
+      "options": [
+        "In the harness, before the cases are loaded, so every provider sees one keyword",
+        "In the provider adapter, because the difference is a property of the vendor's wire format, not of the question",
+        "In the metrics module, because the Brier score cannot handle two keywords",
+        "In the CLI, because the CLI is the only place that knows which provider is in use"
+      ],
+      "answer": 1,
+      "explain": "The keyword a vendor accepts is a property of that vendor's API, so it belongs in that vendor's adapter. That is exactly what `normalise_questions(questions, wire_keyword)` does: it rewrites our canonical {\"type\": \"noul\"} into the vendor's keyword when the two differ. If it lived in the harness, the harness would need to know which vendor is in use - that is the opposite of the one-adapter-one-contract design that makes providers interchangeable. The metrics option is wrong because the metrics never see raw wire keywords - `normalise_answers()` has already folded \"boolean\" into kind=\"noul\" before any metric runs."
+    },
+    {
+      "id": "L40.q2",
+      "concept": "provider-adapter",
+      "prompt": "The harness calls provider.decide(state, questions) and nothing else about the provider. What does that buy the repo?",
+      "options": [
+        "It makes every provider return exactly the same answers, so the comparison is meaningless",
+        "It lets the battery, the metrics and the swap matrix be written once against a contract instead of once per vendor",
+        "It removes the need for a spend cap, because the harness can no longer see the price",
+        "It proves the providers are equally good, because a shared contract implies shared quality"
+      ],
+      "answer": 1,
+      "explain": "The whole point of the contract is that the harness does not know which vendor is behind it. So `build_provider(\"clef:clef-flash\")` and `build_provider(\"mock\")` are interchangeable, and `python -m decisionarena swap --provider a=jev --provider b=clef:clef-flash` is one code path rather than two programs. The first option is wrong: a shared contract standardises the SHAPE of the answer, not its content - the answers are exactly what differs, and that is what gets measured. The spend-cap option is wrong because the harness reads `price_per_mtok` and `estimate_cost()` precisely because the contract exposes them. The last option is nonsense: a shared interface says nothing about quality, which is why the harness has to measure it."
+    },
+    {
+      "id": "L40.q3",
+      "concept": "usage-accounting",
+      "prompt": "Provider.estimate_cost() computes: (usage.get(\"input_tokens\") or usage.get(\"prompt_tokens\") or 0) * price_per_mtok / 1_000_000. A provider returns usage = {\"prompt_tokens\": 500000} and price_per_mtok = 0.042. What is the cost?",
+      "options": [
+        "$0.021",
+        "$0.042",
+        "$21.00",
+        "$0.000021"
+      ],
+      "answer": 0,
+      "explain": "500000 tokens * 0.042 dollars per million tokens / 1000000 = 0.021 dollars. The division by 1_000_000 is what converts \"per million tokens\" into \"per token\", and it is the step people forget. The $0.042 option is the cost of one million tokens, not half a million. The $21.00 option forgets the per-million conversion entirely (500000 * 0.042). The $0.000021 option divides by a million twice. The lesson for the harness: money is always reported in USD with the token counts beside it, because a bare dollar figure is impossible to check."
+    },
+    {
+      "id": "L40.q4",
+      "concept": "base-url",
+      "prompt": "In this repo, where do the URLs that requests are sent to actually live, and why does that matter for a local model?",
+      "options": [
+        "In the case JSON files, so each battery decides where it runs",
+        "In the adapters - JevProvider.URL and ClefProvider.url() - so an adapter that can be pointed at a local server reuses the same client and the same wire format",
+        "In the CLI, which passes --url to every provider",
+        "In metrics.py, which records the endpoint next to each score"
+      ],
+      "answer": 1,
+      "explain": "`JevProvider.URL` is the class attribute \"https://api.typesafe.ai/v1/systemone\", and `ClefProvider.url()` builds the Cloudflare path from the account id and model name. Keeping the endpoint in the adapter is what makes a local server possible: laya-lab/README.md describes pointing the same adapter at http://127.0.0.1:8080 instead of the cloud, so the local model is exercised through the real wire format rather than through a special in-process path. The case-JSON option is wrong - cases carry states and questions, never endpoints. The CLI option is wrong - the CLI takes a provider spec like \"jev\" or \"clef:clef-flash\", not a URL. The metrics option is wrong - metrics.py never touches the network."
+    }
+  ]
+}

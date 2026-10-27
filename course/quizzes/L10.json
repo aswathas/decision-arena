@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L10",
+  "title": "Lists, dicts and floats - the shapes you handle all course",
+  "questions": [
+    {
+      "id": "L10.q1",
+      "concept": "dicts",
+      "prompt": "The `team` question in cases/routing.json has \"criteria\": {\"billing\": \"Charges...\", \"technical\": \"Errors...\", \"sales\": \"Plans...\", \"other\": \"None of the above\"}. What are the four option names, and why?",
+      "options": [
+        "Charges..., Errors..., Plans..., None of the above - they are the dict's values",
+        "billing, technical, sales, other - they are the dict's keys",
+        "0, 1, 2, 3 - they are the positions of the keys",
+        "The four questions is_billing, team, severity and thresholds"
+      ],
+      "answer": 1,
+      "explain": "For a choice question the option names are the keys of the criteria dict, and the values are the human-readable descriptions. The first option confuses the vocabulary with the descriptions - and note that the answer's value is the key, e.g. \"billing\". The third option is wrong because a choice question is unordered by name; only a score question is indexed by position. The fourth option lists unrelated parts of the case file."
+    },
+    {
+      "id": "L10.q2",
+      "concept": "lists",
+      "prompt": "The `severity` question has \"criteria\": [\"No impact\", \"Minor\", \"Major\", \"Critical\"] and the provider answers with the value 1.0. What does that mean?",
+      "options": [
+        "The severity is 1 out of 4, i.e. the first level, \"No impact\"",
+        "The probability that the severity is \"Minor\"",
+        "The index into the ordered criteria list, i.e. \"Minor\"",
+        "The number of criteria the model skipped"
+      ],
+      "answer": 2,
+      "explain": "A score question's criteria is a list, and the answer is the index into it - 1 selects the second level, \"Minor\". The first option is the trap: reading 1 as \"one of four\", i.e. the first entry, when the list is zero-based. The score is a position, not a magnitude: the harness compares levels with a half-step tolerance (abs(value - gold) < 0.5), which only makes sense for positions. The second option confuses the value with the probabilities dict, which for a score is keyed by the string form of the index. The fourth describes nothing in the protocol."
+    },
+    {
+      "id": "L10.q3",
+      "concept": "indexing",
+      "prompt": "You need the third option of a `choice` question whose criteria is a dict with keys billing, technical, sales, other. Which access is correct?",
+      "options": [
+        "question[\"criteria\"][2]",
+        "question[\"criteria\"].get(2)",
+        "list(question[\"criteria\"].values())[2]",
+        "question[\"criteria\"][\"sales\"]"
+      ],
+      "answer": 3,
+      "explain": "The option names are keys, so you look one up by name: [\"sales\"] is the third option. The first option indexes a dict by position and raises a TypeError. The second returns None silently, because .get() with a missing key does not raise - it is the quiet failure mode to watch for. The third would return the description text rather than the name, so it is the wrong string."
+    },
+    {
+      "id": "L10.q4",
+      "concept": "python-data-shapes",
+      "prompt": "In cases/format_variants.json the same ticket appears as a plain string, as a flat dict, and as a nested dict. Why does the harness care about the difference?",
+      "options": [
+        "Because the shape of the state is itself a variable being measured - it changes the probability the model gives",
+        "Because the providers reject a state that is not a string",
+        "Because json.load() cannot read a dict at the top level",
+        "Because nested states cost more tokens and would break the spend cap"
+      ],
+      "answer": 0,
+      "explain": "run_format_friction() sends the same content in three serialisations and measures how far the probability moves - that is the format-friction finding this repo is built around, and it needs the state passed through untouched. The second option is wrong because the providers accept any state; JevProvider.decide() puts it straight into the payload. The third option is wrong because json.load() returns whatever the file contains, dicts included - harness.load_cases() relies on that. The fourth option is a half-truth about tokens with no bearing on the spend cap, which is a dollar amount checked between calls."
+    }
+  ]
+}

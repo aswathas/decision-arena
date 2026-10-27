@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L13",
+  "title": "Temperature - sharpening and flattening a distribution",
+  "questions": [
+    {
+      "id": "L13.q1",
+      "concept": "temperature",
+      "prompt": "What does the temperature parameter do, in one sentence?",
+      "options": [
+        "It divides every logit by T before the softmax, so a smaller T sharpens the distribution and a larger T flattens it",
+        "It adds a random number to each logit so the model does not always give the same answer",
+        "It truncates the lowest-scoring options so only the top three can be chosen",
+        "It scales the model's output layer weights, which changes what the model has learned"
+      ],
+      "answer": 0,
+      "explain": "Temperature is a divisor applied to the logits before the softmax: p_i(T) = exp(z_i / T) / sum_j exp(z_j / T). T below 1 makes the gaps bigger and the distribution peaked; T above 1 makes them smaller and the distribution flat. The second option describes noise injection, not temperature - randomness comes from sampling, which this repo never does. The third option describes a decoding strategy for text models. The fourth option is wrong because temperature changes no weights; it is a deployment-time dial, not retraining."
+    },
+    {
+      "id": "L13.q2",
+      "concept": "sharpness",
+      "prompt": "A model's top option sits at 0.63 at T = 1.0 and at 0.98 at T = 0.25. With a threshold of 0.6, what changes between the two?",
+      "options": [
+        "Both the label and the action: the top option changes and the harness starts acting",
+        "Neither the label nor the action: the top option stays the same and it already acted at 0.63",
+        "Only the action: the top option stays the same, but the harness starts acting at 0.98",
+        "Only the label: the top option changes, but the action was already happening"
+      ],
+      "answer": 1,
+      "explain": "Both numbers are above the 0.6 threshold, so the action (and the label) is the same at both temperatures: temperature changes the probability, not the decision in this case. The third option is the tempting one, but it only holds when the threshold falls between the two probabilities - and here 0.63 already clears 0.6. The fourth option is wrong because temperature can never change which option is on top. The first option is wrong on both counts."
+    },
+    {
+      "id": "L13.q3",
+      "concept": "softmax",
+      "prompt": "Why does the temperature never change which option the model ranks first?",
+      "options": [
+        "Because the softmax output is rounded to four decimals",
+        "Because dividing every logit by the same positive number cannot reorder them",
+        "Because the threshold is applied after the ranking is fixed",
+        "Because temperature is only applied to `noul` answers"
+      ],
+      "answer": 1,
+      "explain": "If z_i > z_j then z_i / T > z_j / T for every T > 0, so every pairwise comparison survives - the argmax, and in fact the whole ranking, is unchanged. The first option is irrelevant: rounding is a presentation step and rounding cannot reorder a set of values either way. The third option is a real property of this repo - the threshold does come after the answer - but it is not why the ranking is invariant; a ranking-invariance argument is. The fourth option is wrong because temperature is a logit-level concept and this repo's example applies it to a three-option choice."
+    },
+    {
+      "id": "L13.q4",
+      "concept": "sampling",
+      "prompt": "In a text model, why does a low temperature make the output repetitive?",
+      "options": [
+        "Because sampling picks the top option more often when the distribution is sharp",
+        "Because a low temperature disables the tokeniser",
+        "Because the model has fewer parameters at a low temperature",
+        "Because the context window shrinks"
+      ],
+      "answer": 0,
+      "explain": "Sampling draws the next token at random with probability p_i, so the shape of the distribution controls the randomness: a peaked distribution (low T) lands on the top token almost every time, which reads as repetitive, while a flat distribution (high T) wanders. The second, third and fourth options are unrelated to temperature - a temperature dial changes no weights, no tokeniser and no context window. Note that this repo never samples: it always takes the top option, which is why the OpenAI-compatible adapter sends the API-level \"temperature\": 0 for greedy decoding."
+    }
+  ]
+}

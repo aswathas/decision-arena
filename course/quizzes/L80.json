@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L80",
+  "title": "Choosing a provider - the decision table",
+  "questions": [
+    {
+      "id": "L80.q1",
+      "concept": "provider-selection",
+      "prompt": "A vendor's benchmark table says model A beats model B on five public datasets. What should decide which one you actually use?",
+      "options": [
+        "The vendor table, because a bigger dataset is always a more honest measurement",
+        "The cheapest price per million tokens",
+        "A measurement of both on your own tickets, with your own thresholds and your own latency requirement",
+        "Whichever model was released most recently"
+      ],
+      "answer": 2,
+      "explain": "The vendor's table is measured on the vendor's data, in the vendor's serialisation, at the vendor's thresholds - so it can only answer a question about the vendor's workload. Your workload is your tickets. The rule this repo works by is: measure your own workload, not a vendor benchmark. The tempting wrong answers fail differently: the price is meaningless without knowing tokens per call and calls per ticket, and 'newest' is not a property that can be measured against anything."
+    },
+    {
+      "id": "L80.q2",
+      "concept": "cost",
+      "prompt": "Using the real prices in decisionarena/providers.py, 10,000 calls of 500 input tokens each (5 Mtok in total) cost how much on clef-flash at $0.038 per Mtok?",
+      "options": [
+        "$19.00",
+        "$0.19",
+        "$1.90",
+        "$0.019"
+      ],
+      "answer": 1,
+      "explain": "5 Mtok x $0.038/Mtok = $0.19. The same arithmetic on clef at $0.24 gives $1.20, and on jev at $0.042 gives $0.21. The tempting wrong answers are all a factor of ten or a hundred out, which is exactly what happens when you forget that 'per Mtok' means per million tokens and the division by a million is part of the formula. $19.00 is what you get if you multiply by 0.038 and forget to divide by a million at all."
+    },
+    {
+      "id": "L80.q3",
+      "concept": "latency",
+      "prompt": "Why does this repo treat Cloudflare's advertised 209.3 ms median latency and the independent harness's observed ~18.7 s for Clef as two different facts rather than picking one?",
+      "options": [
+        "One of them must be wrong",
+        "Latency depends on region, payload, batch composition and load, so only a measurement on your own workload and your own hardware counts",
+        "The vendor number is measured in a different unit",
+        "Latency cannot be measured for decision models at all"
+      ],
+      "answer": 1,
+      "explain": "Both numbers can be true: a median measured on the vendor's servers and payloads says little about what you will see from your machine at 3pm. That is why the harness records latency_s per call and the report prints p50, p95 and max - your number, from your runs. 'One of them must be wrong' is the tempting wrong answer, but latency is not a property of a model alone; it is a property of a model plus a server plus a queue plus a payload, so disagreement between two measurements is expected rather than suspicious."
+    },
+    {
+      "id": "L80.q4",
+      "concept": "provider-selection",
+      "prompt": "Which statement about the providers in this repo can be checked by reading decisionarena/providers.py?",
+      "options": [
+        "ClefProvider is the only adapter that sets supports_images=True",
+        "Every provider in this repo costs the same price per million tokens",
+        "MockProvider is a real model that runs offline",
+        "Jev and Clef use different wire formats, so the metrics layer treats them separately"
+      ],
+      "answer": 0,
+      "explain": "ClefProvider.__init__ passes supports_images=True to the base Provider class, and no other adapter in the file does. The others are wrong on the facts: the prices differ (0.042, 0.038, 0.24, 0.02 and a fake 0.042 for the mock); the mock is explicitly 'not a model evaluation'; and the whole point of normalise_answers() is that every provider is flattened to one shape, so the metrics never know which vendor they are looking at."
+    }
+  ]
+}

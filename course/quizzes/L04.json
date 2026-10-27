@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L04",
+  "title": "Confidence is not probability - the first trap",
+  "questions": [
+    {
+      "id": "L04.q1",
+      "concept": "confidence-vs-probability",
+      "prompt": "A provider returns probabilities {\"billing\": 0.4, \"other\": 0.6} and a confidence of 0.95. Which number does this repo threshold on when it decides whether to act?",
+      "options": [
+        "The confidence, because 0.95 is the larger number",
+        "The top probability, so 0.6 against the case's threshold",
+        "The average of the two",
+        "Neither - action_change_rate() compares labels, not numbers"
+      ],
+      "answer": 1,
+      "explain": "action_change_rate() takes max((aa[\"probabilities\"] or {0: 0}).values(), default=0) and compares that to the threshold - here 0.6 against the 0.6 threshold in cases/routing.json. The confidence field is carried through normalisation but is never the thing that triggers an action. The first option is the trap this lesson exists to catch: a bigger number is not automatically the right number, and thresholding confidence would make an overconfident model act on weak probabilities. The third option is invented, and the fourth is wrong because label_agreement() is a different metric that compares labels only."
+    },
+    {
+      "id": "L04.q2",
+      "concept": "calibration",
+      "prompt": "What does an ECE (expected calibration error) of 0.0 mean about a model?",
+      "options": [
+        "The model is right every time",
+        "The model never says 0.9",
+        "When the model says 0.8, it is right about 80% of the time",
+        "The model's probabilities all round to 0.0"
+      ],
+      "answer": 2,
+      "explain": "ECE buckets the (probability, outcome) pairs and averages |mean confidence - accuracy| per bucket, weighted by bucket size, so 0.0 means the stated probabilities match the observed frequencies. The first option confuses calibration with accuracy - a model can be well calibrated and only 60% accurate. The second and fourth options are nonsense. Note that a well-calibrated model is still wrong sometimes; calibration is about the honesty of the numbers, not about being right."
+    },
+    {
+      "id": "L04.q3",
+      "concept": "overconfidence",
+      "prompt": "A model states 0.9 confidence on every question and is right 60% of the time. What is the overconfidence gap per case?",
+      "options": [
+        "0.3",
+        "0.9",
+        "0.6",
+        "-0.3"
+      ],
+      "answer": 0,
+      "explain": "The gap is confidence minus accuracy: 0.9 - 0.6 = 0.3. The second option just restates the confidence, and the third restates the accuracy - neither is a gap. The fourth is the sign error: a positive gap is what overconfidence means, and this repo's own metric treats the mismatch as an absolute value, so the sign is not what carries the information."
+    },
+    {
+      "id": "L04.q4",
+      "concept": "confidence-vs-probability",
+      "prompt": "Why is miscalibrated confidence more dangerous than a miscalibrated probability?",
+      "options": [
+        "Because confidence is stored as a string and probabilities are not",
+        "Because a wrong probability still degrades gracefully, while a wrong confidence makes you act harder exactly when you are wrong",
+        "Because only one of the two is rounded in the run file",
+        "Because the threshold is applied to confidence in some batteries"
+      ],
+      "answer": 1,
+      "explain": "If probabilities are too low, you act less often - a conservative failure. If confidence is too high, you act more often on cases you are likely to get wrong - an aggressive failure. The first option is wrong because both are floats in the normalised shape. The third is true but irrelevant: MockProvider rounds both to four decimals, and rounding does not change which number is dangerous. The fourth is wrong because no battery in this repo thresholds on confidence."
+    }
+  ]
+}

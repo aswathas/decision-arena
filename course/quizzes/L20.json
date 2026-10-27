@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L20",
+  "title": "Tokens - how text becomes numbers",
+  "questions": [
+    {
+      "id": "L20.q1",
+      "concept": "attention-window",
+      "prompt": "A provider's model has an 8,000-token attention window. You send a 12,000-token ticket. What actually happens to the extra 4,000 tokens?",
+      "options": [
+        "They are truncated, usually from the front, so the beginning of the ticket - often your instructions - is the part that disappears",
+        "They are kept in a compressed summary and appended to the end of the ticket",
+        "They are sent to a second model that summarises them and passes the summary on",
+        "Nothing - the model silently reads all 12,000 tokens and just concentrates harder"
+      ],
+      "answer": 0,
+      "explain": "The attention window is a hard ceiling on how many tokens the model can hold at once. Anything beyond it is truncated, and most systems truncate from the front, which is where instructions usually live. The tempting wrong answer is that the model 'concentrates harder' - but attention cannot attend to a token it never received. This is a deployment failure mode, not a model quality issue."
+    },
+    {
+      "id": "L20.q2",
+      "concept": "token-ids",
+      "prompt": "Two different vendors tokenize the same word 'refund' and assign it id 5127 in one vocabulary and id 9183 in the other. What does that tell you?",
+      "options": [
+        "One of the two tokenizers is wrong",
+        "The word is rarer in one vendor's training data than in the other's",
+        "Token ids are only meaningful relative to the vocabulary they belong to, so the two ids carry no comparable meaning",
+        "The vocabulary with the lower id is the larger one"
+      ],
+      "answer": 2,
+      "explain": "A token id is just the index of a token in a particular vocabulary. Two vendors have two different vocabularies with different orderings, so id 5127 in one and id 9183 in the other are simply two different tokens in two different systems. The tempting wrong answer is that the ids encode something intrinsic about the word - they do not; a token id is a lookup key, not a meaning."
+    },
+    {
+      "id": "L20.q3",
+      "concept": "tokenization",
+      "prompt": "Why do real tokenizers cut text into subword pieces instead of using a fixed list of whole words?",
+      "options": [
+        "Because subwords are faster to look up in a vocabulary table",
+        "Because a fixed word list cannot represent typos, made-up product names, code, or ticket IDs, and the vocabulary would have to be infinite",
+        "Because whole words take up more memory than pieces",
+        "Because a model can only handle pieces of at most ten characters"
+      ],
+      "answer": 1,
+      "explain": "A fixed list of whole words cannot represent every string that appears in the wild, so real tokenizers cut text into subwords that are usually word-like and sometimes not - 'tokenization' itself is rarely one token. The tempting wrong answer is the memory one: pieces do save some memory, but that is a side effect, not the reason the design exists. The reason is coverage: every input string must be encodable."
+    },
+    {
+      "id": "L20.q4",
+      "concept": "vocabulary",
+      "prompt": "In this repo, where do tokens turn into money?",
+      "options": [
+        "In decisionarena/harness.py, where the run writes the cost total into meta.json",
+        "In decisionarena/providers.py, in Provider.estimate_cost(), which multiplies the token count by price_per_mtok and divides by a million",
+        "In decisionarena/metrics.py, in the Brier score",
+        "In cases/routing.json, where each ticket has a fixed length"
+      ],
+      "answer": 1,
+      "explain": "Provider.estimate_cost() in decisionarena/providers.py is the formula: tok * self.price_per_mtok / 1_000_000. The harness only records the resulting number in meta.json - it does not compute it. The tempting wrong answer is the Brier score, which is about probability quality and has nothing to do with token counts or dollars."
+    }
+  ]
+}

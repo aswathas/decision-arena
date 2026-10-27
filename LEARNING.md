@@ -9,6 +9,24 @@ never been taught what a neural network is. That is fine. This document is the p
 from "I use the tools" to "I can explain, from first principles, why this harness
 reports what it reports" — and on to "I built a product somebody pays for."
 
+## Start with the Academy
+
+This 15-day sprint assumes you can already follow the maths. If you cannot
+yet, the repo ships its own course: **Decision Arena Academy** in
+[`course/`](course/README.md) — ten phases, forty-six lessons, from "what even
+is this" to "here is a finding somebody else can check".
+
+The Academy is the on-ramp; this sprint is the fast track. Run `/learn` in this
+repo, or start from the command line:
+
+```bash
+python tools/learn_state.py init --learner <your-name> --path beginner
+python tools/learn_state.py next
+```
+
+The Academy tracks mastery **per concept**, so when you arrive at Day 2 the
+system already knows which ideas you own and which ones you are faking.
+
 ## How this actually works
 
 You **write the code**. The AI explains, quizzes, reviews, and asks questions. It

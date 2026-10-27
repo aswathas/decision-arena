@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L52",
+  "title": "ECE and the reliability curve",
+  "questions": [
+    {
+      "id": "L52.q1",
+      "concept": "reliability-curve",
+      "prompt": "On a reliability diagram, the x-axis is the model's average stated confidence in a bucket and the y-axis is the fraction of predictions in that bucket that were correct. What does a point ABOVE the diagonal mean?",
+      "options": [
+        "The model is underconfident in that bucket - it promised less than it delivered",
+        "The model is overconfident in that bucket - it promised more than it delivered",
+        "The model has more questions in that bucket than in the others",
+        "The bucket is empty"
+      ],
+      "answer": 0,
+      "explain": "Above the diagonal means the y value (what actually happened) is larger than the x value (what was promised) - the model promised less than it delivered, which is UNDER-confidence. The second option describes a point BELOW the diagonal: a high confidence with a low accuracy, the classic overconfident case. The third option is nonsense - bucket size is the 'n' column, not a position on the plot. The fourth option is impossible: reliability_bins() skips empty buckets entirely."
+    },
+    {
+      "id": "L52.q2",
+      "concept": "ece",
+      "prompt": "Why does _ece() weight each bucket by (len(bucket) / total) instead of averaging the bucket gaps equally?",
+      "options": [
+        "Because weighting is faster than averaging",
+        "Because a bucket holding one prediction should not swing the score as much as a bucket holding a hundred - the metric should reflect what the model does on most of the workload",
+        "Because weighting removes the need for binning",
+        "Because unweighted averages can be negative"
+      ],
+      "answer": 1,
+      "explain": "ECE is meant to describe how well the model behaves on the workload you actually have. A bucket with a single prediction has a noisy accuracy - it could be 0 or 1 purely by luck - so letting it contribute a third of the score would make the number unstable and unrepresentative. The weighted form in `_ece()` gives each bucket influence in proportion to how many questions it holds. The speed option is irrelevant. The third option is wrong: binning happens either way. The fourth option is wrong: the gaps are absolute values, so they are never negative."
+    },
+    {
+      "id": "L52.q3",
+      "concept": "calibration-error",
+      "prompt": "A model answers \"50 %\" about every question. Its ECE is exactly 0. Why is that not a recommendation?",
+      "options": [
+        "Because ECE must always be greater than zero",
+        "Because ECE measures calibration only - it says nothing about sharpness, and a perfectly calibrated but uninformative model cannot distinguish anything",
+        "Because 50 % is not a valid probability",
+        "Because the ECE of such a model is really 1.0"
+      ],
+      "answer": 1,
+      "explain": "ECE measures one axis: are the stated probabilities honest? It says nothing about whether the model discriminates between cases at all. A model that says 50 % everywhere is perfectly calibrated - the average stated confidence equals the average accuracy - and completely useless, because it never ranks anything. Calibration and sharpness are two different properties, and a deployable model needs both. The first option is wrong: ECE of 0 is the ideal value on its own axis. The third option is wrong: 0.5 is a perfectly valid probability. The fourth option is wrong: 0.5 confidence against a mix of outcomes gives a small ECE, not 1.0."
+    },
+    {
+      "id": "L52.q4",
+      "concept": "binning",
+      "prompt": "The same set of predictions gives ECE 0.12 with 10 bins and ECE 0.19 with 5 bins. What does that tell you about comparing ECE numbers across providers?",
+      "options": [
+        "That the 5-bin number is the more accurate one",
+        "That ECE is defined relative to a binning choice, so two providers can only be compared if they were scored with the same number of bins",
+        "That the predictions were wrong",
+        "That ECE should be rounded before comparing"
+      ],
+      "answer": 1,
+      "explain": "Binning decides which predictions get compared with which: with 10 bins the 'said 85 %' predictions are compared against each other, with 5 bins they sit in a wider drawer with other promises. Different drawers give different confidence and accuracy averages, hence different ECE for the same model. So ECE is ECE-at-a-given-binning, and `_ece()` takes `bins=10` as its default - if you compare two providers, both must be scored the same way. The first option is wrong: neither is more 'accurate', they just measure different groupings. The third option confuses the metric with the predictions. The fourth option is irrelevant - rounding changes nothing about the binning."
+    }
+  ]
+}

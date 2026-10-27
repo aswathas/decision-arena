@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L91",
+  "title": "Running the experiment at scale",
+  "questions": [
+    {
+      "id": "L91.q1",
+      "concept": "repeats",
+      "prompt": "What does --repeats 3 tell you that one call per case cannot?",
+      "options": [
+        "Whether your case set is big enough to be meaningful",
+        "How much of the observed movement is the model's own variability rather than the effect you are testing",
+        "What the provider charges per million tokens",
+        "Whether the battery hash changed between runs"
+      ],
+      "answer": 1,
+      "explain": "Repeats re-run the same input, so they expose the provider's own jitter - the independent harness found Clef repeats byte-identical while Jev's probabilities moved by about 0.01-0.05. Without repeats, a 0.02 movement and a 0.10 movement look identical, because you cannot tell how much of either is the effect. The tempting first option is the other half of the noise problem and repeats do not fix it: five cases is five cases however many times you repeat them, so the denominator still has to be reported."
+    },
+    {
+      "id": "L91.q2",
+      "concept": "spend-cap",
+      "prompt": "What happens when the running cost reaches the spend cap inside run_battery()?",
+      "options": [
+        "The process exits with an error and the collected files are deleted",
+        "The run aborts with aborted=True and an abort_reason, and everything collected up to that point is still written to runs/",
+        "The cap is raised automatically so the battery can finish",
+        "Only the final case is dropped from the results"
+      ],
+      "answer": 1,
+      "explain": "The check sits at the top of the case-and-repeat loop: if cost >= spend_cap the run sets aborted and reason 'spend cap $X reached' and breaks out of both loops. The RunResult carries aborted and abort_reason, the report prints an ABORTED line, and the jsonl and meta.json for what was collected are still written - so a capped run is a bounded run, not a lost one. The tempting wrong answers describe behaviours the code does not have: nothing deletes files, nothing raises the cap, and the abort stops the whole battery rather than trimming the last case."
+    },
+    {
+      "id": "L91.q3",
+      "concept": "sampling",
+      "prompt": "The independent harness measured Clef's repeats as byte-identical and Jev's probabilities as jittering by roughly 0.01-0.05. What does that 0.05 mean for an effect you are trying to detect?",
+      "options": [
+        "Jev is unusable and should not be measured",
+        "You need at least 0.05 more cases in the battery",
+        "An effect smaller than about 0.05 could not be told apart from the provider's own jitter on a single call",
+        "Repeats are pointless for Jev and should be switched off"
+      ],
+      "answer": 2,
+      "explain": "That 0.05 is the noise floor for a single Jev call: a measured movement of 0.03 might be the whole effect, or it might be jitter. That is exactly why repeats matter, because averaging over repeats shrinks the noise. The tempting wrong answers each invert the lesson: jitter is a fact about a specific provider, not a reason to discard it (Jev was still measured by the same harness), and repeats are the tool that makes small effects visible, not something to switch off."
+    },
+    {
+      "id": "L91.q4",
+      "concept": "experiment-design",
+      "prompt": "Your offline friction run against the mock shows a mean spread of 0.42 with 4 flips at 0.5, and every repeat is byte-identical. What have you actually learned?",
+      "options": [
+        "That decision models are extremely sensitive to input format",
+        "That the harness pipeline works end to end - and nothing about any model, because MockProvider.FORMAT_SHIFT is designed in and the mock's answers are a hash of the input",
+        "That the format battery is mislabelled",
+        "That repeats should be raised to 10 before the number means anything"
+      ],
+      "answer": 1,
+      "explain": "MockProvider.FORMAT_SHIFT is {\"prose\": 0.0, \"flat\": -0.04, \"nested\": -0.81} - the spread you measured was put there on purpose, and the probabilities come from a SHA-256 hash of the input, which is why repeats are byte-identical. So the offline run validates your pipeline and your arithmetic, and the mock's numbers must never be quoted as evidence (AGENTS.md rule 4, and the banner on every mock report). The first option is exactly the misreading that rule exists to prevent, and the fourth confuses the noise question with the label question."
+    }
+  ]
+}

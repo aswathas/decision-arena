@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L54",
+  "title": "Action-change rate - swap safety",
+  "questions": [
+    {
+      "id": "L54.q1",
+      "concept": "action-change-rate",
+      "prompt": "Two providers both pick \"billing\" for the team question. One gives it 0.62, the other 0.58, and the threshold in cases/routing.json is 0.6. What does action_change_rate() report?",
+      "options": [
+        "No change - the labels are identical, so nothing changed",
+        "An action change rate of 0.5, because only one of the two providers changed its mind",
+        "An action change rate of 0.0, because 0.62 and 0.58 are within 0.05 of each other",
+        "One action change out of one compared question: provider A acts (0.62 >= 0.6), provider B does not (0.58 < 0.6), so the rate is 1.0"
+      ],
+      "answer": 3,
+      "explain": "The `choice` branch of `action_change_rate()` compares each provider's TOP probability against the threshold: 0.62 >= 0.6 acts, 0.58 < 0.6 does not, so one action change out of one compared question - a rate of 1.0. The first option is the exact confusion this metric exists to prevent: the labels are the same, the actions are not. The second option misreads the denominator - `compared` counts questions, not providers, and the label agreement between the two providers is 1.0 anyway. The third option is invented; nothing in the metric compares the two providers' values to each other, only to the threshold."
+    },
+    {
+      "id": "L54.q2",
+      "concept": "thresholds",
+      "prompt": "A provider says 0.48 for is_billing and another says 0.52. The threshold is 0.5. Why is this small difference worth a whole metric?",
+      "options": [
+        "Because a threshold sitting in the middle of two models' outputs turns a tiny probability difference into a completely different action - and that is the normal condition, not an edge case",
+        "Because 0.04 is larger than the measurement error of any API",
+        "Because thresholds are stored in the case files and therefore need auditing",
+        "Because probabilities must be reported to more decimal places"
+      ],
+      "answer": 0,
+      "explain": "The threshold is a decision boundary, and two models that differ at all will straddle it sometimes. 0.48 vs 0.52 flips 'act' to 'do not act' completely, so the cost of a swap is not proportional to the probability difference - it is a step function. That is why the repo reports the action-change rate rather than only agreement. The second option is irrelevant - the metric has nothing to do with measurement error. The third option is true of the mechanics (thresholds live in the case files) but is not a reason the metric matters. The fourth option is unrelated."
+    },
+    {
+      "id": "L54.q3",
+      "concept": "hysteresis-intro",
+      "prompt": "What is hysteresis in this context, what does it buy, and what does it cost?",
+      "options": [
+        "A single higher threshold; it removes all flapping at the cost of missing borderline cases entirely",
+        "Retraining the model so its probabilities are more spread out",
+        "Running both providers and taking the average of their probabilities",
+        "Two thresholds instead of one - act above the higher one, keep acting until below the lower one - so small differences stop flipping actions, at the cost of reacting more slowly near the threshold"
+      ],
+      "answer": 3,
+      "explain": "Hysteresis means two thresholds with a band between them: act when p >= t + margin, stop acting only when p < t - margin, and keep the current action inside the band. Two providers whose probabilities differ by 0.04 then almost never disagree about the action, so the action-change rate falls and the flapping stops. The cost is latency near the threshold - the system becomes slower to react - and that is a product decision, not a modelling one. This repo does not implement hysteresis; it measures the damage it would prevent. The first option is just a raised threshold with no band. The second and third options describe other things entirely."
+    },
+    {
+      "id": "L54.q4",
+      "concept": "swap-safety",
+      "prompt": "Why does this repo treat the action-change rate as the headline swap-safety number rather than label agreement or accuracy?",
+      "options": [
+        "Because it is the easiest metric to compute",
+        "Because agreement and accuracy are unreliable in general",
+        "Because it answers the question a buyer actually has - what changes in production if I change vendor - while accuracy and agreement are framings a vendor can look good on",
+        "Because the action-change rate is the only metric that does not need thresholds"
+      ],
+      "answer": 2,
+      "explain": "The repo's brief is that every vendor publishes a benchmark where they win. Accuracy and label agreement are both framings a vendor can be happy with. The action-change rate asks the operational question: if I swap, which decisions flip? - and it is reported next to the thresholds in `cases/routing.json`, which are the product's own decision rules. The first option is wrong - it needs thresholds, which is exactly why it is not the simplest metric. The second option is unfair: accuracy and agreement are perfectly good metrics, they just do not answer this question. The third option is exactly backwards: `action_change_rate()` requires a thresholds dict."
+    }
+  ]
+}

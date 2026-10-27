@@ -1,0 +1,71 @@
+{
+  "lesson_id": "L60",
+  "title": "The evidence contract - raw calls before conclusions",
+  "questions": [
+    {
+      "id": "L60.q1",
+      "concept": "evidence-contract",
+      "prompt": "A colleague hands you a Markdown report saying \"accuracy 92.3%\". What does the evidence contract in this repo require you to find before you repeat that number?",
+      "options": [
+        "The raw run file behind it - the runs/<run_id>.jsonl (plus the matching meta.json) - so the number can be recomputed from the raw calls",
+        "Nothing; a report is the authoritative output of the harness",
+        "A screenshot of the terminal that produced it",
+        "The vendor's own published benchmark, to cross-check the number"
+      ],
+      "answer": 0,
+      "explain": "The contract is: raw first (runs/<run_id>.jsonl with the provider's own output), then meta (runs/<run_id>.meta.json with provider, price, battery hash, timestamps), then the report, which is derived from the two files before it. Without the raw file you cannot recompute 92.3% or check that it came from the cases you think it did. 'A report is authoritative' is exactly the belief the contract exists to break - report.py contains no measurement at all, so it can only be wrong about what the raw data says. A screenshot proves nothing and cannot be recomputed. The vendor's benchmark is the thing this repo exists to replace, not a source of truth."
+    },
+    {
+      "id": "L60.q2",
+      "concept": "provenance",
+      "prompt": "What is provenance, in the sense the evidence contract uses it?",
+      "options": [
+        "The order the JSONL lines appear in",
+        "The list of every provider the harness knows how to build",
+        "The chain of custody for a result: which provider and model, which cases, when, at what price - the facts that let someone locate and re-check the observation",
+        "The number of times a run was repeated"
+      ],
+      "answer": 2,
+      "explain": "Provenance means where the result came from: provider name, price per Mtok, cases, repeats, battery hash, timestamps, cost and uuid - all recorded in meta.json and stamped into every JSONL line as run_id. That is what lets a reader tie a number to the exact model, questions and moment that produced it. Line order is incidental. The list of known providers is a registry, not a record of this run - 'jev' could be jev-latest today and jev-1.13.0 next month. Repeat count matters (it is in meta.json) but it is one fact among several, not the whole chain of custody."
+    },
+    {
+      "id": "L60.q3",
+      "concept": "reproducibility",
+      "prompt": "Two runs of the same provider have different battery_hash values in their meta.json. What does that tell you?",
+      "options": [
+        "One of the runs was faked",
+        "The two runs were made against different sets of cases, so their accuracies are not directly comparable",
+        "The provider changed its pricing between the runs",
+        "The hash changes on every run by design, so it carries no information"
+      ],
+      "answer": 1,
+      "explain": "battery_hash() hashes the whole case list, so if the hash differs the cases differ - someone edited the case file, or the two runs used different batteries. Comparing accuracy across different question sets compares apples to oranges. It says nothing about honesty (the same honest harness can produce two hashes) and nothing about pricing (price_per_mtok is a separate field in meta.json). The hash is a fingerprint, not a nonce: it is stable for identical cases, which is exactly what makes it useful."
+    },
+    {
+      "id": "L60.q4",
+      "concept": "reproducibility",
+      "prompt": "In this repo, what is the difference between the report and the raw JSONL file when it comes to reproducibility?",
+      "options": [
+        "They are two copies of the same data, so either one works",
+        "The report is more reproducible because it is human-readable",
+        "The raw file is a temporary cache that gets deleted after the report is written",
+        "The raw file is what you can recompute from; the report is a derived summary that can be regenerated from the raw file but is never edited by hand"
+      ],
+      "answer": 3,
+      "explain": "The direction of derivation is the whole point: raw calls -> meta -> report. The report is regenerated from the raw evidence every time, so a reader who wants to check a number opens the JSONL and recomputes it by hand. The two files are not copies - the JSONL holds per-call provider output, latency, token usage and cost, while the .md holds aggregates. 'Human-readable' is not reproducibility; recomputability is. And nothing deletes the raw file: runs/ is committed evidence in this repo, and deleting it would turn the number back into marketing."
+    },
+    {
+      "id": "L60.q5",
+      "concept": "jsonl",
+      "prompt": "Connect this to the repo: why does the harness write evidence as JSONL - one JSON object per line — instead of a single pretty-printed JSON array?",
+      "options": [
+        "Because a line-oriented file can be appended to and read line by line, so one call can be inspected without parsing the whole file, and a truncated write still leaves earlier lines readable",
+        "Because JSONL files are smaller and compress better",
+        "Because json.dumps cannot write nested arrays",
+        "Because the report writer needs a Markdown-safe format"
+      ],
+      "answer": 0,
+      "explain": "run_battery() writes one json.dumps(r) per record, one per line - so the file is greppable, line-oriented and appendable, and a crash mid-write does not destroy the lines already written. The size argument is wrong: JSONL is usually slightly larger than an array because of the repeated brackets and separators, and there is no compression in this repo anyway. json.dumps handles nested structures perfectly well - the harness dumps nested 'answers' dicts all the time. And the report writer reads the RunResult in memory; it never parses the file, so the file format is chosen for the human and for the checker, not for report.py."
+    }
+  ]
+}

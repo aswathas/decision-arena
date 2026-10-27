@@ -10,10 +10,29 @@ The point: every vendor published a benchmark table where they win, and the two 
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | The rules for this repo — for humans and for other AI agents |
 | [`AI-CONTEXT.md`](AI-CONTEXT.md) | Machine-readable current state: what exists, what is verified, what is blocked |
+| [`course/README.md`](course/README.md) | **Decision Arena Academy** — the beginner course, ten phases, forty-six lessons |
 | [`LEARNING.md`](LEARNING.md) | The 15-day curriculum this repo teaches, day by day |
 | [`docs/architecture-graph.md`](docs/architecture-graph.md) | The code graph — 188 nodes, 9 communities, with the interactive version alongside |
 | [`docs/decision-log.md`](docs/decision-log.md) | Every decision that shaped this repo, and what it cost |
 | [`examples/README.md`](examples/README.md) | The learning path: five runnable scripts that teach the maths |
+
+## Learn it
+
+The repo ships its own course. A beginner who knows nothing about LLMs works
+through ten phases — from "what even is this" to "here is a finding somebody
+else can check" — and an AI agent teaches each lesson, hands over one
+micro-exercise, quizzes them, and tracks what they actually learned.
+
+```bash
+python tools/install_skills.py          # install the /learn skill into .claude/skills/
+python tools/learn_state.py init --learner <your-name> --path beginner
+python tools/learn_state.py next        # what to learn next, and why
+```
+
+Then run `/learn` in this repo. The course is the folder `course/`; the skills
+are in `skills/`; the learner state is in `learning/`; and
+`python tools/course_check.py --check` is the gate that keeps a broken lesson
+from ever reaching a learner.
 
 
 ## Zero-install

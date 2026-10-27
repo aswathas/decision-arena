@@ -1,0 +1,71 @@
+{
+  "lesson_id": "L24",
+  "title": "From logits to a decision - argmax, sampling and generation",
+  "questions": [
+    {
+      "id": "L24.q1",
+      "concept": "decoding",
+      "prompt": "What is the decisive difference between a chat LLM and a decision model at the decoding step?",
+      "options": [
+        "The chat LLM uses softmax and the decision model uses argmax",
+        "The chat LLM decodes over an open vocabulary of tokens and generates a sequence by feeding each sampled token back; the decision model decodes over your fixed list of options and produces one distribution, once",
+        "The decision model runs more blocks than the chat LLM",
+        "The chat LLM returns probabilities and the decision model returns text"
+      ],
+      "answer": 1,
+      "explain": "Both use the same softmax. The chat LLM's vocabulary is tens of thousands of tokens and the loop runs until a stop condition; the decision model's vocabulary is the criteria you listed in the question and there is no loop - one softmax, one distribution. The tempting wrong answer is the fourth one, which is exactly backwards: the decision model returns probabilities and a value, and the chat LLM returns text."
+    },
+    {
+      "id": "L24.q2",
+      "concept": "temperature-applied",
+      "prompt": "What does raising the temperature from 1.0 to 5.0 do to a distribution over options?",
+      "options": [
+        "It flattens the distribution - the top option's probability falls - but it never changes the RANKING of the options",
+        "It sharpens the distribution, because dividing by a bigger number makes the logits larger",
+        "It changes the ranking, because the smaller gaps get relatively bigger",
+        "It leaves the distribution untouched, because softmax normalises away any constant"
+      ],
+      "answer": 0,
+      "explain": "Temperature divides the logits before the softmax, so a bigger T makes the gaps between logits smaller in the exponent and the distribution flatter. The ranking is untouched - examples/02_temperature.py asserts that the order is preserved at every temperature. The tempting wrong answer is the third one: raising T never reorders anything, it only changes how lopsided the distribution is."
+    },
+    {
+      "id": "L24.q3",
+      "concept": "sampling",
+      "prompt": "The model returns {\"billing\": 0.72, \"technical\": 0.18, \"sales\": 0.10}. If you sample from this distribution many times, roughly what fraction of draws give \"billing\"?",
+      "options": [
+        "About 10%, because sampling is uniform over the options",
+        "About 50%, because the top two options are close",
+        "About 72%, because each option is drawn in proportion to its probability",
+        "About 100%, because billing is the argmax"
+      ],
+      "answer": 2,
+      "explain": "Sampling draws in proportion to the probabilities, so billing comes up roughly 72% of the time. The tempting wrong answer is the fourth one: that is argmax, not sampling, and it is a different decoding strategy that throws away the rest of the distribution."
+    },
+    {
+      "id": "L24.q4",
+      "concept": "generation",
+      "prompt": "Why does this repo measure the probabilities dict rather than the chosen option?",
+      "options": [
+        "Because the probabilities are cheaper for the provider to compute",
+        "Because the probabilities carry the information a hard label throws away, and they are what the threshold and the calibration metrics need",
+        "Because the chosen option is often wrong",
+        "Because the harness cannot store strings in JSON"
+      ],
+      "answer": 1,
+      "explain": "decisionarena/metrics.py's collect_scored() pulls the probability of the gold option out of the dict, and action_change_rate() compares the top probability against the threshold. Both need the distribution, not the label. The tempting wrong answer is the third one: the label is right most of the time - but the whole point is that a hard label cannot tell you whether the model was barely right or overwhelmingly right, and that distinction is what calibration is made of."
+    },
+    {
+      "id": "L24.q5",
+      "concept": "decoding",
+      "prompt": "In cases/routing.json, the thresholds are {\"is_billing\": 0.5, \"team\": 0.6, \"severity\": 0.5}. What does that 0.6 mean for the team question?",
+      "options": [
+        "The routing decision is made only if the model's top team probability is at least 0.6",
+        "The model must assign exactly 0.6 to the billing team",
+        "60% of the team question's tokens are used as context",
+        "The model's confidence must be 0.6, independently of the option probabilities"
+      ],
+      "answer": 0,
+      "explain": "The threshold is the decision rule that sits between the distribution and the action: metrics.action_change_rate() acts when the top probability clears it. The tempting wrong answer is the last one - confidence is a separate field from the probabilities, and the harness acts on the probabilities, not on the reported confidence."
+    }
+  ]
+}

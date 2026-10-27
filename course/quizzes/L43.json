@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L43",
+  "title": "Jev - TypeSafe System One",
+  "questions": [
+    {
+      "id": "L43.q1",
+      "concept": "decision-model-api",
+      "prompt": "What is the practical difference between a decision-model API like Jev's System One and a chat API?",
+      "options": [
+        "The decision-model API is cheaper per token",
+        "The decision-model API takes a state plus structured questions and returns structured answers with probabilities, instead of a free-text reply you have to parse",
+        "The decision-model API has no rate limits",
+        "The decision-model API is the only kind of API that can return a number"
+      ],
+      "answer": 1,
+      "explain": "The chat API hands you a paragraph and leaves the interpreting to you. The System One wire format hands you a dict of structured answers - a probability for a `noul` question, an option key for a `choice` question, a level index for a `score` question - and that structure is exactly what `normalise_answers()` and then `collect_scored()` need. The cost option is false here: Jev's price is $0.042 per Mtok, and the price is decided by the provider, not by the API style. The rate-limit option is invented. The last option is nonsense - plenty of APIs return numbers; what matters is whether the number is a decision or a fragment of prose."
+    },
+    {
+      "id": "L43.q2",
+      "concept": "jev",
+      "prompt": "The provider's name is \"jev:jev-latest\" or \"jev:jev-1.14.0\". Why does the adapter build the name that way instead of just \"jev\"?",
+      "options": [
+        "Because the colon is required by the HTTP header format",
+        "Because the model id has to be visible in the run id and the report, so a pinned model is never confused with the moving \"latest\" one",
+        "Because Cloudflare's URL format needs a colon",
+        "Because price_per_mtok cannot be stored on the provider otherwise"
+      ],
+      "answer": 1,
+      "explain": "The name is a label that ends up in the run id, in `runs/<run_id>.jsonl`, in the meta.json and in the report, so it has to say WHICH model produced the evidence. `jev-latest` is a moving target; `jev-1.14.0` is pinned. Comparing \"jev-latest\" today with \"jev-latest\" next month may compare two different models - and then the numbers are not comparable at all. The header option is wrong: headers use colons as separators, and the name never reaches a header. The Cloudflare option is wrong: Cloudflare URLs use slashes, and this is Jev's adapter. The price option is wrong: `price_per_mtok` is an ordinary dataclass field of the base `Provider` class."
+    },
+    {
+      "id": "L43.q3",
+      "concept": "api-key",
+      "prompt": "JevProvider.decide() checks the credential before it builds the request and raises RuntimeError(\"TYPESAFE_API_KEY is not set\"). Why check before the request rather than after?",
+      "options": [
+        "Because the API would charge for a rejected request",
+        "Because failing fast with a clear message keeps the failure in your own code, instead of a confusing HTTP error from a remote server",
+        "Because the key might expire mid-call",
+        "Because the timeout is set to 60 seconds and the check takes longer than that"
+      ],
+      "answer": 1,
+      "explain": "The credential is read from the environment in `__init__`, so an absent key is knowable locally, before any network traffic. Raising a RuntimeError with the variable name gives the operator the one thing they need: which env var to set. Failing after the request would give a remote 401 and a much vaguer message. The charging option is nonsense for a rejected request. The expiry option is invented - nothing in the adapter tracks key expiry. The timeout option is confused nonsense: the timeout bounds how long the request may take, and the check happens before the request exists."
+    },
+    {
+      "id": "L43.q4",
+      "concept": "system-one",
+      "prompt": "You want to check your setup and see exactly which cases would run against Jev, without spending anything or making a single call. Which command does that?",
+      "options": [
+        "python -m decisionarena run --provider jev --battery routing --dry-run",
+        "python -m decisionarena run --provider jev --battery routing",
+        "python -m decisionarena friction --provider jev",
+        "python -m decisionarena providers"
+      ],
+      "answer": 0,
+      "explain": "`--dry-run` in `cmd_run()` prints the provider, the battery size, the price and the list of case ids and their question keys, and then returns without calling anything. Without the flag the run really calls the API and writes evidence to runs/. The friction option is a different experiment - it runs the format-variants battery and needs real calls. The providers option lists which providers are configured, which is useful but does not show the cases. The second option is the live run: it makes real calls and spends real money."
+    }
+  ]
+}

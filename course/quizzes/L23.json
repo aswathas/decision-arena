@@ -1,0 +1,70 @@
+{
+  "lesson_id": "L23",
+  "title": "The transformer block - attention, MLP, residual and layer norm",
+  "questions": [
+    {
+      "id": "L23.q1",
+      "concept": "transformer-block",
+      "prompt": "What are the four parts of a transformer block, in the order the operations happen in a pre-norm block?",
+      "options": [
+        "attention -> MLP -> residual -> layer norm",
+        "layer norm -> attention -> residual -> layer norm -> MLP -> residual",
+        "MLP -> attention -> residual -> layer norm -> residual",
+        "embedding -> attention -> softmax -> output"
+      ],
+      "answer": 1,
+      "explain": "In a pre-norm block: normalise, run attention, add the input back (residual); normalise again, run the MLP, add the input back (residual). The tempting wrong answer is the first one, which is a plausible-sounding order that puts the residual in the wrong place and layer norm at the end - post-norm ordering, which was the original 2017 form but is now the less common choice because it trains worse."
+    },
+    {
+      "id": "L23.q2",
+      "concept": "mlp",
+      "prompt": "Why does a transformer block need an MLP at all? Attention alone cannot do the job, because...",
+      "options": [
+        "The MLP is what converts the final vector into output logits",
+        "Attention output is a weighted average of values that already exist, so it can move information around but cannot compute a new feature; the MLP is where the actual thinking happens",
+        "Attention output vectors are not normalised, so the MLP normalises them",
+        "The MLP supplies the query and key vectors that attention needs"
+      ],
+      "answer": 1,
+      "explain": "Attention mixes what is already there. The MLP applies a small nonlinear function independently at every position, and that is where new features are computed. The tempting wrong answer is the first one - the logits come from a separate output projection after the final block, not from the MLP inside each block."
+    },
+    {
+      "id": "L23.q3",
+      "concept": "residual-connection",
+      "prompt": "What is the gradient-level reason the residual connection helps a 100-block stack train at all?",
+      "options": [
+        "It gives the gradient a direct, unobstructed path back to earlier layers instead of forcing it through 100 nonlinearities",
+        "It removes the need for layer norm",
+        "It makes the attention weights sum to 1",
+        "It reduces the number of parameters in the block"
+      ],
+      "answer": 0,
+      "explain": "Adding the input back means the gradient can flow back along a straight highway instead of being multiplied by 100 Jacobians, which is exactly the vanishing-gradient problem examples/03_train_linear.py names: 'why deep networks need tricks (residual connections, careful initialisation, normalisation)'. The tempting wrong answer is the second one - layer norm is still needed; the residual connection and the norm solve different problems."
+    },
+    {
+      "id": "L23.q4",
+      "concept": "layer-norm",
+      "prompt": "What does layer norm do to a vector, and what does it deliberately leave alone?",
+      "options": [
+        "It clips every component into [0, 1], discarding anything outside that range",
+        "It sorts the components so the largest is first",
+        "It rescales the vector to have mean about 0 and standard deviation about 1, deliberately keeping the direction - the information - while taming the magnitude",
+        "It converts the vector into a probability distribution that sums to 1"
+      ],
+      "answer": 2,
+      "explain": "Layer norm subtracts the mean, divides by the standard deviation, then applies a learned scale and shift. The direction of the vector carries the information; the magnitude is what drifts as you stack blocks, and a drifted magnitude pushes the next softmax into the saturated zone L22 warned about. The tempting wrong answer is the last one - that is what softmax does, and softmax is a different operation on a different axis."    },
+    {
+      "id": "L23.q5",
+      "concept": "transformer-block",
+      "prompt": "In this repo, which part of the harness actually sees any of the block's internals?",
+      "options": [
+        "The metrics inspect the attention weights to compute ECE",
+        "The harness re-implements the block to check the vendor's numbers",
+        "The provider adapters log the layer-norm outputs",
+        "None of it - the harness is deliberately blind to the mechanism and measures only the returned probabilities, accuracy, calibration and swap safety"
+      ],
+      "answer": 3,
+      "explain": "decisionarena/providers.py sends the raw state string to a vendor and decisionarena/metrics.py measures what comes back. That separation - mechanism versus measurement - is the architecture of the project, as examples/04_attention_numpy.py's closing block states: 'The harness does not care HOW the model does that.' The tempting wrong answer is the second one: the harness never re-implements a model, because the point is to measure the model as a black box."
+    }
+  ]
+}

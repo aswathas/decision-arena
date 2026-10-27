@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L90",
+  "title": "Choosing a hypothesis worth testing",
+  "questions": [
+    {
+      "id": "L90.q1",
+      "concept": "prior-work",
+      "prompt": "The independent harness rmax-ai/jev-vs-clef reported a 0.90 / 0.86 / 0.09 spread on noul questions across prose, flat and nested states. What does that make, for your own experiment?",
+      "options": [
+        "A hypothesis you can still test, because nobody has looked at it",
+        "Prior work: that state shape moves noul answers is already established, so your finding has to state its delta",
+        "A vendor benchmark table",
+        "A result you may quote as your own finding"
+      ],
+      "answer": 1,
+      "explain": "That number is recorded as VERIFIED in the vault's Claims Ledger: the same refund request gives 0.90 in prose, 0.86 in flat JSON and 0.09-0.10 in nested JSON, while choice and score stay stable. So 'state shape moves noul answers' is background, not a finding - repeating it would add a point to a known curve. The tempting first option is the trap this lesson exists to break; the fourth is the failure mode of not reading prior work at all, and the third is wrong because that harness is third-party raw evidence, not a vendor table."
+    },
+    {
+      "id": "L90.q2",
+      "concept": "hypothesis",
+      "prompt": "Which of these sentences is a falsifiable hypothesis?",
+      "options": [
+        "State shape affects decision quality",
+        "Format sensitivity is a serious problem for decision models",
+        "On our 20 production tickets, the noul probability for is_billing moves by more than 0.10 between the prose and nested serialisations, and at least one ticket changes side of 0.5",
+        "Decision models are not deterministic enough to certify"
+      ],
+      "answer": 2,
+      "explain": "A falsifiable hypothesis names the measurement, the numbers and the boundary, so that some result could prove it wrong - the third sentence does all three. The first two are the tempting wrong answers: they are beliefs with no number attached, so no outcome can contradict them and running the experiment teaches you nothing. The fourth is also too vague: no measurement is specified, and the published determinism work gives you a specific figure to aim at instead."
+    },
+    {
+      "id": "L90.q3",
+      "concept": "kill-criteria",
+      "prompt": "Why must the kill criteria be written before the experiment runs?",
+      "options": [
+        "Because the harness requires a pre-registration file",
+        "Because a threshold chosen after seeing the number is a threshold chosen to keep the number",
+        "Because kill criteria are written into the run's meta.json",
+        "Because kill criteria are cheaper to write than metric names"
+      ],
+      "answer": 1,
+      "explain": "The whole value of a kill criterion is that it was fixed in advance; once you have seen 'mean spread 0.42', any cutoff you pick is chosen to preserve that result, and the write-up can no longer be distinguished from a fishing expedition. Pre-registration also makes the null result meaningful - a pre-registered criterion that fires is a finding, not a disappointment. The tempting wrong answers are wrong on the facts: the harness has no such requirement, meta.json carries no kill criteria, and the cost of writing is irrelevant to why the order matters."
+    },
+    {
+      "id": "L90.q4",
+      "concept": "novelty",
+      "prompt": "The vault's Claims Ledger lists, as an open question with no source found, \"Is there an independent, reproducible accuracy comparison on real-world (not synthetic) states?\" What does that give you?",
+      "options": [
+        "Permission to publish the vendor's benchmark table as your own result",
+        "A gap with no name, which you must invent a hypothesis to fill",
+        "A named, still-unpublished gap you can position a cheap, checkable hypothesis against",
+        "Proof that nobody has ever compared two decision models"
+      ],
+      "answer": 2,
+      "explain": "That entry is a ready-made novelty statement: the vendor tables use the vendors' datasets and the independent harness used synthetic tickets, so a comparison on your own production-shaped states is unpublished, cheap to run, and checkable. The first option is the failure mode this repo's rules exist to stop - a vendor table is a CLAIM, not your measurement. The second is wrong because the gap is already named and described, and the fourth overstates it: the gap is about real-world states, not about every comparison ever done."
+    }
+  ]
+}

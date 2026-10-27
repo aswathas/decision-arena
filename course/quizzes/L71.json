@@ -1,0 +1,71 @@
+{
+  "lesson_id": "L71",
+  "title": "Gold labels - the scarcest resource",
+  "questions": [
+    {
+      "id": "L71.q1",
+      "concept": "outcome-labels",
+      "prompt": "What is the difference between an outcome label and a label of what should have happened?",
+      "options": [
+        "An outcome label is a probability, and a 'should have happened' label is a category",
+        "An outcome label records what actually happened - read out of the ticket queue, the CRM or the logs - while a 'should have happened' label records one person's reading of the case",
+        "An outcome label is written by a machine, and a 'should have happened' label is written by a human",
+        "There is no difference; they are two names for the same thing"
+      ],
+      "answer": 1,
+      "explain": "Outcome labels are read from the record of the work: which team handled the ticket, how it was closed, whether the customer churned. That is what makes them trustworthy, and it is why they can be bootstrapped cheaply. A 'should have happened' label is one person's judgement, and the person writing it is not the population the model serves - so when the model disagrees you cannot tell who is wrong. Probability versus category is the noul/choice distinction, not this one. Machine versus human is not the dividing line either - a human writes outcome labels all the time when reading them out of a queue."
+    },
+    {
+      "id": "L71.q2",
+      "concept": "label-quality",
+      "prompt": "Your model scores 88% on a battery whose two labellers agreed on only 90% of the cases. What does that tell you about the 88%?",
+      "options": [
+        "That the labellers were careless and the 88% should be trusted",
+        "That the model is 2% worse than the labellers, which is a meaningful gap",
+        "That the model should be re-run with more repeats",
+        "That the benchmark has roughly a 10% floor of inherent disagreement built into it, so the 88% carries substantial uncertainty and the model may be within noise of the labellers themselves"
+      ],
+      "answer": 3,
+      "explain": "If two careful labellers disagree on about 10% of cases, then the labels themselves contain roughly 10% of irreducible uncertainty. A reported 88% therefore has to be read with that error bar: the model may be indistinguishable from the labellers, and '88% vs 90%' is not a finding. Option 2 mistakes disagreement for carelessness - genuine ambiguity is the usual cause. Option 3 compares a number against a number measured on different cases. Option 4 confuses two different sources of noise: repeats test the model's stability, not the label's."
+    },
+    {
+      "id": "L71.q3",
+      "concept": "disagreement",
+      "prompt": "Two labellers disagree on a borderline ticket. What should adjudication do?",
+      "options": [
+        "Take the majority view of whoever is most senior, and discard the disagreement",
+        "Average the two labels into a half-way value",
+        "Drop the case from the battery, since it cannot be labelled reliably",
+        "Resolve it to the label the work actually justified - and record the disagreement, because it marks the case as ambiguous and belongs in a separate borderline slice of the results"
+      ],
+      "answer": 3,
+      "explain": "Adjudication is a process, not a vote: the adjudicator picks the label the actual work justified - often by going back to what the team that handled it really did - and the disagreement is kept, not erased, because it tells you where the task is ambiguous and where the model's competence is actually visible. Seniority is a tie-break at best, and erasing the disagreement destroys the information. Averaging is meaningless: a gold label is a categorical answer, not a number. Dropping the case quietly biases the benchmark toward easy cases and inflates every headline number."
+    },
+    {
+      "id": "L71.q4",
+      "concept": "label-quality",
+      "prompt": "Why can a wrong gold label make a good model look bad - and what is the opposite error?",
+      "options": [
+        "A wrong label raises accuracy artificially; the opposite error lowers it artificially",
+        "A wrong label changes the cost of the run; the opposite error changes the latency",
+        "There is no opposite error - a wrong label is only ever harmful in one direction",
+        "A wrong label marks a correct answer as wrong; the opposite error rewards the wrong behaviour and makes a bad model look good, which is worse because the benchmark now teaches the mistake"
+      ],
+      "answer": 3,
+      "explain": "Labels are the target, so the metric rewards whatever they say. If your label says 'sales' and the truth was 'billing', a model that routes correctly to billing is marked wrong - the bad direction. The opposite - a label that says 'billing' when the truth was 'sales' - makes a model that routes to sales look right, and the benchmark then actively rewards the mistake. That second error is more dangerous because it is invisible: the accuracy goes up and nothing looks wrong. Cost and latency are unaffected by labels."
+    },
+    {
+      "id": "L71.q5",
+      "concept": "outcome-labels",
+      "prompt": "Connect this to the repo: why can cases/injection.json and cases/format_variants.json have no gold labels at all, while cases/routing.json needs them?",
+      "options": [
+        "Because the injection and format batteries are too small to label",
+        "Because the mock provider cannot read gold labels",
+        "Because the routing battery is scored by comparing the model's answers against a right answer (accuracy, Brier, ECE all need an outcome), while the injection and format batteries are scored by how much the answer CHANGES - which needs no right answer at all",
+        "Because gold labels are only permitted in the routing battery for licensing reasons"
+      ],
+      "answer": 2,
+      "explain": "run_battery() only calls metrics.score_case() when the case has a gold entry, and score_case() is what produces accuracy, Brier and ECE - every one of those needs an outcome to compare against. The injection battery measures whether the decision flipped (action_change_rate against thresholds) and the format battery measures how far the probability moved (spread and flips_at_0.5). Neither has a right answer to compare with, so neither needs a label. That contrast is exactly why the format-friction experiment was the cheapest one in the field. The other three options are wrong: there is no licensing rule, the batteries are the same size, and the mock never sees a gold label - it produces answers only."
+    }
+  ]
+}

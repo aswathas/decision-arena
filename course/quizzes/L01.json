@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L01",
+  "title": "The three question types - noul, choice, score",
+  "questions": [
+    {
+      "id": "L01.q1",
+      "concept": "noul",
+      "prompt": "A provider answers a yes/no question with {\"type\": \"boolean\", \"boolean\": true}. What kind does the harness see, and how does it get there?",
+      "options": [
+        "kind=\"boolean\" - the harness keeps whatever the provider sent",
+        "kind=\"noul\" - normalise_answers() rewrites \"boolean\" into \"noul\"",
+        "kind=\"value\" - unknown types fall through to the generic branch",
+        "kind=\"noul\" - the harness rejects the answer and re-asks the question"
+      ],
+      "answer": 1,
+      "explain": "providers.py defines NUL_KEYWORDS = (\"noul\", \"boolean\") and normalise_answers() maps both to kind \"noul\", reading the value from a.get(\"noul\", a.get(\"boolean\")). That is why the module docstring can say the Vercel AI Gateway 'calls the same thing boolean and rejects noul'. The first option is wrong because the whole point of normalisation is one name for the metrics. The third option would only happen for a type the function does not know at all. The fourth is wrong because the harness never re-asks - it just translates."
+    },
+    {
+      "id": "L01.q2",
+      "concept": "choice",
+      "prompt": "For a `choice` question, what does the answer's value look like, and where do the option names come from?",
+      "options": [
+        "A float index into the criteria list, and the names are the list entries",
+        "A label string, and the names are the VALUES of the criteria dict",
+        "A label string, and the names are the KEYS of the criteria dict",
+        "A probability dict, and the names are its keys"
+      ],
+      "answer": 2,
+      "explain": "In cases/routing.json the team question has \"criteria\": {\"billing\": \"Charges, invoices...\", \"technical\": \"...\"} - a dict whose keys are the option names and whose values are the human-readable descriptions. The answer's value is one of those keys, e.g. \"billing\", and the probabilities dict is keyed by the same names. The first option describes a `score` question, not a `choice`. The second confuses which half of the dict is the vocabulary. The fourth describes the probabilities field, not the value."
+    },
+    {
+      "id": "L01.q3",
+      "concept": "score",
+      "prompt": "In cases/routing.json the severity criteria are [\"No impact\", \"Minor\", \"Major\", \"Critical\"] and the gold answer for routing-002 is 3. What does the 3 mean?",
+      "options": [
+        "The index of the level in the ordered criteria list, so the gold level is \"Critical\"",
+        "The severity as three out of four, so the gold level is \"Major\"",
+        "The probability that the severity is Critical",
+        "The number of levels below the chosen one"
+      ],
+      "answer": 0,
+      "explain": "A score answer is the index into the ordered criteria list, and the list is zero-based, so 3 selects \"Critical\". The second option is the tempting reading - \"3 out of 4\" sounds natural but the harness treats the number as a position, not a magnitude: metrics.collect_scored() reads dist.get(str(int(gold_value)), 0.0) and compares levels with a half-step tolerance (abs(value - gold) < 0.5), which only makes sense for positions. The third option confuses the value with the probability, and the fourth describes nothing in this protocol."
+    },
+    {
+      "id": "L01.q4",
+      "concept": "decision-types",
+      "prompt": "In cases/routing.json the gold block is {\"is_billing\": true, \"team\": \"billing\", \"severity\": 1}. What tells you which question type each gold belongs to?",
+      "options": [
+        "The length of the gold value - one character means noul",
+        "The Python type of the gold value: bool means noul, str means choice, int means score",
+        "The question id - \"is_\" prefixes are noul questions",
+        "The thresholds block, which names one threshold per question type"
+      ],
+      "answer": 1,
+      "explain": "metrics.collect_scored() branches on the answer's kind and treats gold as bool for a noul, a str for a choice and an int/float for a score - the gold's own type carries the same information. The first option is nonsense. The third is wrong because the question ids are the author's naming choice: the injection battery uses ids like \"contains_pii\" and \"is_destructive\", but the id is not what defines the type. The fourth option is wrong because thresholds are policy, not type - several different question types share the 0.5 threshold in that file."
+    }
+  ]
+}

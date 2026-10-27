@@ -1,0 +1,70 @@
+{
+  "lesson_id": "L30",
+  "title": "Loss - cross-entropy as surprise",
+  "questions": [
+    {
+      "id": "L30.q1",
+      "concept": "surprise",
+      "prompt": "The model gives the correct answer a probability of 0.001. What does -log(p) tell you, and in what units?",
+      "options": [
+        "That the model was wrong by 0.001, in probability units",
+        "That the model was maximally surprised by the truth - about 6.9 nats - because nats measure how many nats of information the truth cost you given the model's own distribution",
+        "That the loss is 0.001 nats, because the loss equals the probability",
+        "That the model was about 99.9% confident, so the loss should be small"
+      ],
+      "answer": 1,
+      "explain": "-log(0.001) is about 6.908 nats. A nat is the information needed to state the truth given what the model already said, so a probability of 0.001 costs nearly seven nats while 0.9 costs about 0.105. The tempting wrong answer is the third one: the loss is not the probability, it is the logarithm of its inverse, which is why a tiny probability produces a huge penalty rather than a tiny one."    },
+    {
+      "id": "L30.q2",
+      "concept": "negative-log-likelihood",
+      "prompt": "For a single example where the true class is 'billing' and the model gave it probability p, what does the cross-entropy reduce to?",
+      "options": [
+        "-log(p)",
+        "-(p - 1)^2",
+        "1 - p",
+        "-p * log(p)"
+      ],
+      "answer": 0,
+      "explain": "Cross-entropy sums y_c * log(p_c) over all classes, and only the true class has y_c = 1, so it collapses to -log(p_true) - the negative log-likelihood of the observed answer. The tempting wrong answer is the third one: 1 - p is the squared-error-style mistake measure, which does not punish a confident mistake without limit and is the reason the log exists."
+    },
+    {
+      "id": "L30.q3",
+      "concept": "cross-entropy",
+      "prompt": "Why does cross-entropy punish a confidently wrong prediction far more than a hesitant wrong one?",
+      "options": [
+        "Because cross-entropy adds a fixed penalty of 1 for every wrong answer",
+        "Because the model's confidence is subtracted from the loss",
+        "Because the log makes the penalty unbounded as p approaches zero, while the gap grows only linearly",
+        "Because cross-entropy ignores probabilities entirely and only counts errors"
+      ],
+      "answer": 2,
+      "explain": "Two reasons in one: the penalty grows without bound as p -> 0 (so p = 0.0001 costs 9.2 nats while p = 0.1 costs 2.3), and the scale is multiplicative rather than additive (a probability 10 times smaller is far more than 10 times worse). The tempting wrong answer is the first one - there is no fixed penalty; the penalty is entirely determined by the probability the model gave the true class."
+    },
+    {
+      "id": "L30.q4",
+      "concept": "log-loss",
+      "prompt": "Why does examples/03_train_linear.py clamp p into [1e-12, 1 - 1e-12] before taking any logarithm?",
+      "options": [
+        "To round the probability to a fixed precision",
+        "Because log(0) is -infinity, which would poison the loss and every gradient computed from it",
+        "To keep the loss from becoming negative",
+        "To make the probabilities sum to 1"
+      ],
+      "answer": 1,
+      "explain": "log(0) = -inf, so a saturated sigmoid would produce an infinite loss and then infinite gradients, and the training run would be dead. The clamp keeps the arithmetic finite while changing the answer by an amount too small to matter. The tempting wrong answer is the third one - the loss is always non-negative, and that is not what the clamp is for."
+    },
+    {
+      "id": "L30.q5",
+      "concept": "log-loss",
+      "prompt": "This repo reports the Brier score, mean of (p - o)^2, rather than cross-entropy. Why might you prefer the Brier score when REPORTING a model's quality?",
+      "options": [
+        "Because the Brier score never saturates",
+        "Because the Brier score stays in probability units, so it reads directly as 'mean squared probability error' and can be compared against a baseline without a log in the way",
+        "Because the Brier score does not need the gold labels",
+        "Because cross-entropy cannot be computed on a distribution"
+      ],
+      "answer": 1,
+      "explain": "The Brier score lives in the same units as the probability itself - a number between 0 and 1 - so it is directly interpretable and easy to compare, whereas cross-entropy is in nats and rewards a confident mistake more aggressively than the reporting audience usually expects. The tempting wrong answer is the third one: the Brier score absolutely needs the outcome, which is why _brier is fed the same (probability, outcome) pairs that collect_scored() builds."
+    }
+  ]
+}

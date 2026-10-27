@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L41",
+  "title": "Build your own provider - the mock, and what it is not",
+  "questions": [
+    {
+      "id": "L41.q1",
+      "concept": "mock-provider",
+      "prompt": "The MockProvider's FORMAT_SHIFT dict shifts the noul probability by -0.81 when the state is nested instead of prose. Why does the mock simulate that at all?",
+      "options": [
+        "Because the mock is a faithful copy of TypeSafe Jev and reproduces its real behaviour",
+        "Because the mock reproduces the SHAPE of published findings so the friction pipeline has something to detect, with zero credentials and zero spend",
+        "Because the mock was trained on the routing battery and learned the shift",
+        "Because the mock needs some way to make its own output look interesting"
+      ],
+      "answer": 1,
+      "explain": "The mock's own docstring says it reproduces the *shape* of the published findings so the pipeline - metrics, swap matrix, format-friction report - can be exercised without API keys. The shift is a hard-coded simulation of the reported format-friction effect, so `python -m decisionarena friction --provider mock` has a real signal to find. The first option is wrong: the mock is not a copy of any model and knows nothing about Jev. The third option is wrong: there is no training here at all - FORMAT_SHIFT is a literal dict of three constants. The fourth option is wrong: the shift exists so the harness is exercised, not to look impressive; report.run_report() stamps mock runs with a SIMULATED RUN banner precisely because the numbers are not evidence."
+    },
+    {
+      "id": "L41.q2",
+      "concept": "determinism",
+      "prompt": "Why must a mock provider be deterministic rather than random, even though the mock's numbers are not published as evidence?",
+      "options": [
+        "Because a random mock would be too slow to run over a whole battery",
+        "Because a random mock would consume API credits",
+        "Because randomness makes the numbers look more realistic",
+        "Because a random mock makes it impossible to tell whether a change in your metrics code caused a change in the score"
+      ],
+      "answer": 3,
+      "explain": "Determinism is what makes the harness testable. If the mock rolled differently on every call, a change in your metric code and a change in the mock's output would be indistinguishable, and you could never write a regression test for the metrics. That is why the mock derives every number from a hash of seed + question id + serialised state - a pure function of its inputs - so repeats are stable. The speed option is wrong: hashing is cheap. The credits option is wrong: the mock never touches the network, so there is nothing to bill. The realism option is wrong and dangerously backwards - the mock's job is to be reproducible and clearly labelled, not to look real."
+    },
+    {
+      "id": "L41.q3",
+      "concept": "seed",
+      "prompt": "What does changing the seed of MockProvider(seed=\"other-seed\") actually change, and what does it let you do?",
+      "options": [
+        "It changes how many tokens the mock reports, so the cost accounting changes",
+        "It makes the mock talk to a different vendor",
+        "It changes every number the mock derives from its hash, reproducibly - so two different seeds behave like two different models you can compare offline",
+        "It changes only the format-friction shift"
+      ],
+      "answer": 2,
+      "explain": "The seed is the first component of the hashed string, so changing it changes the hash, which changes the uniform number the mock derives and therefore every probability it produces - and it does so reproducibly. Two mocks with different seeds therefore behave like two different 'models', which is exactly how you exercise label_agreement, probability_gap and action_change_rate without spending money. The token option is wrong: the token estimate is computed from the length of the state and the questions, not from the seed. The vendor option is wrong: the mock never makes a network call. The format option is wrong: FORMAT_SHIFT is a class attribute, identical for every mock instance."
+    },
+    {
+      "id": "L41.q4",
+      "concept": "harness-testing",
+      "prompt": "You run the whole battery with --provider mock and get accuracy 80 %. What can you honestly conclude from that number?",
+      "options": [
+        "That the runner, the metrics and the report all work end to end on a stable, reproducible input - and nothing whatsoever about a real model",
+        "That the mock model is 80 % accurate at routing tickets",
+        "That a real provider would score at least as well, because the battery is the same",
+        "That the spend cap worked, so the run is a valid measurement"
+      ],
+      "answer": 0,
+      "explain": "The mock proves the machinery: the battery loads, the provider is called, answers are normalised, the metrics compute, the report renders, and the raw JSONL evidence is written. The number itself is a property of MockProvider's hash, not of any model. The second option is the exact mistake the repo's rule 4 forbids - report.run_report() even prints a SIMULATED RUN banner saying the numbers must never be quoted as evidence. The third option is wrong because the mock's accuracy is arbitrary; the battery being identical does not make the mock a proxy for a provider. The fourth option confuses cost control with validity: a successful spend-cap check says nothing about whether a number is meaningful."
+    }
+  ]
+}

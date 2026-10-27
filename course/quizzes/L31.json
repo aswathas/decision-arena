@@ -1,0 +1,70 @@
+{
+  "lesson_id": "L31",
+  "title": "Gradient - the direction of steepest ascent",
+  "questions": [
+    {
+      "id": "L31.q1",
+      "concept": "gradient",
+      "prompt": "The gradient of a loss function points in the direction of steepest ASCENT. Why does gradient descent subtract it?",
+      "options": [
+        "Because subtraction is cheaper than addition",
+        "Because the gradient is always negative",
+        "Because the gradient tells you which way the loss grows fastest, so moving against it is the way the loss shrinks",
+        "Because subtracting avoids overflow"
+      ],
+      "answer": 2,
+      "explain": "The gradient is the uphill direction, so w -= lr * dL/dw walks downhill - that is the update in examples/03_train_linear.py. The tempting wrong answer is the second one: the gradient's sign depends on the error, and the file's own sign sanity check shows it pointing both ways depending on whether the prediction was too high or too low."
+    },
+    {
+      "id": "L31.q2",
+      "concept": "chain-rule",
+      "prompt": "In logistic regression, dL/dw_i = (p - y) * p * (1 - p) * x_i. Where does the chain rule come in?",
+      "options": [
+        "The factor (p - y) is the chain rule applied twice",
+        "The factor x_i is the chain rule, since z = w . x + b",
+        "There is no chain rule here - the gradient is derived directly from the loss alone",
+        "The three local derivatives along the path loss -> p -> z -> w are multiplied together: (p - y)/(p(1-p)) times p(1-p) times x_i, and the sigmoid's p(1-p) cancels against the loss's 1/(p(1-p))"
+      ],
+      "answer": 3,
+      "explain": "The chain rule multiplies the local derivatives along the path, and in this case the sigmoid's derivative p(1-p) cancels the loss's own 1/(p(1-p)), leaving the neat product. The tempting wrong answer is the second one: x_i is indeed dz/dw_i, but it is one of three factors in a product, not the chain rule by itself."
+    },
+    {
+      "id": "L31.q3",
+      "concept": "partial-derivative",
+      "prompt": "What is the difference between a partial derivative and the gradient?",
+      "options": [
+        "A partial derivative is the derivative of a multi-variable function with respect to one variable, holding the others fixed; the gradient is the collection of all those partial derivatives, one per parameter",
+        "A partial derivative is for functions of one variable; the gradient is for functions of many variables",
+        "They are the same thing in different notation",
+        "The gradient is the numerical approximation and the partial derivative is the exact value"
+      ],
+      "answer": 0,
+      "explain": "A partial derivative is one slope, one coordinate at a time; the gradient is the whole vector of them, shaped like the parameter vector. The tempting wrong answer is the last one: it is the opposite of the truth - the partial derivative is the exact analytic value, and the numeric finite-difference estimate is the approximation you use to CHECK it."
+    },
+    {
+      "id": "L31.q4",
+      "concept": "chain-rule",
+      "prompt": "Why does a confidently-wrong model learn so slowly?",
+      "options": [
+        "Because the gradient's sign is wrong when the model is confident",
+        "Because the loss becomes infinite and the optimiser stops",
+        "Because the factor p * (1 - p) vanishes as p approaches 0 or 1, so the examples the model gets wrong contribute almost nothing to the update - the direction is right, the step size is nearly zero",
+        "Because the learning rate is automatically reduced for saturated models"
+      ],
+      "answer": 2,
+      "explain": "The p(1-p) factor is at most 0.25 and goes to zero at the extremes: at p = 0.99 it is 0.0099. So the gradient magnitude collapses on exactly the examples that need correcting - the vanishing-gradient problem in its simplest form. The tempting wrong answer is the second one: the loss is large but finite (unless p hits exactly 0, and the file clamps it), so training continues - it just moves almost not at all on the wrong examples."    },
+    {
+      "id": "L31.q5",
+      "concept": "gradient",
+      "prompt": "Why can this repo's injection and friction batteries run without gold labels, while the routing battery cannot?",
+      "options": [
+        "Because the gradient needs a label: dL/dp contains y, so without a gold answer there is no error to measure - and the friction and injection batteries measure the OUTPUT, not the error",
+        "Because the injection and friction cases are easier",
+        "Because the routing battery's labels are stored somewhere else",
+        "Because providers compute their own gradients"
+      ],
+      "answer": 0,
+      "explain": "dL/dp = (p - y) / (p(1-p)) contains the label y. Without a label there is no loss and no gradient - which is exactly why harness.run_battery() only calls metrics.score_case() when a case has a gold key, and why run_format_friction() never needs one. The tempting wrong answer is the second one: it is not about difficulty, it is about what is being measured."
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L45",
+  "title": "Laya - a local model on your own GPU",
+  "questions": [
+    {
+      "id": "L45.q1",
+      "concept": "weights",
+      "prompt": "A '9B' local model is about 9 billion parameters, stored at roughly 2 bytes each in 16-bit precision. Why does that arithmetic decide which variant you can run on a 4 GB GPU?",
+      "options": [
+        "Because 9B parameters need about 18 GB of file, which does not fit in 4 GB of VRAM, so the smaller flash variant is the realistic choice",
+        "Because parameter count sets the price per token",
+        "Because a model with more parameters always answers faster",
+        "Because 9B parameters cannot be downloaded in one piece"
+      ],
+      "answer": 0,
+      "explain": "9 billion parameters at 2 bytes each is about 18 GB, and a 4 GB card cannot hold that - which is exactly why `laya-lab/README.md` says 4 GB VRAM is tight and you should plan for the 9B flash model and expect to be near the limit. The other options are wrong: parameter count does not set a per-token price (the prices in `ClefProvider.PRICES` are vendor prices), a bigger model is generally slower, not faster, and download size is not what decides whether it fits in VRAM."
+    },
+    {
+      "id": "L45.q2",
+      "concept": "latency",
+      "prompt": "Why does laya-lab/README.md recommend setting LAYA_PRELOAD=1 before serving?",
+      "options": [
+        "Because preloading makes the model more accurate",
+        "Because the weights are loaded before serving, so the first request is not a slow cold-start outlier",
+        "Because preloading reduces VRAM usage",
+        "Because the server cannot answer requests until it has preloaded"
+      ],
+      "answer": 1,
+      "explain": "Without preloading, the first request pays for loading the weights - the README calls it a 40-second outlier. With `LAYA_PRELOAD=1` the weights are already resident when the server starts accepting traffic. In this repo's own report, `run_report()` prints p50, p95 and max latency: one cold-start outlier is invisible at p50, visible at max, and would show up as a p95/max gap. The accuracy option is wrong - preloading changes nothing about the model. The VRAM option is wrong - preloading does not reduce memory use. The last option is wrong - the server starts and loads, then serves."
+    },
+    {
+      "id": "L45.q3",
+      "concept": "local-inference",
+      "prompt": "laya-lab/README.md says the default way to connect the local model to the harness is to point the existing Jev adapter at http://127.0.0.1:8080, rather than writing an in-process LayaProvider. Why?",
+      "options": [
+        "Because localhost is always faster than the cloud",
+        "Because an in-process provider would drag torch into the environment the stdlib-only decisionarena package runs in, and it would skip the real wire format",
+        "Because JevProvider already supports a base_url parameter today",
+        "Because the local server cannot speak HTTP"
+      ],
+      "answer": 1,
+      "explain": "Two reasons, both in the README: an in-process `LayaProvider` imports `laya`, which drags torch into the venv that `decisionarena/` runs in - and the repo's rule 1 says the library stays stdlib-only - and it removes the HTTP hop, so the harness would no longer be exercising the real wire format. Note the third option is false today: the README describes adding a `base_url` parameter to `JevProvider` as the plan, but the adapter in `decisionarena/providers.py` still has `URL` as a fixed class attribute, so you would have to add that parameter yourself. The first option is not why - and hosted latency is often comparable. The last option is nonsense: `laya-serve` speaks HTTP."
+    },
+    {
+      "id": "L45.q4",
+      "concept": "laya",
+      "prompt": "The upstream limits table in laya-lab/README.md lists 'Khmer 0.000 at 95.2% confidence'. Why does the README call that the product thesis in one line?",
+      "options": [
+        "Because it proves the local model is useless",
+        "Because a decision model that is confidently wrong on an Indic language is a real, purchasable problem - accuracy alone would have hidden it",
+        "Because Khmer is too hard for any model",
+        "Because 95.2% confidence shows the calibration is fine"
+      ],
+      "answer": 1,
+      "explain": "It is the clearest possible demonstration of why accuracy is not enough: the model scores 0.000 on Khmer tasks, yet states 95.2% confidence. Accuracy alone would show a bad score; the *combination* of a wrong answer and high confidence is the thing a user can be harmed by, and the thing a better-calibrated model could fix. The first option overreaches - the finding is narrow, not a verdict on the model. The third option is an over-generalisation. The fourth option inverts the meaning: a 95.2% confidence attached to a 0.000 outcome is exactly bad calibration, and the README's own table shows ECE 0.466 improving to 0.081 only after a temperature fit."
+    }
+  ]
+}

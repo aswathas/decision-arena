@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L44",
+  "title": "Clef - Cloudflare Workers AI",
+  "questions": [
+    {
+      "id": "L44.q1",
+      "concept": "account-token",
+      "prompt": "Clef needs CLOUDFLARE_ACCOUNT_ID and CLOUDFLARE_AUTH_TOKEN, while Jev needs only one key. What do the two Cloudflare values do?",
+      "options": [
+        "They are two halves of the same key, and the adapter concatenates them",
+        "The account id is a cache key and the auth token is the model name",
+        "The account id says which Cloudflare account to bill and whose AI resources to use; the auth token is the credential that authorises the request",
+        "The account id selects the model and the auth token selects the region"
+      ],
+      "answer": 2,
+      "explain": "The account id identifies the Cloudflare account - it appears literally in the URL path (`/accounts/<account id>/ai/run/@cf/cloudflare/<model>`), which is also what decides which account is billed. The auth token is the bearer credential in the Authorization header. They are not halves of one secret, and neither of the wrong options matches how the adapter uses them. The practical consequence, which `available_providers()` encodes, is that Clef counts as configured only when BOTH env vars are present - and `ClefProvider.decide()` raises a RuntimeError naming both if either is missing."
+    },
+    {
+      "id": "L44.q2",
+      "concept": "workers-ai",
+      "prompt": "What does it mean that Clef runs on Cloudflare Workers AI and has open weights?",
+      "options": [
+        "That the model weights can be inspected, downloaded and run elsewhere - which is why the same family also appears as the local Laya server",
+        "That Cloudflare hosts the model code for free",
+        "That Workers AI charges nothing",
+        "That Clef's answers are deterministic"
+      ],
+      "answer": 0,
+      "explain": "Open weights means the trained parameters are published, so anyone can download them and run the model on their own hardware - which is exactly what the local Laya server in `laya-lab/` does, and `laya-lab/README.md` describes `laya-serve` as speaking the same `/v1/systemone` wire format as TypeSafe Jev. That is what makes the hosted-vs-local comparison possible at all. The free option is wrong: Workers AI is metered, and the adapter's prices are $0.24 and $0.038 per Mtok. The determinism option is wrong: determinism is a property of a given run's settings, not of where the weights are hosted."
+    },
+    {
+      "id": "L44.q3",
+      "concept": "clef",
+      "prompt": "Clef's endpoint is built per account and per model, so the adapter has a url() method rather than a URL constant. Why does that matter for this repo?",
+      "options": [
+        "It means Clef is slower than Jev, because a URL must be assembled on every call",
+        "It means the account id is sent as a query parameter, so it may appear in logs",
+        "It means Cloudflare requires the model name in the path for billing",
+        "It shows that the address of a backend is a property of the adapter - which is what lets the same client later be pointed at a local server"
+      ],
+      "answer": 3,
+      "explain": "The endpoint shape is a vendor detail, so it lives in the vendor's adapter: `ClefProvider.url()` builds the account-scoped path, while `JevProvider.URL` is a fixed class attribute. That separation is exactly what makes a local backend possible - `laya-lab/README.md` describes pointing the same adapter at a localhost URL instead of the cloud, so the local model is exercised through the real wire format. The speed option is nonsense: building a string is free next to a network round trip. The query-parameter option is wrong: the account id is a path segment, not a query parameter. The billing option is invented."
+    },
+    {
+      "id": "L44.q4",
+      "concept": "open-weights",
+      "prompt": "Cloudflare's answer comes back as {\"success\": true, \"result\": {\"answers\": {...}}} while Jev's answers sit at the top level. What makes this difference invisible to the harness?",
+      "options": [
+        "The CLI strips the wrapper before scoring",
+        "The metrics module handles both shapes",
+        "The case JSON files are written in the nested format",
+        "The adapter reads result[\"answers\"] itself and passes it through normalise_answers(), so the harness only ever sees the one flattened shape"
+      ],
+      "answer": 3,
+      "explain": "`ClefProvider.decide()` unwraps `result`, checks `success` and raises `RuntimeError(f\"Cloudflare error: {resp.get('errors')}\")` when the call failed, then hands `result[\"answers\"]` to `normalise_answers()`. After that, every provider returns the same dict-of-dicts shape, so `collect_scored()` and the other metrics never branch on vendor. The first option is wrong: `cmd_run()` does no reshaping. The second option is wrong: `metrics.py` never sees a vendor payload. The third option is wrong: cases hold states and questions only."
+    }
+  ]
+}

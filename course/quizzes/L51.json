@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L51",
+  "title": "The Brier score - probability quality",
+  "questions": [
+    {
+      "id": "L51.q1",
+      "concept": "brier-score",
+      "prompt": "A model says 0.9 and is right on one question, then says 0.8 and is wrong on another. What is its Brier score, and what does that number say about the model?",
+      "options": [
+        "0.85 - it is well calibrated",
+        "0.5 - it is right half the time",
+        "0.05 - the errors nearly cancel out",
+        "0.325 - its confidence is too extreme, and an honest version of the same model would score much lower"
+      ],
+      "answer": 3,
+      "explain": "brier = ((0.9 - 1)^2 + (0.8 - 0)^2) / 2 = (0.01 + 0.64) / 2 = 0.325. The second question dominates: claiming 0.8 when the truth is 0 is a squared error of 0.64, sixty-four times the first question's 0.01. The model is overconfident - an honest version giving 0.6 and 0.4 would score 0.16 with the same accuracy. The first option is wrong arithmetic. The second option is the accuracy (1 of 2), which is exactly what the Brier score is for - it says more than. The third option is wrong because squared errors never cancel; they only add."
+    },
+    {
+      "id": "L51.q2",
+      "concept": "squared-error",
+      "prompt": "Why is the error squared rather than taken as an absolute distance?",
+      "options": [
+        "Because squaring makes the calculation faster",
+        "Because it makes the error scale non-linearly, so a big confident mistake costs far more than a small uncertain one - which is what you want when a wrong confident answer triggers an irreversible action",
+        "Because absolute differences can be negative and squares cannot",
+        "Because squaring removes the need for the outcome value"
+      ],
+      "answer": 1,
+      "explain": "Squaring makes 0.95 wrong (0.9025) cost vastly more than 0.45 wrong (0.2025) - a non-linear penalty on large mistakes, and it also makes the score smooth so the model can be optimised against. The speed option is nonsense. The third option is confused: an absolute difference is never negative either, and the reason to square is the penalty shape, not sign-handling. The fourth option is wrong: the outcome is still needed - brier = (p - o)^2 uses both."
+    },
+    {
+      "id": "L51.q3",
+      "concept": "probability-quality",
+      "prompt": "A model always says 0.5. Over the same questions as an overconfident model with identical accuracy, the always-0.5 model has a lower Brier score. What does that tell you?",
+      "options": [
+        "The always-0.5 model is a better product",
+        "The overconfident model should be retrained immediately",
+        "Brier score rewards models that predict the majority class",
+        "Being uninformative is a milder failure than being confidently wrong, so the Brier score measures a dimension accuracy cannot see"
+      ],
+      "answer": 3,
+      "explain": "For two questions where one is right and one is wrong, the always-0.5 model scores (0.25 + 0.25) / 2 = 0.25 while the overconfident one scores 0.325 - so an uninformative model beats a confidently-wrong one on Brier at identical accuracy. That is the metric measuring probability quality, which accuracy cannot see at all. The first option is wrong: uninformative is useless in production even if it is well-behaved. The second option is a leap the arithmetic does not support (and temperature is the cheaper fix - see examples/02_temperature.py). The third option is wrong: Brier scores the probability of the GOLD option, and the always-0.5 model would be badly penalised on a gold option whose true probability is 0.9."
+    },
+    {
+      "id": "L51.q4",
+      "concept": "brier-score",
+      "prompt": "In this repo, for a choice question the Brier score uses only the probability the model gave to the GOLD option. How does that differ from the strict multi-class Brier score?",
+      "options": [
+        "They are identical",
+        "The strict multi-class version divides by the number of options instead of the number of questions",
+        "The repo's version is the strict multi-class version, but with the outcome sign flipped",
+        "The strict multi-class version also scores the probabilities the model gave to every wrong option, so it penalises a confident wrong pick more heavily"
+      ],
+      "answer": 3,
+      "explain": "The repo's `collect_scored()` gives `_brier` the probability of the gold option only - the one-vs-rest form - so a model that was confidently wrong on the *wrong* option is not penalised for that option's confidence. The strict multi-class Brier sums the squared error over every option's probability, so a wrong pick at 0.95 costs much more than a wrong pick at 0.40. The first option is wrong. The second option is wrong: the repo divides by the number of questions, and the multi-class form still normalises by the question count. The third option is wrong: the repo's form is the one-vs-rest form, not the multi-class form with flipped signs."
+    }
+  ]
+}

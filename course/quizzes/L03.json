@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L03",
+  "title": "What a probability means here - and what it does not",
+  "questions": [
+    {
+      "id": "L03.q1",
+      "concept": "probability",
+      "prompt": "A model answers 0.9 for \"is this email about billing?\". What does that 0.9 claim?",
+      "options": [
+        "That 90% of the email's words are about billing",
+        "That, across many similar emails, this model would call about 90% of them billing",
+        "That the model has verified the email's contents with 90% certainty",
+        "That this particular email is 90% likely to be billing and will be right 90% of the time"
+      ],
+      "answer": 1,
+      "explain": "A probability here is a long-run frequency over repeated similar cases: in about 9 out of 10 comparable emails, the model says billing. The first option is the joke misreading of '90% chance of rain' and is meaningless for a classification. The third is wrong because the model verifies nothing - it produces a number. The fourth is the most tempting wrong answer and it contains the real error: the number is a claim about the model's behaviour across many cases, not a promise that this particular email will be classified correctly nine times in ten."
+    },
+    {
+      "id": "L03.q2",
+      "concept": "probability",
+      "prompt": "Whose property is a reported probability of 0.9 - the world's, or the model's?",
+      "options": [
+        "The world's: it is the true chance that this email is a billing email",
+        "The model's: given this state, this model said billing with probability 0.9",
+        "Neither: it belongs to the threshold, which is what turns it into an action",
+        "The harness's: the harness chooses the probability before sending the request"
+      ],
+      "answer": 1,
+      "explain": "The probability is a property of the model plus the state. Change the model and the number changes even though the email did not - which is exactly why this repo runs the same battery against several models. The first option is wrong because a 'true chance' belongs to the world, and no model can report that directly. The third option confuses a probability with the decision rule applied to it. The fourth is nonsense - the harness sends questions and receives answers; it does not choose the numbers."
+    },
+    {
+      "id": "L03.q3",
+      "concept": "odds",
+      "prompt": "What are the odds corresponding to a probability of 0.9?",
+      "options": [
+        "9 : 1",
+        "1 : 9",
+        "0.9 : 1",
+        "1 : 0.9"
+      ],
+      "answer": 0,
+      "explain": "Odds are p / (1 - p), so 0.9 / 0.1 = 9, i.e. nine to one. The second option inverts the ratio and would say the opposite outcome is nine times more likely. The third option is the tempting one: it writes the probability against 1, as if the odds were '0.9 times as likely as certain'. Odds compare the probability of the outcome with the probability of everything else, so the denominator is 1 - p = 0.1, not 1. The fourth option mixes the two up again."
+    },
+    {
+      "id": "L03.q4",
+      "concept": "uncertainty",
+      "prompt": "A ticket could genuinely be either billing or sales, and no model can settle it. Which kind of uncertainty is that?",
+      "options": [
+        "Aleatoric - the ambiguity lives in the world itself",
+        "Epistemic - the model has not seen enough similar cases",
+        "Both, because a hard case is always both",
+        "Neither - it shows up as a calibration error"
+      ],
+      "answer": 0,
+      "explain": "Aleatoric uncertainty is the world's own ambiguity: the ticket really is ambiguous, and a perfect model would still be uncertain. Epistemic uncertainty is the model's blind spot - it is fixable with more training data, and it is the more dangerous kind because it produces confident errors. The third option is wrong because the two are distinguished by whether the world or the model is responsible; a case can be one or the other, and this ticket is aleatoric by construction. The fourth is wrong because calibration error measures a mismatch between stated probability and observed frequency - a property of the model, not the ticket."
+    }
+  ]
+}

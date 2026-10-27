@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L82",
+  "title": "The escape hatch - abstention, thresholds and hysteresis",
+  "questions": [
+    {
+      "id": "L82.q1",
+      "concept": "abstention",
+      "prompt": "What is the difference between the \"other\" option in the routing battery's team question and escalating because a probability fell below the question's threshold?",
+      "options": [
+        "They are the same mechanism, described two ways",
+        "The \"other\" option is chosen by the model inside its own vocabulary; the escalation is chosen by your system from the probability",
+        "\"other\" is only ever used for spam tickets",
+        "Thresholds apply only to choice questions, not to noul questions"
+      ],
+      "answer": 1,
+      "explain": "There are two escape hatches at two levels. The model-level one is built into the question: cases/routing.json gives team a fourth criterion, \"other: None of the above - needs human triage\", and routing-005's gold answer is literally \"other\". The system-level one is yours: when the top probability is below the threshold for that question, you escalate instead of acting. The tempting first option is wrong because the two live on opposite sides of the model - one is an answer the model gives, the other is a decision your code makes about that answer."
+    },
+    {
+      "id": "L82.q2",
+      "concept": "thresholds",
+      "prompt": "cases/routing.json sets the threshold for team at 0.6 and for is_billing at 0.5. Why are they different?",
+      "options": [
+        "Because the model returns different numbers of decimal places for different questions",
+        "Because thresholds are picked at random per case to keep the battery honest",
+        "Because different questions carry different risk of a wrong automatic action, and the threshold is a product decision",
+        "Because 0.6 is the default threshold hard-coded in decisionarena/metrics.py"
+      ],
+      "answer": 2,
+      "explain": "Auto-routing a ticket to the wrong team costs more than escalating it to a human, so team needs a higher bar than a plain yes/no question. metrics.py has no default threshold at all - action_change_rate() takes the thresholds dict as an argument, and cli.py reads them out of the case files. The first and second options are the tempting wrong answers because they look technical, but a decimal-place difference or randomness would not explain a deliberate product difference; and thresholds living with the cases, not in the code, is exactly what makes them a product decision."
+    },
+    {
+      "id": "L82.q3",
+      "concept": "hysteresis",
+      "prompt": "The same ticket gives a probability of 0.48 on one call and 0.52 on the next, with a 0.5 threshold and a 0.05 margin. What does the hysteresis rule do?",
+      "options": [
+        "The action flips on every call, because 0.48 and 0.52 are on opposite sides of 0.5",
+        "The band between 0.45 and 0.55 swallows the wobble, so the action is held steady instead of flipping",
+        "The probability is rounded to 0.5 before the comparison",
+        "The system escalates on every call, because nothing reaches 0.55"
+      ],
+      "answer": 1,
+      "explain": "With hysteresis you act at or above threshold + margin (0.55) and stop acting below threshold - margin (0.45), and inside the band you keep the previous action. Both 0.48 and 0.52 are inside the band, so nothing flips. The first option describes the single-threshold behaviour, which is the whole problem hysteresis fixes - lesson L54 measured a 0.04 difference producing one action change under a single threshold and zero under a 0.05 margin. What you give up is speed near the threshold: the system is deliberately sticky."
+    },
+    {
+      "id": "L82.q4",
+      "concept": "escalation",
+      "prompt": "You turn abstention on and the measured accuracy goes down. What is the honest explanation?",
+      "options": [
+        "There is a bug in decisionarena/metrics.py",
+        "An abstention is scored as an incorrect answer: collect_scored() counts a noul as correct only when it lands on the same side of 0.5 as the gold label, so read accuracy together with the escalation rate",
+        "Abstaining changes the battery hash, so the scores are no longer comparable",
+        "Accuracy only counts cases that ran more than once"
+      ],
+      "answer": 1,
+      "explain": "collect_scored() scores a noul correct when abs(p - o) < 0.5 - that is, when it lands on the gold side of 0.5. A model that abstains at 0.4 on a question whose gold answer is true is therefore counted as wrong, deliberately: abstaining is not answering. The consequence is that accuracy and escalation rate must be read together - a policy that escalates a lot shows a lower accuracy, and that is the cost of the escape hatch, not a bug. The battery-hash option is wrong because abstention happens after the run, in your own code."
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L83",
+  "title": "Shipping it - docs, versioning and the public repo",
+  "questions": [
+    {
+      "id": "L83.q1",
+      "concept": "shipping",
+      "prompt": "What is the minimum a stranger needs in order to check one number you published?",
+      "options": [
+        "A screenshot of the report",
+        "The repo, the command to run it, the raw evidence, and the one finding",
+        "A link to your blog post about the result",
+        "The provider's pricing page"
+      ],
+      "answer": 1,
+      "explain": "That four-part package is what makes a number checkable rather than merely quoted: the repo says what was measured, the command says how to reproduce it and what it costs, the raw runs/*.jsonl is the evidence the number is derived from, and the finding is the single sentence under test. The tempting wrong answers are all ways of asking a reader to trust you - a screenshot cannot be recomputed from, a blog link says nothing about cost or provenance, and a pricing page explains money, not evidence."
+    },
+    {
+      "id": "L83.q2",
+      "concept": "versioning",
+      "prompt": "Why should a finding name the provider spec jev:jev-1.14.0 rather than jev-latest?",
+      "options": [
+        "jev-latest is deprecated and will be removed",
+        "jev-latest is a moving target, so the pinned id is what identifies the model that actually answered",
+        "The two cost different amounts per Mtok",
+        "The CLI refuses to run anything but a pinned id"
+      ],
+      "answer": 1,
+      "explain": "JevProvider's docstring lists jev-latest | jev-1.14.0 | jev-1.13.0, and the provider name recorded in meta.json and in every report header is jev:<model>. 'jev-latest' can point at a different model next month, so a finding that names only that string cannot be re-checked later - you would be comparing two different subjects. The tempting wrong answers are wrong on the facts: nothing in the code deprecates jev-latest, the price is a property of the price_per_mtok argument rather than the model id, and the CLI accepts jev-latest happily."
+    },
+    {
+      "id": "L83.q3",
+      "concept": "public-evidence",
+      "prompt": "Why does this repo commit runs/*.jsonl to git instead of keeping the raw calls locally?",
+      "options": [
+        "To make the repository archive larger",
+        "Because git compresses JSON especially well",
+        "So a reader can recompute the published number from the raw calls instead of trusting the report",
+        "Because the Markdown report file is temporary and would otherwise be lost"
+      ],
+      "answer": 2,
+      "explain": "The evidence contract says raw first, then meta, then report - the report is derived and a report you cannot regenerate from raw data is marketing. Committing the raw lines is what lets a reader open runs/<run_id>.jsonl, recompute the accuracy or the cost by hand, and check the report. The other options are the tempting wrong answers because they explain the mechanism of git rather than the reason for the rule; the report is not temporary, it is committed right next to the raw file."
+    },
+    {
+      "id": "L83.q4",
+      "concept": "reproducibility",
+      "prompt": "Which combination of things already in this repo is what makes a stranger's re-run possible?",
+      "options": [
+        "Stdlib only, one normalised noul/choice/score wire shape, a spend cap, and committed raw run files",
+        "The mock provider, plus a large test suite",
+        "A fast GPU, plus the newest models",
+        "The decision log, plus the Apache-2.0 licence file"
+      ],
+      "answer": 0,
+      "explain": "Reproducibility needs the harness to install nowhere, to speak one protocol regardless of vendor, to be unable to spend much by accident, and to leave behind the raw calls that let a reader check the result - which is exactly the stdlib-only decision, normalise_answers(), the default spend cap of $0.25, and the committed runs/. The second and third options fail for a stranger (the mock proves nothing about models, and a GPU is not needed), and the fourth is a good artifact but not a mechanism: a licence tells a reader they may reuse the work, not how to reproduce it."
+    }
+  ]
+}

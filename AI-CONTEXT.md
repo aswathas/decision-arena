@@ -26,16 +26,32 @@ verified_facts:
     evidence: "runs/20261025-005316-mock.md, runs/20261025-005353-friction-mock.json"
     verified_on: 2026-10-25
   - id: unit-tests
-    claim: "7/7 stdlib unittest cases pass (python -m unittest discover -s tests)."
-    evidence: "tests/test_metrics.py"
-    verified_on: 2026-10-25
+    claim: "29/29 stdlib unittest cases pass (python -m unittest discover -s tests): 7 metric tests plus 22 Academy tests."
+    evidence: "tests/test_metrics.py, tests/test_learn_state.py"
+    verified_on: 2026-10-27
+  - id: academy-course
+    claim: "Decision Arena Academy ships 46 lessons and 46 quizzes across 10 phases; the course gate passes and course/curriculum.json is in sync."
+    evidence: "course/curriculum.json, tools/course_check.py, course/lessons/L00-what-is-a-decision-model.md"
+    verified_on: 2026-10-27
+  - id: academy-loop
+    claim: "The learning loop runs end to end offline: init -> start -> grade -> record -> feedback, tracking per-concept mastery and a review queue."
+    evidence: "tools/learn_state.py, learning/README.md"
+    verified_on: 2026-10-27
+  - id: academy-skills
+    claim: "Three Academy skills live in skills/ (learn, arena-coach, course-author) and install project-locally into .claude/skills/ without touching the pre-existing global 'learn' skill."
+    evidence: "skills/learn/SKILL.md, skills/arena-coach/SKILL.md, skills/course-author/SKILL.md, tools/install_skills.py"
+    verified_on: 2026-10-27
+  - id: academy-hooks
+    claim: "SessionStart injects the learner's progress and Stop reminds the agent to close the loop; both exit 0 and never block the session."
+    evidence: ".claude/settings.json, tools/hooks/session_start.py, tools/hooks/stop.py"
+    verified_on: 2026-10-27
   - id: cli-surface
     claim: "providers / run / friction / swap all work from `python -m decisionarena`."
     evidence: "runs/20261025-005316-mock.md"
     verified_on: 2026-10-25
   - id: mock-is-not-evidence
     claim: "MockProvider output is a harness test, never a model evaluation."
-    evidence: "decisionarena/providers.py"
+    evidence: "decisionarena/providers.py, decisionarena/report.py"
     verified_on: 2026-10-25
   - id: laya-wire-compat
     claim: "laya-serve exposes POST /v1/systemone, the same wire format as Jev."
@@ -74,11 +90,15 @@ in_progress:
   - id: laya-local
     what: "Local Laya provider (in-process) + JevProvider base_url pointing at laya-serve."
     state: "not started; laya-lab/README.md has the Windows setup"
-  - id: day-2-learning
-    what: "Aswath works through examples/00 .. examples/04 himself."
-    state: "scaffolds exist; the learning pass has not happened yet"
+  - id: academy-first-pass
+    what: "Aswath works through the Academy himself, starting at L00, and his first learner artifacts land in docs/notes/ and exercises/."
+    state: "course complete and gated; the learning pass has not happened yet"
+  - id: academy-vault-bridge
+    what: "Mirror the Academy build log into the Obsidian vault (Learning/Course - Decision Models/Build Log.md) without duplicating the source of truth."
+    state: "not started; the repo's learning/build_log.md is authoritative for now"
 
 next_actions:
+  - "Day 1 of the Academy: `python tools/learn_state.py init --learner aswath --path beginner`, then `/learn` for L00."
   - "Day 2: work through examples/01_softmax.py and 02_temperature.py, quiz, log."
   - "Day 5: live Jev + Clef run on the routing battery; repo flips PUBLIC."
   - "Day 6 parity: one client, three providers (Jev / Clef / local Laya) on one battery."
@@ -113,6 +133,14 @@ commands_that_work:
   - "python -m decisionarena run --provider mock --battery all"
   - "python -m decisionarena friction --provider mock"
   - "python -m decisionarena swap --provider a=mock --provider b=mock"
+  - "python tools/course_check.py --index"
+  - "python tools/course_check.py --check"
+  - "python tools/learn_state.py init --learner aswath --path beginner"
+  - "python tools/learn_state.py next"
+  - "python tools/learn_state.py status"
+  - "python tools/learn_state.py review"
+  - "python tools/learn_state.py feedback"
+  - "python tools/install_skills.py --target claude-project"
   - "python tools/check_links.py --vault \"C:\\Users\\aswat\\Aswaths Obsidian Den\\Aswaths Mountain Den\""
   - "uv venv --python 3.12 && uv pip install laya \"laya[serve]\""
 
@@ -125,22 +153,31 @@ do_not_touch:
 
 ## Summary
 
-**What exists.** A working, dependency-free harness that can already exercise the full
-pipeline offline: providers (mock, Jev, Clef, OpenAI-compatible), three batteries
-(routing / injection / format), metrics, a Markdown report writer, and a swap-safety
-comparator. Seven unit tests pass.
+**What exists.** Two things, both real. (1) A working, dependency-free harness
+that can already exercise the full pipeline offline: providers (mock, Jev,
+Clef, OpenAI-compatible), three batteries (routing / injection / format),
+metrics, a Markdown report writer, and a swap-safety comparator. (2)
+**Decision Arena Academy** - a self-contained beginner course in `course/`
+(46 lessons, 46 quizzes, 10 phases), with three skills (`skills/`), a
+per-concept mastery engine (`tools/learn_state.py`), a course gate
+(`tools/course_check.py`) and session hooks. 29/29 unit tests pass.
 
-**What is real.** Nothing measured yet from a live provider — every committed number so
-far comes from the mock and proves only that the harness works. The pricing and
-capability facts in the vault were verified against vendor pages and third-party
-benchmarks on 2026-10-25, and are marked with their source.
+**What is real.** Nothing measured yet from a live provider - every committed
+number so far comes from the mock and proves only that the harness works. The
+pricing and capability facts in the vault were verified against vendor pages
+and third-party benchmarks on 2026-10-25, and are marked with their source.
+The Academy itself is verified only as *material*: the gate proves the lessons
+are well-formed, not that they teach well. That is what the learner's own
+progress file is for.
 
-**What is next.** The learning path (`examples/`) and the vault restructure are in
-flight. The first genuinely publishable artifact is the **format-friction finding**:
-how far a decision probability moves when only the *shape* of the input state changes
-(prose vs flat JSON vs nested JSON). The independent harness `rmax-ai/jev-vs-clef`
-reported a 0.90 / 0.86 / 0.09 spread across exactly that axis. Reproducing it on
-Laya would be a real, novel, checkable contribution.
+**What is next.** Aswath runs the Academy himself, starting at L00, and his
+first learner artifacts land in `docs/notes/` and `exercises/`. The first
+genuinely publishable artifact remains the **format-friction finding**: how far
+a decision probability moves when only the *shape* of the input state changes
+(prose vs flat JSON vs nested JSON). The independent harness
+`rmax-ai/jev-vs-clef` reported a 0.90 / 0.86 / 0.09 spread across exactly that
+axis. Reproducing it on Laya would be a real, novel, checkable contribution.
 
-**What is blocked.** Credentials for the live providers and a GPU-enabled Kaggle
-account, all owned by the user. Nothing else is blocked.
+**What is blocked.** Credentials for the live providers and a GPU-enabled
+Kaggle account, all owned by the user. Nothing else is blocked - the Academy
+runs fully offline.

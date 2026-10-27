@@ -1,0 +1,71 @@
+{
+  "lesson_id": "L32",
+  "title": "Training one neuron with gradient descent",
+  "questions": [
+    {
+      "id": "L32.q1",
+      "concept": "training-loop",
+      "prompt": "What are the four steps of one iteration of the training loop?",
+      "options": [
+        "Sample the data, normalise it, compute the gradient, print the loss",
+        "Forward pass to get the prediction, compute the loss, backward pass to get the gradient, update the parameters against the gradient",
+        "Embed the input, run attention, run the MLP, stack the block",
+        "Tokenize, embed, attend, decode"
+      ],
+      "answer": 1,
+      "explain": "forward -> log_loss -> gradients -> update, exactly as examples/03_train_linear.py runs it. The tempting wrong answer is the fourth one: that is the inference pipeline, not the training loop. Training repeats the same four steps on labelled data thousands of times, and the loss is watched to see whether it is going down."
+    },
+    {
+      "id": "L32.q2",
+      "concept": "learning-rate",
+      "prompt": "You raise the learning rate by a factor of 100 and the loss no longer falls - it oscillates, or even grows. Why?",
+      "options": [
+        "The gradient became wrong, because the learning rate is part of the gradient formula",
+        "The data became unlabelled",
+        "The steps are now too long for the shape of the loss surface: the model overshoots the bottom, and a large enough step can even leave the region where the loss behaves and produce nan",
+        "The softmax stopped working, because temperature depends on the learning rate"
+      ],
+      "answer": 2,
+      "explain": "The gradient says which direction; the learning rate says how far. Too far and you overshoot the minimum, landing on the other side; far too far and the new weights land outside the well-behaved region, the next gradient is computed on garbage, and the numbers grow without bound until you get nan. The tempting wrong answer is the first one: the gradient is computed from the data and the current weights, and does not depend on the learning rate at all."
+    },
+    {
+      "id": "L32.q3",
+      "concept": "gradient-descent",
+      "prompt": "Why does the training loop in examples/03_train_linear.py divide the accumulated gradient by the number of examples before stepping?",
+      "options": [
+        "To make the gradient smaller in magnitude so the model trains more slowly",
+        "Because the gradient can only be computed on a batch",
+        "To make the step size independent of how many examples happen to be in the dataset, and to average away the noise of any single example",
+        "To convert the loss into a probability"
+      ],
+      "answer": 2,
+      "explain": "The loop accumulates the gradient over all nine examples and divides by n, so the update size reflects the average direction rather than the sum - adding more data does not make the step bigger. Averaging also smooths the path, since a single example's gradient can point somewhere unhelpful. The tempting wrong answer is the first one: the division is there to make the step size stable, not to slow training down."
+    },
+    {
+      "id": "L32.q4",
+      "concept": "loss-curve",
+      "prompt": "The training run ends with a loss of 0.012 and a training accuracy of 1.0. What does that NOT tell you?",
+      "options": [
+        "That the model learned something on this data",
+        "That the weights came out roughly equal, which is the shape of the correct rule on this symmetric data",
+        "That the model's probabilities are calibrated on data it has never seen",
+        "That the loss went down"
+      ],
+      "answer": 2,
+      "explain": "A low training loss says nothing about calibration on unseen data - a model can fit the training set perfectly and still be badly overconfident on real tickets, which is exactly what L33 is about. The tempting wrong answer is the second one: the equal weights are visible in the file's output and are a real signal - the weights being equal is the shape of the x1 + x2 = 1 rule, not an absence of information."
+    },
+    {
+      "id": "L32.q5",
+      "concept": "loss-curve",
+      "prompt": "You read a printed loss column that starts at 0.693 and ends at nan. What is the most likely cause, and what do you change first?",
+      "options": [
+        "The data is wrong; add more examples",
+        "The softmax overflowed; switch to the stable version",
+        "The number of steps was too small",
+        "The learning rate is far too large, so the steps blew the weights up; lower the learning rate and try again"
+      ],
+      "answer": 3,
+      "explain": "A loss that grows into nan is the classic exploding-learning-rate signature: a step so large that the weights land somewhere the loss surface does not behave, and the next gradient multiplies the damage. The first thing to change is the learning rate. The tempting wrong answer is the second one: the softmax in examples/01_softmax.py is already the stable max-subtracting version, and nan from a training run is about step size, not about exponent overflow."
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "lesson_id": "L72",
+  "title": "Running a battery end to end",
+  "questions": [
+    {
+      "id": "L72.q1",
+      "concept": "battery",
+      "prompt": "In this repo, what is a 'battery'?",
+      "options": [
+        "The providers are the subjects you run the battery against",
+        "A named set of cases: cli.py's BATTERIES dict maps routing, injection, format and all to the files in cases/, and _load_battery() loads them",
+        "The repeat count of a run",
+        "The spend cap of a run"
+      ],
+      "answer": 1,
+      "explain": "A battery is the case set, and the name is what you type on the command line. cli.py holds the mapping in one dict - 'routing': 'routing.json', 'injection': 'injection.json', 'format': 'format_variants.json', 'all': None - so the command-line name and the file the runner opens cannot drift apart. The providers are the subjects you run the battery against. The repeat count and the spend cap are arguments of the run, not the battery."
+    },
+    {
+      "id": "L72.q2",
+      "concept": "runner",
+      "prompt": "What does the spend cap actually do when it is reached?",
+      "options": [
+        "It throws away the run and returns nothing",
+        "run_battery() checks the running cost before each call, stops the run, and reports aborted with a reason such as 'spend cap $0.25 reached'",
+        "It reduces the repeat count until the run fits",
+        "It switches to the mock provider to finish the battery cheaply"
+      ],
+      "answer": 1,
+      "explain": "The check is `if cost >= spend_cap` at the top of the inner loop, and it breaks out of both loops with aborted=True and a reason string; run_report() then prints an ABORTED line, and the records collected so far are still written to the JSONL. The evidence for the part that did run is preserved. It does not throw away the run, it does not silently reduce repeats, and it does not substitute a different provider - that would make the run file a lie."
+    },
+    {
+      "id": "L72.q3",
+      "concept": "repeats",
+      "prompt": "What does --repeats 3 buy you, mechanically and analytically?",
+      "options": [
+        "It averages the three answers into a smoother score, which reduces variance",
+        "It triples the number of cases in the battery",
+        "It makes the run three times faster by splitting the work",
+        "Mechanically: run_battery() loops for rep in range(repeats), writing three JSONL records per case with repeat 0, 1, 2. Analytically: it lets the report compare byte-identical answers across repeats, which is how the determinism section gets anything to say"
+      ],
+      "answer": 3,
+      "explain": "Each repeat is a full extra call with the same case, recorded separately in the raw file - the evidence, not an average. report.run_report() then groups the records by case_id and compares json.dumps(answers, sort_keys=True) across them, printing 'N/M cases returned byte-identical answers across repeats'. That is the only way to learn whether a model is stable. Option 2 is a different thing - averaging three answers would hide exactly the variation you are trying to detect. Option 3 is wrong because the number of cases is fixed by the battery; option 4 is nonsense - it is three times the work."
+    },
+    {
+      "id": "L72.q4",
+      "concept": "cli",
+      "prompt": "Why is 'python -m decisionarena providers' the first command you run in a session?",
+      "options": [
+        "It performs a cheap test call against each provider to verify the credentials",
+        "It refreshes the model list from the vendors' APIs",
+        "It prints the previous run's results",
+        "It prints which providers this machine is actually configured for, by reading the environment variables - so you find out now, not after a failed call"
+      ],
+      "answer": 3,
+      "explain": "cmd_providers() calls providers.available_providers(), which only reads the environment: TYPESAFE_API_KEY for jev, CLOUDFLARE_ACCOUNT_ID plus CLOUDFLARE_AUTH_TOKEN for clef, OPENAI_BASE_URL plus OPENAI_API_KEY for oai. It makes no call and costs nothing, and it tells you which provider spec to use. It does not test the credentials - a missing key shows up as 'no' here and as an exception inside the run if the variable is set but wrong. It does not refresh anything, and it does not print previous results."
+    },
+    {
+      "id": "L72.q5",
+      "concept": "runner",
+      "prompt": "Connect this to the repo: you run 'python -m decisionarena run --provider mock --battery routing --repeats 3' and it succeeds. What lands on disk, and what does it prove?",
+      "options": [
+        "Just the Markdown report, since the raw file is a temporary cache",
+        "The JSONL and meta.json only - the .md file is optional",
+        "One JSONL line per case, with the repeats averaged into a single answer",
+        "runs/<run_id>.jsonl (one line per call, 15 lines for 5 cases x 3 repeats), runs/<run_id>.meta.json (run id, provider, price, battery hash, timestamps, cost, cap, uuid) and runs/<run_id>.md (the report). It proves the harness works end to end; the mock's numbers say nothing about any model"
+      ],
+      "answer": 3,
+      "explain": "run_battery() writes the JSONL and the meta.json, and cmd_run() writes the .md next to them - all three sharing the run id, which is also stamped into every JSONL line. The raw file is not a cache: it is the committed evidence, and AGENTS.md rule 3 says a number without its runs/*.jsonl behind it is marketing. The .md is not optional - cmd_run() always writes it. And repeats are separate records, never averaged: averaging would destroy the very variation the determinism check exists to find. Finally, a mock run proves the harness works; the report even carries a SIMULATED RUN banner saying the numbers must never be quoted as evidence."
+    }
+  ]
+}

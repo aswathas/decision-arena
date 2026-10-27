@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L42",
+  "title": "Credentials, cost and the spend cap",
+  "questions": [
+    {
+      "id": "L42.q1",
+      "concept": "credentials",
+      "prompt": "Why does this repo read API keys from environment variables instead of a file inside the project?",
+      "options": [
+        "Environment variables are faster to read than a file",
+        "Because a key in a file gets committed to git by accident, and once it is in the history it is compromised; environment variables keep the key out of the repository entirely",
+        "Because Cloudflare's API refuses requests whose key came from a file",
+        "Because environment variables are encrypted automatically by the operating system"
+      ],
+      "answer": 1,
+      "explain": "The repo's rule 5 is that credentials come from env vars only, and `.env.example` lists every variable name with an empty value so you copy it, fill it in, and never commit the filled file. A secret in a committed file is in the git history forever, and rotating it does not remove the old one. The speed option is irrelevant - a file read is microseconds. The Cloudflare option is invented: nothing in `ClefProvider` cares where the token came from. The encryption option is wrong: environment variables are plaintext in the process environment; the protection comes from never writing them into the repo, and from the adapter raising a RuntimeError before any request when a key is missing."
+    },
+    {
+      "id": "L42.q2",
+      "concept": "cost-model",
+      "prompt": "Provider.estimate_cost() uses (input_tokens or prompt_tokens) * price_per_mtok / 1_000_000. A call uses 2000 input tokens on clef-flash, whose price is $0.038 per Mtok. What does the call cost?",
+      "options": [
+        "$0.000076",
+        "$0.076",
+        "$76.00",
+        "$0.038"
+      ],
+      "answer": 0,
+      "explain": "2000 * 0.038 / 1_000_000 = 0.000076 dollars. The division by a million is what turns \"price per million tokens\" into a price per token. The $0.076 option forgets the per-million division and is off by a factor of a thousand; $76.00 is that mistake times a thousand more; $0.038 is the price of a whole million tokens. The repo's convention is to always report the dollar figure next to the token counts, because a bare dollar number cannot be checked."
+    },
+    {
+      "id": "L42.q3",
+      "concept": "spend-cap",
+      "prompt": "run_battery() checks `if cost >= spend_cap` BEFORE making the next call. With the default cap of $0.25, what can you say about the final total cost of an aborted run?",
+      "options": [
+        "It is always exactly $0.25",
+        "It is always less than $0.25",
+        "It can be slightly more than $0.25, because the last permitted call was made before the running cost had reached the cap",
+        "It is zero, because an aborted run charges nothing"
+      ],
+      "answer": 2,
+      "explain": "The check is a gate on the NEXT call, not a settlement of the bill. The last call you were allowed to make had already been made and its cost already added, and the cap was only compared afterwards. So a run can finish a little over the cap - the cap bounds how many further calls may happen, not the final total to the cent. The first option is wrong because nothing rounds the total to the cap. The second is wrong for the same reason as the third. The last option is wrong because the calls that already happened were still real calls and were still charged."
+    },
+    {
+      "id": "L42.q4",
+      "concept": "tokens",
+      "prompt": "The harness only ever prices the INPUT side of a call, using usage.get(\"input_tokens\") or usage.get(\"prompt_tokens\"). Why the two spellings, and what does the fallback buy you?",
+      "options": [
+        "Because one of them counts words and the other counts characters",
+        "Because different vendors spell the same input-token field differently, and the `or` chain accepts either without crashing",
+        "Because prompt_tokens is an estimate and input_tokens is exact, so the repo prefers the estimate",
+        "Because the fallback makes the cost of a call with no usage data come out as zero instead of raising"
+      ],
+      "answer": 1,
+      "explain": "Vendors disagree on the field name for the same quantity - the number of tokens they read - so `usage.get(\"input_tokens\") or usage.get(\"prompt_tokens\") or 0` accepts either spelling and treats a missing count as zero. The word/character option is invented; both fields count tokens. The third option is backwards: it is the exact input count that is wanted, and the repo has no reason to prefer an estimate. The fourth option is half-true about the effect (a missing usage dict does yield zero) but wrong about the reason - the `or 0` exists so a provider that reports no usage does not crash the run, and the two-key form exists for spelling differences."
+    }
+  ]
+}

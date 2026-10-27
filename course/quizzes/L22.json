@@ -1,0 +1,71 @@
+{
+  "lesson_id": "L22",
+  "title": "Attention - which words look at which",
+  "questions": [
+    {
+      "id": "L22.q1",
+      "concept": "scaled-dot-product",
+      "prompt": "Why does attention divide the query-key scores by sqrt(d_k) before the softmax?",
+      "options": [
+        "To make the scores fit in a 32-bit float",
+        "Because a dot product of d_k-dimensional vectors grows with dimension, so without the division the softmax saturates into a nearly one-hot distribution whose gradient is nearly zero",
+        "To convert the scores into probabilities before the softmax normalises them",
+        "To make sure that every row of the weight matrix sums to exactly 1"
+      ],
+      "answer": 1,
+      "explain": "The dot product of two random vectors grows roughly like sqrt(d_k), so the scores get large, and softmax of widely-spread scores is nearly one-hot - which is flat, so the gradient nearly vanishes and the model learns nothing from that step. Dividing by sqrt(d_k) keeps the scores in a range where softmax still has slope. The tempting wrong answer is the third one: softmax is what turns scores into probabilities, and the division happens before it, on raw scores."
+    },
+    {
+      "id": "L22.q2",
+      "concept": "attention",
+      "prompt": "In scaled dot-product attention, what is the softmax applied to?",
+      "options": [
+        "The vector of values V, to mix them",
+        "Each ROW of the scaled score matrix, so each row becomes a distribution over the tokens",
+        "Each COLUMN of the score matrix, so each column becomes a distribution",
+        "The output of the whole attention layer, to normalise the final result"
+      ],
+      "answer": 1,
+      "explain": "Row i of the score matrix holds token i's scores against every other token, so softmaxing row-wise turns it into 'how much attention does token i pay to each token'. The row is the distribution; a column has no independent meaning, which is why the file's self-check asserts that every ROW sums to 1. The tempting wrong answer is the column one, and it is the mistake people make when they first see the matrix printed."
+    },
+    {
+      "id": "L22.q3",
+      "concept": "queries-keys-values",
+      "prompt": "Which of the three vectors decides WHAT gets carried from one token to another, and which decides WHO looks at WHOM?",
+      "options": [
+        "The value carries the content and is mixed by the weights; the query and key together decide who looks at whom",
+        "The query carries the content and is mixed directly; the key and value only decide who looks at whom",
+        "All three do the same job, and they are interchangeable",
+        "The key carries the content; the query and value decide who looks at whom"
+      ],
+      "answer": 0,
+      "explain": "The weights are built from query-key dot products, so the query and key decide who looks at whom. The values are what gets mixed: step 4 computes W @ V, so each output is a weighted average of the VALUE vectors. The tempting wrong answer is the second one - the query is not carried through, it is only used to compute a score and then discarded."
+    },
+    {
+      "id": "L22.q4",
+      "concept": "context",
+      "prompt": "Why is the output of the attention layer called a CONTEXTUALISED embedding rather than just an embedding?",
+      "options": [
+        "Because it has been normalised so that its components sum to 1",
+        "Because it has been quantised to a smaller precision",
+        "Because each token's output now contains information borrowed from the tokens it attended to, so the same word gets a different vector in a different sentence",
+        "Because it is the output of many attention heads combined"
+      ],
+      "answer": 2,
+      "explain": "After the weighted mix, token i's vector is no longer just its own embedding - it carries what it borrowed from the tokens it attended to. That is context, and it is why the word 'bank' can mean a river edge in one sentence and money in another. The tempting wrong answer is the first one - the attention weights sum to 1, but the output vector does not."
+    },
+    {
+      "id": "L22.q5",
+      "concept": "context",
+      "prompt": "The softmax in examples/01_softmax.py and the softmax in examples/04_attention_numpy.py are the same function. What differs between them?",
+      "options": [
+        "The function: one is stable and one is not",
+        "What is being softmaxed: one is a row of scores over OPTIONS, the other a row of scores over TOKENS",
+        "The scaling: attention applies 1/sqrt(d_k) and the option softmax does not",
+        "The dimension: the option softmax always runs over four options"
+      ],
+      "answer": 1,
+      "explain": "Identical function, different axis. A routing probability is a softmax over the options in cases/routing.json; an attention weight is a softmax over the tokens of the ticket. The tempting wrong answer is the third one - the 1/sqrt(d_k) division is applied to the scores BEFORE the softmax in attention, but it is a separate step, not a difference in the softmax itself."
+    }
+  ]
+}

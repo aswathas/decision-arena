@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L00",
+  "title": "What this repo is - and what a decision model is not",
+  "questions": [
+    {
+      "id": "L00.q1",
+      "concept": "decision-model",
+      "prompt": "According to this repo, what does a decision model actually do?",
+      "options": [
+        "It writes a natural-language reply for the customer to read",
+        "It returns a distribution over a fixed set of options, and the caller decides what to do with it",
+        "It plans a multi-step chain of tool calls until it reaches an answer",
+        "It picks exactly one option and hides everything it considered"
+      ],
+      "answer": 1,
+      "explain": "A decision model maps a state to a distribution over a fixed option set, and the caller applies a threshold. The tempting wrong answer is the first one: a chat reply is prose produced for a human, and this repo measures decisions, not writing. The third option describes a reasoning agent with a tool loop, which this repo deliberately excludes so the measurement stays about the model rather than the scaffolding around it. The fourth is wrong because the distribution is the point - keeping the other probabilities is what makes calibration measurable."
+    },
+    {
+      "id": "L00.q2",
+      "concept": "evaluation",
+      "prompt": "Why does this repo run the SAME battery against several decision models instead of trusting each vendor's own benchmark?",
+      "options": [
+        "Because vendor benchmarks are always wrong",
+        "Because the vendor benchmarks each test a different question",
+        "Because every vendor publishes a benchmark where they win, and the headline tables disagree with each other",
+        "Because running one battery per model is the only way to work out the price per token"
+      ],
+      "answer": 2,
+      "explain": "The README says it directly: 'every vendor published a benchmark table where they win, and the two headline tables disagree with each other', so this repo exists so a third party can run the comparison. The first option is too crude - the vendor tables are not necessarily wrong, they are just self-reported and not comparable. The second is wrong because the opposite is true: the whole point is that the cases are identical. The fourth is a real concern but it is handled by price_per_mtok and estimate_cost, not by the battery design."
+    },
+    {
+      "id": "L00.q3",
+      "concept": "evidence",
+      "prompt": "In this repo, what makes a number quotable as a result?",
+      "options": [
+        "It appears in a Markdown report under runs/",
+        "It was produced by a provider whose API key was present",
+        "The raw run file behind it exists, such as the runs/<run_id>.jsonl with the per-call records",
+        "It was printed by the report with four decimal places"
+      ],
+      "answer": 2,
+      "explain": "The rule is 'evidence before claims': a number without its raw runs/*.jsonl behind it is marketing. A Markdown report is only a rendering of that evidence, so the first option is a summary of the answer, not the answer. The second option confuses 'we could afford it' with 'we can check it'. The fourth option is exactly backwards - rounding to four decimals is a presentation choice and tells you nothing about whether the number is real."
+    },
+    {
+      "id": "L00.q4",
+      "concept": "evidence",
+      "prompt": "You run the harness against the mock provider and it reports an accuracy of 0.90. What can you conclude?",
+      "options": [
+        "The mock provider is a good model for cheap support routing",
+        "The harness pipeline works end to end, but nothing about any real model was measured",
+        "The battery is easy, because 90% of the cases were answered correctly",
+        "The mock provider is a faithful simulation of a real decision model"
+      ],
+      "answer": 1,
+      "explain": "The mock is the harness's own test fixture, so its numbers prove the pipeline (metrics, swap matrix, friction report) runs - nothing more. AGENTS.md rule 4 says the mock's numbers must never be published as a model evaluation, and report.run_report() prints a SIMULATED RUN banner for exactly that reason. The first and fourth options are the classic trap: a simulator that reproduces the shape of a published finding can look like a cheap real model. The third is wrong because the cases are fixed by the case files, and their difficulty does not change with the provider."
+    }
+  ]
+}

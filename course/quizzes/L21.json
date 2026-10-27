@@ -1,0 +1,58 @@
+{
+  "lesson_id": "L21",
+  "title": "Embeddings - numbers as places in space",
+  "questions": [
+    {
+      "id": "L21.q1",
+      "concept": "embeddings",
+      "prompt": "What is an embedding of a piece of text?",
+      "options": [
+        "A vector of numbers that places the text as a point in a space, so that similar texts land near each other",
+        "A compressed copy of the text that can be decoded back to the original string",
+        "A list of the tokens in the text, in order",
+        "The probability the model assigns to each possible continuation"
+      ],
+      "answer": 0,
+      "explain": "An embedding is a fixed-length list of floats whose only job is to give the text a position. The meaning is in the relative positions, not in the numbers themselves. The tempting wrong answer is the compression one - a compressed copy would be invertible, but an embedding is lossy in a way that is not about recovering the text, it is about placing it near other texts that mean something similar."
+    },
+    {
+      "id": "L21.q2",
+      "concept": "similarity",
+      "prompt": "Two vectors are [10, 0] and [100, 0]. Their dot product is 1000, but they are obviously far apart on the map. What is the problem, and what fixes it?",
+      "options": [
+        "The dot product is wrong; use the sum of the coordinates instead",
+        "The vectors must be normalised to unit length before any comparison, so use the raw coordinates",
+        "The dot product measures direction, not distance; cosine similarity divides by the two vector lengths so only direction matters",
+        "There is no problem - a large dot product means the vectors are similar, and near-ness on the map is irrelevant"
+      ],
+      "answer": 2,
+      "explain": "A dot product grows with the magnitudes of both vectors, so two points far apart but pointing the same way score huge. Cosine similarity divides by the product of the lengths, which leaves only the angle between them, and that is what carries the 'similar meaning' signal. The tempting wrong answer is the last one: if a large dot product counted as similarity, then 'billing' and 'cat' could look similar just because both embeddings happened to be large."
+    },
+    {
+      "id": "L21.q3",
+      "concept": "geometry",
+      "prompt": "Where does the 'meaning' in an embedding come from?",
+      "options": [
+        "A human wrote a definition for each word and the model looked it up",
+        "The training data: words that appear in similar contexts end up near each other, so the map is drawn by usage",
+        "The tokenizer, which assigns nearby ids to related words",
+        "The attention weights, which are added to the embedding to give it meaning"
+      ],
+      "answer": 1,
+      "explain": "The geometry is learned from data: tickets mentioning 'refund' often mention 'charge', so those tokens end up near each other without anyone writing down that they are related. The tempting wrong answer is the tokenizer one - a tokenizer assigns ids, and nearby ids mean nothing; in fact two vendors' ids are completely unrelated for the same word, as L20 showed."
+    },
+    {
+      "id": "L21.q4",
+      "concept": "vectors",
+      "prompt": "In examples/04_attention_numpy.py, the embeddings for the tokens 'the', 'cat' and 'dog' are [1.0, 0.0], [0.0, 1.0] and [0.9, 0.1]. What does the file do with the fact that token 0 and token 2 are close?",
+      "options": [
+        "It averages their embeddings into one vector",
+        "It drops the far token and keeps only the nearest",
+        "Their query-key dot product comes out high, so the softmax gives them most of each other's attention",
+        "Nothing - the file only prints the embeddings and never compares them"
+      ],
+      "answer": 2,
+      "explain": "The file's own comment says it: 'token 0 and token 2 are similar, so they should attend to each other'. The mechanism is the dot product between embeddings from L21 - a high similarity becomes a high attention score, and the softmax turns that into a large weight. That is the bridge from this lesson to L22, and it is why the file asserts weights[0][2] > weights[0][1]."
+    }
+  ]
+}
