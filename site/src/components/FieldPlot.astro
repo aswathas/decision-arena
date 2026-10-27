@@ -217,7 +217,7 @@ const caseGroups = [
       ))}
 
       {/* series */}
-      {series.map((s) => (
+      {series.map((s, si) => (
         <polyline
           points={s.points.join(' ')}
           fill="none"
@@ -225,6 +225,8 @@ const caseGroups = [
           stroke-width="1"
           stroke-opacity="0.85"
           data-series={s.key}
+          class="m-draw"
+          style={`--m-length: 1200; --m-duration: 1.7s; --m-delay: ${0.15 + si * 0.22}s`}
         />
       ))}
 
@@ -240,6 +242,8 @@ const caseGroups = [
             stroke="none"
             data-marker={s.key}
             data-index={i}
+            class="m-fade"
+            style={`--m-duration: 0.5s; --m-delay: ${0.5 + i * 0.06}s`}
           />
         )),
       )}

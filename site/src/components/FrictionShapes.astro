@@ -1,0 +1,363 @@
+---
+/**
+ * The friction figure: one ticket, three shapes, one decision.
+ *
+ * The same support ticket, serialised three ways, and the probability that
+ * comes back each time. The marker travels down the probability axis as the
+ * shape changes, and crosses the 0.5 threshold - which is the whole finding
+ * in one motion.
+ *
+ * The three numbers are the committed run's: the featured station
+ * fmt-001-refund / is_urgent, run 20261027-212313-friction-mock. Prose
+ * 0.9271, flat JSON 0.3278, nested JSON 0.0. This is the offline
+ * simulator's shape, not a measurement of a model, and the page says so.
+ */
+const AXIS_X = 468;
+const TOP = 44;
+const BOTTOM = 286;
+
+const yOf = (p: number) => BOTTOM - p * (BOTTOM - TOP);
+
+const READINGS = [
+  { key: 'prose', label: 'prose', p: 0.9271, value: '0.93' },
+  { key: 'flat', label: 'flat json', p: 0.3278, value: '0.33' },
+  { key: 'nested', label: 'nested json', p: 0.0, value: '0.00' },
+];
+
+const THRESHOLD = 0.5;
+const yProse = yOf(READINGS[0].p);
+const yFlat = yOf(READINGS[1].p);
+const yNested = yOf(READINGS[2].p);
+const yThreshold = yOf(THRESHOLD);
+
+// The marker travels from the prose reading down to the flat reading and on
+// to the nested one, so the distance it covers is the spread.
+const travel = `translateY(0)`;
+---
+
+<figure class="shapes">
+  <div class="shapes__frame">
+    <svg
+      class="shapes__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="shapes-title shapes-desc"
+    >
+      <title id="shapes-title">One ticket, three serialisations, one decision</title>
+      <desc id="shapes-desc">
+        A support ticket drawn three ways - as flowing prose, as a flat row of
+        fields, and as a nested stack of boxes - feeds a probability axis on
+        the right. A marker starts high on the axis at 0.93 for the prose
+        version, slides down to 0.33 for the flat version, and on to 0.00 for
+        the nested version, crossing the horizontal decision threshold at 0.5
+        on the way. The ticket never changed; only its shape did.
+      </desc>
+
+      {/* the three shapes */}
+      <g class="shapes__glyphs">
+        {
+          READINGS.map((r, i) => (
+            <g
+              class={`shapes__glyph shapes__glyph--${r.key}`}
+              style={`--m-delay: ${i}s`}
+            >
+              {r.key === 'prose' && (
+                <g>
+                  <path d="M40 54 C 60 44, 84 62, 104 52 S 148 60, 172 50" />
+                  <path d="M40 64 C 60 54, 84 72, 104 62 S 148 70, 172 60" />
+                  <path d="M40 74 C 60 64, 84 82, 104 72 S 148 80, 172 70" />
+                </g>
+              )}
+              {r.key === 'flat' && (
+                <g>
+                  <rect x="40" y="146" width="22" height="20" />
+                  <rect x="68" y="146" width="22" height="20" />
+                  <rect x="96" y="146" width="22" height="20" />
+                  <rect x="124" y="146" width="22" height="20" />
+                  <rect x="152" y="146" width="22" height="20" />
+                </g>
+              )}
+              {r.key === 'nested' && (
+                <g>
+                  <rect x="40" y="232" width="70" height="24" />
+                  <rect x="52" y="260" width="70" height="24" />
+                  <rect x="64" y="288" width="70" height="24" />
+                </g>
+              )}
+            </g>
+          ))
+        }
+
+        {/* the shape labels */}
+        {
+          READINGS.map((r, i) => (
+            <text
+              class="shapes__label"
+              x="40"
+              y={r.key === 'prose' ? 98 : r.key === 'flat' ? 186 : 330}
+            >
+              {r.label}
+            </text>
+          ))
+        }
+      </g>
+
+      {/* the connectors: each shape reaches the axis at its own reading */}
+      {
+        READINGS.map((r) => (
+          <path
+            class="shapes__connector"
+            d={`M 186 ${r.key === 'prose' ? 64 : r.key === 'flat' ? 156 : 264}
+                C 300 ${r.key === 'prose' ? 64 : r.key === 'flat' ? 156 : 264},
+                  380 ${yOf(r.p)}, ${AXIS_X - 6} ${yOf(r.p)}`}
+          />
+        ))
+      }
+
+      {/* the probability axis */}
+      <line class="shapes__axis" x1={AXIS_X} y1={TOP} x2={AXIS_X} y2={BOTTOM} />
+      <text class="shapes__tick" x={AXIS_X - 6} y={TOP - 12} text-anchor="end">
+        1.0
+      </text>
+      <text class="shapes__tick" x={AXIS_X - 6} y={BOTTOM + 18} text-anchor="end">
+        0.0
+      </text>
+
+      {/* the decision threshold */}
+      <line
+        class="shapes__threshold"
+        x1={AXIS_X - 74}
+        y1={yThreshold}
+        x2={AXIS_X + 92}
+        y2={yThreshold}
+      />
+      <text class="shapes__threshold-label" x={AXIS_X + 100} y={yThreshold - 7}>
+        0.5
+      </text>
+      <text class="shapes__decision" x={AXIS_X + 100} y={yThreshold + 20}>
+        decide
+      </text>
+
+      {/* the readings, in graphite, and the one that travels in ink */}
+      {
+        READINGS.map((r) => (
+          <rect
+            class="shapes__reading"
+            x={AXIS_X - 3.5}
+            y={yOf(r.p) - 3.5}
+            width="7"
+            height="7"
+          />
+        ))
+      }
+
+      {/* the reading that travels: the square moves, the value arrives with it */}
+      <g
+        class="shapes__marker"
+        style={`--d1: ${yFlat - yProse}px; --d2: ${yNested - yProse}px`}
+      >
+        <rect x={AXIS_X - 4.5} y={yProse - 4.5} width="9" height="9" />
+      </g>
+
+      <text class="shapes__value shapes__value--a" x={AXIS_X + 12} y={yProse + 4}>
+        0.93
+      </text>
+      <text class="shapes__value shapes__value--b" x={AXIS_X + 12} y={yFlat + 4}>
+        0.33
+      </text>
+      <text class="shapes__value shapes__value--c" x={AXIS_X + 12} y={yNested + 4}>
+        0.00
+      </text>
+    </svg>
+  </div>
+
+  <figcaption class="shapes__caption">
+    <span class="edge-code">the friction finding</span>
+    <span class="shapes__caption-text">
+      The ticket never changed. The shape did - and the decision changed with it. This is the
+      offline simulator reproducing the shape of the result, not a measurement of a model.
+    </span>
+  </figcaption>
+</figure>
+
+<style>
+  .shapes {
+    margin: 0 0 1.6rem;
+  }
+
+  .shapes__frame {
+    border: 1px solid var(--color-rule);
+    background: var(--color-ground);
+    padding: 0.9rem;
+  }
+
+  .shapes__svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .shapes__glyph path,
+  .shapes__glyph rect {
+    fill: none;
+    stroke: var(--color-graphite);
+    stroke-width: 1;
+  }
+
+  .shapes__glyph--prose path {
+    fill: var(--color-prussian-tint);
+    stroke: var(--color-prussian);
+  }
+
+  .shapes__glyph--flat rect {
+    fill: var(--color-ground-deep);
+  }
+
+  .shapes__glyph--nested rect {
+    fill: var(--color-prussian-tint);
+    stroke: var(--color-prussian);
+  }
+
+  .shapes__label,
+  .shapes__tick,
+  .shapes__threshold-label,
+  .shapes__decision,
+  .shapes__value {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    fill: var(--color-ink-45);
+  }
+
+  .shapes__connector {
+    fill: none;
+    stroke: var(--color-rule);
+    stroke-width: 1;
+  }
+
+  .shapes__axis {
+    stroke: var(--color-ink-45);
+    stroke-width: 1;
+  }
+
+  .shapes__threshold {
+    stroke: var(--color-prussian);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+  }
+
+  .shapes__threshold-label {
+    fill: var(--color-prussian);
+  }
+
+  .shapes__reading {
+    fill: var(--color-graphite);
+  }
+
+  .shapes__marker rect {
+    fill: var(--color-ink);
+  }
+
+  .shapes__value {
+    fill: var(--color-ink);
+  }
+
+  .shapes__caption {
+    display: flex;
+    gap: 0.9rem;
+    align-items: baseline;
+    margin-top: 0.7rem;
+    padding-top: 0.7rem;
+    border-top: 1px solid var(--color-rule-soft);
+  }
+
+  .shapes__caption-text {
+    font-size: var(--text-caption);
+    color: var(--color-ink-70);
+    line-height: 1.5;
+  }
+
+  /* The motion: the marker holds at each reading, then moves when the shape
+     changes, and the value beside it changes with it. */
+  @keyframes shapes-marker {
+    0%,
+    28% {
+      transform: translateY(0);
+    }
+    36%,
+    62% {
+      transform: translateY(var(--d1));
+    }
+    70%,
+    96% {
+      transform: translateY(var(--d2));
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes shapes-value-a {
+    0%,
+    28% {
+      opacity: 1;
+    }
+    36%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes shapes-value-b {
+    0%,
+    30% {
+      opacity: 0;
+    }
+    36%,
+    62% {
+      opacity: 1;
+    }
+    70%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes shapes-value-c {
+    0%,
+    64% {
+      opacity: 0;
+    }
+    70%,
+    96% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .shapes__marker {
+    animation: shapes-marker 7s ease-in-out infinite;
+  }
+
+  .shapes__value--a {
+    animation: shapes-value-a 7s ease-in-out infinite;
+  }
+
+  .shapes__value--b {
+    animation: shapes-value-b 7s ease-in-out infinite;
+  }
+
+  .shapes__value--c {
+    animation: shapes-value-c 7s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .shapes__marker,
+    .shapes__value {
+      animation: none !important;
+      opacity: 1;
+    }
+  }
+</style>

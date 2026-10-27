@@ -5,3 +5,7 @@ dist/
 
 # Logs from a detached local preview server (see site/README.md).
 preview.*.log
+
+# The raw image downloads, before site/scripts/optimize-illustrations.mjs
+# re-encodes them. Only the optimized copies are committed.
+.illustrations-raw/

@@ -19,8 +19,12 @@ import { url } from '../../data/urls';
  * The figure components, one per lesson. A lesson without a figure simply has
  * no entry, and the page renders the lesson without one - the figure is an
  * addition to the lesson, never a requirement for reading it.
+ *
+ * The glob is eager on purpose: a lazy glob hands back loader functions, and
+ * `module.default` on a loader is undefined, so the figure silently never
+ * renders. With `eager: true` the entry is the module itself.
  */
-const FIGURES = import.meta.glob('../../figures/*.astro');
+const FIGURES = import.meta.glob('../../figures/*.astro', { eager: true });
 
 export function getStaticPaths() {
   return LESSONS.map((lesson) => ({

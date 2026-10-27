@@ -1,0 +1,154 @@
+---
+/**
+ * The course map: ten phases on one spine, every lesson a tick.
+ *
+ * The list below it is the curriculum; this is the same curriculum as a shape -
+ * how long each phase is, where the dense parts are, and where the reading time
+ * actually goes. One idea of motion: the spine draws itself, then the ticks
+ * rise in reading order.
+ */
+import { PHASES } from '../data/course';
+
+const WIDTH = 960;
+const HEIGHT = 168;
+const LEFT = 56;
+const RIGHT = WIDTH - 56;
+const SPINE_Y = 116;
+const MAX_TICK_H = 74;
+
+const groupWidth = (RIGHT - LEFT) / PHASES.length;
+const maxLessons = Math.max(...PHASES.map((p) => p.lessons.length));
+const maxMinutes = Math.max(...PHASES.flatMap((p) => p.lessons.map((l) => l.minutes)));
+
+// The ticks are scaled by lesson count, so a phase with eight lessons looks
+// like a phase with eight lessons.
+const tickStep = Math.min(11, (groupWidth - 22) / Math.max(maxLessons - 1, 1));
+
+const groups = PHASES.map((phase, index) => {
+  const centre = LEFT + groupWidth * index + groupWidth / 2;
+  const count = phase.lessons.length;
+  const span = (count - 1) * tickStep;
+  const ticks = phase.lessons.map((lesson, i) => {
+    const x = centre - span / 2 + i * tickStep;
+    const height = 18 + (lesson.minutes / maxMinutes) * (MAX_TICK_H - 18);
+    return {
+      id: lesson.id,
+      x,
+      y: SPINE_Y - height,
+      height,
+      minutes: lesson.minutes,
+    };
+  });
+  return { phase, centre, ticks };
+});
+
+const totalMinutes = PHASES.reduce((sum, p) => sum + p.minutes, 0);
+const busiest = groups.reduce((a, b) => (a.ticks.length >= b.ticks.length ? a : b));
+---
+
+<figure class="fig fig--map">
+  <div class="fig__frame">
+    <svg
+      class="fig__svg"
+      viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
+      role="img"
+      aria-labelledby="course-map-title course-map-desc"
+    >
+      <title id="course-map-title">Ten phases, forty-six lessons, one reading order</title>
+      <desc id="course-map-desc">
+        A horizontal spine runs across the page with ten phase groups on it, in reading order
+        from phase zero to phase nine. Each lesson in a phase is a vertical tick above the spine;
+        a taller tick is a longer lesson. The densest phase is phase {busiest.phase.id}, with
+        {busiest.ticks.length} lessons. Below the spine each phase is numbered and its reading
+        time is given. The whole course is {totalMinutes} minutes of reading.
+      </desc>
+
+      <line
+        class="map__spine"
+        x1={LEFT}
+        y1={SPINE_Y}
+        x2={RIGHT}
+        y2={SPINE_Y}
+        pathLength="1000"
+      />
+
+      {
+        groups.map((group, index) => (
+          <g
+            class="map__group m-rise"
+            style={`--m-delay: ${0.35 + index * 0.09}s`}
+          >
+            {group.ticks.map((tick) => (
+              <line
+                class="map__tick"
+                x1={tick.x}
+                y1={SPINE_Y}
+                x2={tick.x}
+                y2={tick.y}
+              />
+            ))}
+            <circle class="map__node" cx={group.centre} cy={SPINE_Y} r="3" />
+            <text class="map__num num" x={group.centre} y={SPINE_Y + 26} text-anchor="middle">
+              {String(group.phase.id).padStart(2, '0')}
+            </text>
+            <text class="map__meta num" x={group.centre} y={SPINE_Y + 42} text-anchor="middle">
+              {group.phase.minutes} min
+            </text>
+          </g>
+        ))
+      }
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">course map</span>
+    <span class="fig__caption-text">
+      Ten phases on one spine. Every tick is a lesson; a taller tick is a longer one. The widest
+      phase is {busiest.phase.id}, and the whole course is {totalMinutes} minutes of reading.
+    </span>
+  </figcaption>
+</figure>
+
+<style>
+  .fig--map .fig__frame {
+    padding: 1.1rem 1rem 0.6rem;
+  }
+
+  .map__spine {
+    stroke: var(--color-rule);
+    stroke-width: 1;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: fig-draw 1.6s ease-out forwards;
+  }
+
+  .map__tick {
+    stroke: var(--color-prussian);
+    stroke-width: 1;
+    opacity: 0.55;
+  }
+
+  .map__node {
+    fill: var(--color-ground);
+    stroke: var(--color-ink-70);
+    stroke-width: 1;
+  }
+
+  .map__num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--color-ink);
+  }
+
+  .map__meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--color-ink-45);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .map__spine {
+      animation: none;
+      stroke-dashoffset: 0;
+    }
+  }
+</style>
