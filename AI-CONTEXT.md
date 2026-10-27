@@ -90,9 +90,13 @@ verified_facts:
     evidence: "runs/20261027-212313-friction-mock.jsonl, runs/20261027-212313-friction-mock.meta.json"
     verified_on: 2026-10-27
   - id: public-site
-    claim: "The public site builds from site/ (Astro 7 + Tailwind 4, static) and ships as a single page: one figure plate with the measure and learn doors, the friction field, and the evidence links. It is published at https://pm51wr5jr44rf.space.minimax.io. The Impeccable detector reports 0 findings at 1440x900 and 390x844, and the a11y smoke check passes."
-    evidence: "site/src/pages/index.astro, site/README.md, tools/check_site_a11y.py"
-    verified_on: 2026-10-27
+    claim: "The public site builds from site/ (Astro 7 + Tailwind 4, static) and ships 48 pages: the landing page (one figure plate with the measure and learn doors, the friction field, and the evidence links), a course index, and one page per lesson. It is published at https://pm51wr5jr44rf.space.minimax.io. The Impeccable detector reports 0 findings at 1440x900 and 390x844, and the a11y smoke check passes on every built page."
+    evidence: "site/src/pages/index.astro, site/src/pages/lessons/[id].astro, site/README.md, tools/check_site_a11y.py"
+    verified_on: 2026-10-28
+  - id: course-reader-reads-the-repo
+    claim: "The course pages are rendered from the repository's own files, not copied: the lesson body is course/lessons/*.md imported as markdown, the quiz is course/quizzes/*.json, and the index is the generated course/curriculum.json. A lesson file that moves fails the build instead of publishing a stale copy."
+    evidence: "site/src/data/course.ts, course/curriculum.json"
+    verified_on: 2026-10-28
   - id: site-no-third-party-runtime
     claim: "The site makes no third-party runtime request: both typefaces are self-hosted woff2 files vendored from the upstream releases by tools/vendor_fonts.py."
     evidence: "tools/vendor_fonts.py, site/public/fonts/fonts.css"
@@ -179,9 +183,10 @@ metrics, a Markdown report writer, and a swap-safety comparator. (2)
 (46 lessons, 46 quizzes, 10 phases), with three skills (`skills/`), a
 per-concept mastery engine (`tools/learn_state.py`), a course gate
 (`tools/course_check.py`) and session hooks. 29/29 unit tests pass. (3) A
-public landing page in `site/` - one figure plate carrying two equal doors,
-the friction field plotted from the committed run, and every number linked to
-its raw file.
+public site in `site/` - 48 static pages: a landing page carrying two equal
+doors on one figure plate, the friction field plotted from the committed run,
+every number linked to its raw file, and a course reader that renders the 46
+lessons and their quizzes straight from the repository's own files.
 
 **What is real.** Nothing measured yet from a live provider - every committed
 number so far comes from the mock and proves only that the harness works. The

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-27T16:20:00Z",
+  "generatedAt": "2026-10-27T20:14:00Z",
   "title": "Design System: Decision Arena",
   "extensions": {
     "colorMeta": {
@@ -158,15 +158,23 @@
     "typographyMeta": {
       "display": {
         "displayName": "Display",
-        "purpose": "The single h1, the title block of the figure plate. Nothing else uses this size."
+        "purpose": "The h1 of the two entry surfaces only: the landing page and the course index. Nothing else uses this size."
       },
       "headline": {
         "displayName": "Headline",
-        "purpose": "Section headings and the closing call to action."
+        "purpose": "Section headings, the closing call to action, and a lesson's own title, which is set at this role rather than at display."
       },
       "title": {
         "displayName": "Title",
         "purpose": "The two panel headings inside the plate, each preceded inline by its journal panel tag."
+      },
+      "prose-heading": {
+        "displayName": "Prose Heading",
+        "purpose": "The ## sections of a lesson body, each opening with a 1px top rule."
+      },
+      "prose-subheading": {
+        "displayName": "Prose Subheading",
+        "purpose": "The ### sections of a lesson body."
       },
       "lead": {
         "displayName": "Lead",
@@ -174,11 +182,19 @@
       },
       "body": {
         "displayName": "Body",
-        "purpose": "All running prose, held to a 58ch measure."
+        "purpose": "All running prose, held to a 58ch measure on the plate and 60ch in the reader."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "The small sans size: panel bodies, notes, stat labels, the reader's strip values and rail entries."
       },
       "label": {
         "displayName": "Measured Label",
-        "purpose": "Edge codes, nav links, metric chips, axis and station labels. Mono, uppercase, tracked."
+        "purpose": "Edge codes, nav links, metric chips, strip labels, axis and station labels. Mono, uppercase, tracked."
+      },
+      "mono-caption": {
+        "displayName": "Mono Caption",
+        "purpose": "Machine-readable mono at 0.8125rem: command blocks, code, the foot's two lines."
       },
       "numeric": {
         "displayName": "Numeric",
@@ -201,20 +217,28 @@
         "name": "arrow-slide",
         "value": "180ms ease",
         "purpose": "The primary button's arrow slides 3px to the right on hover."
+      },
+      {
+        "name": "disclosure-open",
+        "value": "none - native <details>",
+        "purpose": "The reader's only motion belongs to the reader: the browser opens the answer key instantly, with no authored transition, so nothing can be previewed before it is opened."
       }
     ],
     "breakpoints": [
       {
-        "name": "plate-collapse",
-        "value": "1080px"
+        "name": "plate-and-rail-collapse",
+        "value": "1080px",
+        "purpose": "The plate frame and the evidence section collapse to one column; on a lesson page the margin rail becomes a wrapped contents line above the body."
       },
       {
         "name": "plot-floor-width",
-        "value": "760px"
+        "value": "760px",
+        "purpose": "The friction plot alone takes a 680px floor width and scrolls sideways inside its own frame."
       },
       {
         "name": "compact-grids",
-        "value": "720px"
+        "value": "720px",
+        "purpose": "The nav wraps and drops the mark's sub-line; the measurement, phase, lesson-row and previous/next grids drop or compress their index columns."
       }
     ]
   },
@@ -223,7 +247,7 @@
       "name": "Primary Action Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "The only filled control in the system: ink on paper, mono label, square corners.",
+      "description": "The only filled control on a surface: ink on paper, mono label, square corners.",
       "html": "<a class=\"ds-action\" href=\"#\">Run it now <span class=\"ds-action__arrow\" aria-hidden=\"true\">→</span></a>",
       "css": ".ds-action { display: inline-flex; align-items: center; gap: 0.7rem; background: var(--color-ink); color: var(--color-ground); padding: 0.85rem 1.35rem; font-family: var(--font-mono); font-size: 0.8125rem; letter-spacing: 0.02em; text-decoration: none; border: 1px solid var(--color-ink); transition: background-color 140ms ease, color 140ms ease; } .ds-action:hover { background: var(--color-prussian); border-color: var(--color-prussian); color: #ffffff; } .ds-action:focus-visible { outline: 2px solid var(--color-prussian); outline-offset: 3px; border-radius: 1px; } .ds-action__arrow { transition: transform 180ms ease; } .ds-action:hover .ds-action__arrow { transform: translateX(3px); }"
     },
@@ -271,9 +295,17 @@
       "name": "Navigation Bar",
       "kind": "nav",
       "refersTo": "nav-link",
-      "description": "Sticky hairline bar; the only translucent surface in the system.",
-      "html": "<header class=\"ds-nav\"><div class=\"ds-nav__inner\"><a href=\"#\" class=\"ds-nav__mark\"><span class=\"ds-nav__mark-name\">Decision Arena</span><span class=\"ds-nav__mark-sub\">the neutral harness</span></a><nav class=\"ds-nav__links\" aria-label=\"Primary\"><a href=\"#\">Run it</a><a href=\"#\">Evidence</a></nav></div></header>",
+      "description": "Sticky hairline bar shared by all forty-eight pages; the only translucent surface in the system.",
+      "html": "<header class=\"ds-nav\"><div class=\"ds-nav__inner\"><a href=\"#\" class=\"ds-nav__mark\"><span class=\"ds-nav__mark-name\">Decision Arena</span><span class=\"ds-nav__mark-sub\">the neutral harness</span></a><nav class=\"ds-nav__links\" aria-label=\"Primary\"><a href=\"#\">What it measures</a><a href=\"#\">Run it</a><a href=\"#\">Evidence</a><a href=\"#\">Course</a><a href=\"#\">GitHub</a></nav></div></header>",
       "css": ".ds-nav { border-bottom: 1px solid var(--color-rule); position: sticky; top: 0; background: color-mix(in srgb, var(--color-ground) 92%, transparent); backdrop-filter: blur(6px); z-index: 20; } .ds-nav__inner { max-width: 1440px; margin: 0 auto; padding: 0.85rem clamp(1rem, 4vw, 3rem); display: flex; align-items: baseline; justify-content: space-between; gap: 1.5rem; } .ds-nav__mark { display: flex; align-items: baseline; gap: 0.7rem; text-decoration: none; color: var(--color-ink); } .ds-nav__mark-name { font-weight: 600; letter-spacing: -0.01em; } .ds-nav__mark-sub { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--color-ink-45); } .ds-nav__links { display: flex; gap: 1.6rem; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.09em; text-transform: uppercase; } .ds-nav__links a { text-decoration: none; color: var(--color-ink-70); padding-bottom: 2px; border-bottom: 1px solid transparent; } .ds-nav__links a:hover { color: var(--color-ink); border-bottom-color: var(--color-prussian); } .ds-nav__links a:focus-visible { outline: 2px solid var(--color-prussian); outline-offset: 3px; border-radius: 1px; }"
+    },
+    {
+      "name": "Page Foot",
+      "kind": "custom",
+      "refersTo": "foot-line",
+      "description": "One hairline and two mono lines: identity on the left, the repository on the right.",
+      "html": "<footer class=\"ds-foot\"><p class=\"ds-foot__left\">Decision Arena · apache-2.0 · built for engineers who want the number, not the brochure</p><p class=\"ds-foot__right\">github.com/aswathas/decision-arena</p></footer>",
+      "css": ".ds-foot { border-top: 1px solid var(--color-rule); max-width: 1440px; margin: 0 auto; padding: 1.4rem clamp(1rem, 4vw, 3rem) 2.4rem; display: flex; flex-wrap: wrap; gap: 0.6rem 2rem; justify-content: space-between; } .ds-foot p { margin: 0; font-family: var(--font-mono); font-size: 0.8125rem; color: var(--color-ink-45); max-width: 58ch; }"
     },
     {
       "name": "Figure Plate",
@@ -298,18 +330,52 @@
       "description": "One reading at a time: the selected serialisation in ink, the others in tertiary ink.",
       "html": "<div class=\"ds-readout\"><div class=\"ds-readout__row\"><p class=\"ds-edge-code\">reading - fmt-001-refund / is_urgent</p><p class=\"ds-readout__note\">the ticket as one paragraph of English</p></div><ul class=\"ds-readout__values\"><li class=\"ds-readout__value\" data-active=\"true\"><span class=\"ds-readout__key\">prose</span><span class=\"ds-readout__num\">0.93</span></li><li class=\"ds-readout__value\"><span class=\"ds-readout__key\">flat json</span><span class=\"ds-readout__num\">0.33</span></li><li class=\"ds-readout__value\"><span class=\"ds-readout__key\">nested json</span><span class=\"ds-readout__num\">0.00</span></li></ul></div>",
       "css": ".ds-readout { border-top: 1px solid var(--color-rule); padding-top: 0.85rem; display: flex; flex-direction: column; gap: 0.7rem; } .ds-readout__row { display: flex; flex-wrap: wrap; gap: 0.35rem 1rem; align-items: baseline; justify-content: space-between; } .ds-edge-code { margin: 0; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--color-ink-45); } .ds-readout__note { margin: 0; font-size: 0.8125rem; color: var(--color-ink-70); } .ds-readout__values { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0 2.4rem; } .ds-readout__value { display: flex; align-items: baseline; gap: 0.6rem; padding: 0.12rem 0; color: var(--color-ink-45); transition: color 180ms ease; } .ds-readout__value[data-active='true'] { color: var(--color-ink); } .ds-readout__key { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.09em; text-transform: uppercase; color: inherit; } .ds-readout__num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-feature-settings: 'tnum' 1; font-size: 1.05rem; color: inherit; }"
+    },
+    {
+      "name": "Reference Strip",
+      "kind": "custom",
+      "refersTo": "meta-label",
+      "description": "The stamp above the title: a hairline and a row of measured label/value pairs. Every label carries data.",
+      "html": "<dl class=\"ds-strip\"><div class=\"ds-strip__item\"><dt class=\"ds-strip__label\">reading time</dt><dd class=\"ds-strip__value\">25 min</dd></div><div class=\"ds-strip__item\"><dt class=\"ds-strip__label\">concepts</dt><dd class=\"ds-strip__value\">decision-model · evaluation · evidence</dd></div><div class=\"ds-strip__item\"><dt class=\"ds-strip__label\">your file</dt><dd class=\"ds-strip__value\">docs/notes/L00-what-is-a-decision-model.md</dd></div></dl>",
+      "css": ".ds-strip { display: flex; flex-wrap: wrap; gap: 0.9rem clamp(1.4rem, 3.5vw, 3rem); margin: 0; padding-top: 0.9rem; border-top: 1px solid var(--color-rule); } .ds-strip__item { min-width: 0; } .ds-strip__label { margin: 0; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--color-ink-45); } .ds-strip__value { margin: 0.25rem 0 0; font-size: 0.8125rem; color: var(--color-ink-70); }"
+    },
+    {
+      "name": "Lesson Id Chip",
+      "kind": "chip",
+      "refersTo": "path-chip",
+      "description": "A lesson id in a path's run: a bordered mono chip joined to the next by a hairline dash.",
+      "html": "<div class=\"ds-path\"><p class=\"ds-path__id\">beginner</p><ol class=\"ds-path__seq\"><li><a href=\"#\">L00</a></li><li><a href=\"#\">L01</a></li><li><a href=\"#\">L02</a></li></ol></div>",
+      "css": ".ds-path { border-top: 1px solid var(--color-rule); padding-top: 0.9rem; } .ds-path__id { margin: 0 0 0.5rem; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--color-prussian); } .ds-path__seq { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.35rem 0.5rem; font-size: 0.8125rem; } .ds-path__seq li { position: relative; } .ds-path__seq li:not(:last-child)::after { content: ''; position: absolute; right: -0.42rem; top: 50%; width: 0.3rem; height: 1px; background: var(--color-rule); } .ds-path__seq a { display: inline-block; text-decoration: none; color: var(--color-ink-70); border: 1px solid var(--color-rule-soft); padding: 0.12rem 0.4rem; font-family: var(--font-mono); font-size: 0.6875rem; } .ds-path__seq a:hover { color: var(--color-ink); border-color: var(--color-prussian); }"
+    },
+    {
+      "name": "Margin Rail",
+      "kind": "nav",
+      "refersTo": "rail-link",
+      "description": "The sticky margin column listing this page's own sections, and nothing else.",
+      "html": "<aside class=\"ds-rail\"><p class=\"ds-edge-code\">in this lesson</p><ol class=\"ds-rail__list\"><li><a href=\"#\">Why this matters</a></li><li><a href=\"#\">The naive story</a></li><li><a href=\"#\">What breaks</a></li></ol><p class=\"ds-rail__foot\"><a href=\"#\">The whole course</a></p></aside>",
+      "css": ".ds-rail { position: sticky; top: 4.5rem; border-top: 1px solid var(--color-rule); padding-top: 0.9rem; } .ds-edge-code { margin: 0; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--color-ink-45); } .ds-rail__list { list-style: none; margin: 0.7rem 0 0; padding: 0; } .ds-rail__list li { margin-bottom: 0.35rem; font-size: 0.8125rem; line-height: 1.45; } .ds-rail__list a { color: var(--color-ink-70); text-decoration: none; border-bottom: 1px solid transparent; } .ds-rail__list a:hover { color: var(--color-ink); border-bottom-color: var(--color-prussian); } .ds-rail__foot { margin: 1.1rem 0 0; padding-top: 0.8rem; border-top: 1px solid var(--color-rule-soft); } .ds-rail__foot a { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--color-ink-70); text-decoration: none; border-bottom: 1px solid transparent; } .ds-rail__foot a:hover { color: var(--color-ink); border-bottom-color: var(--color-prussian); }"
+    },
+    {
+      "name": "Quiz Disclosure",
+      "kind": "custom",
+      "refersTo": "disclosure-marker",
+      "description": "The answer key behind a native disclosure whose marker is a plus sign at the margin edge.",
+      "html": "<details class=\"ds-question\"><summary class=\"ds-question__summary\"><span class=\"ds-question__index\">01</span><span class=\"ds-question__concept\">evaluation</span></summary><div class=\"ds-question__body\"><p class=\"ds-question__prompt\">What does a probability of 0.9 mean?</p><ol class=\"ds-question__options\"><li><span class=\"ds-question__marker\">a</span>the model is right nine times in ten</li><li class=\"ds-question__option--right\"><span class=\"ds-question__marker\">b</span>the model is right nine times in ten</li></ol></div></details>",
+      "css": ".ds-question { border-top: 1px solid var(--color-rule-soft); } .ds-question__summary { cursor: pointer; padding: 0.7rem 0; display: flex; align-items: baseline; gap: 1rem; list-style: none; } .ds-question__summary::-webkit-details-marker { display: none; } .ds-question__summary::after { content: '+'; margin-left: auto; font-family: var(--font-mono); color: var(--color-ink-45); } .ds-question[open] .ds-question__summary::after { content: '-'; } .ds-question__index { font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--color-ink-45); } .ds-question__concept { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-ink-45); } .ds-question__body { padding: 0 0 1.2rem; } .ds-question__prompt { font-weight: 600; margin: 0 0 0.8rem; line-height: 1.55; } .ds-question__options { list-style: none; margin: 0 0 1rem; padding: 0; } .ds-question__options li { display: grid; grid-template-columns: 1.6rem minmax(0, 1fr); gap: 0.4rem; padding: 0.3rem 0; line-height: 1.55; color: var(--color-ink-70); } .ds-question__marker { font-family: var(--font-mono); color: var(--color-ink-45); } .ds-question__option--right { color: var(--color-ink); } .ds-question__option--right .ds-question__marker { color: var(--color-prussian); font-weight: 600; }"
     }
   ],
   "narrative": {
     "northStar": "The Analysis Chart",
-    "overview": "The site is a printed technical plot. Not a page about a plot — a plot. The lineage runs from the synoptic analysis chart through the contour map to the engineer's data plot, and the governing idea is that a measurement belongs on the sheet with its own axes, its own margin codes and its own run file named in the caption. Everything here is drawn from that world: cool plot-paper ground, ink with a blue cast, one committed data colour, hairline rules only, and tabular monospace for every number because the numbers are the product.\n\nThe page is a figure plate. One hairline frame, two panels divided by a single hairline rule in the journal convention, and panel labels (a) and (b) set inline with their headings. There is no card row, no split hero, no icon tile, no eyebrow above a heading, and no rounded anything. The two legitimate next moves — run the battery, or learn to read what it prints — are the same kind of object on the same sheet, so they are drawn with the same instruments: the same button style, the same caption rule, the same edge codes.\n\nDepth is printed, not cast. There is not a single box-shadow in the artifact. Hierarchy comes from hairline rules, one tonal step of ground (--color-ground-deep), weight, size and the rare inversion of an inverted panel. The single authored moment is the projection toggle in the friction field: one series is promoted to ink while the others fall back to graphite context, over 180ms.",
+    "overview": "The site is a printed technical plot. Not a page about a plot — a plot. The lineage runs from the synoptic analysis chart through the contour map to the engineer's data plot, and the governing idea is that a measurement belongs on the sheet with its own axes, its own margin codes and its own run file named in the caption. Everything here is drawn from that world: cool plot-paper ground, ink with a blue cast, one committed data colour, hairline rules only, and tabular monospace for every number because the numbers are the product.\n\nThe landing page is a figure plate. One hairline frame, two panels divided by a single hairline rule in the journal convention, and panel labels (a) and (b) set inline with their headings. There is no card row, no split hero, no icon tile, no eyebrow above a heading, and no rounded anything. The two legitimate next moves — run the battery, or learn to read what it prints — are the same kind of object on the same sheet, so they are drawn with the same instruments: the same button style, the same caption rule, the same edge codes.\n\nThe course reader is the second surface, and it is the same sheet with a longer reading column. A lesson is a technical document, so it is set like a specification: a reference strip above the title carrying the phase, the reading time, the concepts, the paths, the prerequisites and the file the reader is going to write; the lesson's own text at one measure; the lesson's own ## sections listed in the margin; and the answer key behind a disclosure at the foot. The course index is the plate's curriculum column drawn out into a table of contents. The reader adds no new world: it reuses every token, adds no colour, no radius, no shadow, no gradient and no new typeface, and it keeps the chrome identical — the nav and foot were extracted into shared components so that all forty-eight pages are drawn with the same instruments.\n\nDepth is printed, not cast. There is not a single box-shadow in the artifact. Hierarchy comes from hairline rules, one tonal step of ground (--color-ground-deep), weight, size and the rare inversion of an inverted panel. The single authored moment is the projection toggle in the friction field: one series is promoted to ink while the others fall back to graphite context, over 180ms. The reader has no authored motion of its own: its only motion belongs to the reader, the browser opening a disclosure.",
     "keyCharacteristics": [
       "Cool plot-paper ground, never cream, never warm; one committed data colour (prussian indigo).",
       "Hairline rules only — every border in the build is 1px, including every `border-left`.",
       "Zero corner radius on every surface; the only non-zero radius is a 1px focus-ring radius.",
       "Every number in IBM Plex Mono with tabular figures.",
-      "One filled control on the page; everything else is a link or a hairline.",
-      "Provenance printed in the margin: run ids, providers and file paths are set as edge codes next to the data they describe."
+      "One filled control per surface; everything else is a link or a hairline.",
+      "Provenance printed in the margin: run ids, providers and file paths are set as edge codes next to the data they describe.",
+      "The reader is the same sheet: a data strip above the title, one measure, a margin rail, and the answer key behind a disclosure.",
+      "A label above a heading is only allowed when it carries data — a phase, a run id, a measurement name — never a decorative preamble."
     ],
     "rules": [
       {
@@ -328,6 +394,11 @@
         "section": "colors"
       },
       {
+        "name": "The Reader Inherits The Palette Rule",
+        "body": "The course reader adds no hue, no fill, no opacity and no second accent. Every surface it introduces — the reference strip, the fact strip, the path chips, the rail, the disclosure, the code blocks — is drawn from the ground, the deep ground, the two inks, the two rules and prussian. A new surface that needs a colour the reader did not already have is a signal that it wants a different world.",
+        "section": "colors"
+      },
+      {
         "name": "The Tabular Number Rule",
         "body": "Every numeral is set in IBM Plex Mono with tabular figures, so a column of readings aligns as a column. A number set in the sans face is a defect.",
         "section": "typography"
@@ -338,13 +409,23 @@
         "section": "typography"
       },
       {
+        "name": "The Document Is Not A Poster Rule",
+        "body": "Only the two entry surfaces carry the display size. A lesson page is a document, so its own h1 — the lesson title, rendered from the lesson file — is set at the headline role, and the reader's headings step down from there. A reading surface that opens at poster scale is a surface that has confused itself with the landing page.",
+        "section": "typography"
+      },
+      {
         "name": "The Plot Keeps Its Width Rule",
         "body": "A chart is never squeezed to fit. It takes a floor width and scrolls sideways inside its own frame, because a nine-station plot rendered at four-pixel type is the same as an absent plot.",
         "section": "layout"
       },
       {
         "name": "The One Column Rule",
-        "body": "Sections are one column of full-width bands separated by hairlines. There is no two-column body layout and no sidebar.",
+        "body": "On the plate, sections are one column of full-width bands separated by hairlines; there is no body sidebar. The reader is the world's one two-column form, and it is the printed specification's: one column of prose and a narrow margin rail that lists that page's own sections and nothing else. Nothing else in the system may sit beside prose.",
+        "section": "layout"
+      },
+      {
+        "name": "The Margin Rail Rule",
+        "body": "A rail in the margin is 15rem, sticky, opened by a 1px rule, and it lists the sections of the page it sits beside. It is never a second content column, never a card, never a promo, and it never carries a link the page does not already own.",
         "section": "layout"
       },
       {
@@ -360,21 +441,24 @@
     ],
     "dos": [
       "Do set every number in IBM Plex Mono with tabular figures, and always beside the token counts or units that give it meaning.",
-      "Do separate regions with a 1px rule in `--color-rule` (or `--color-rule-soft` for a row inside a list), and keep prose to a 58ch measure.",
+      "Do separate regions with a 1px rule in `--color-rule` (or `--color-rule-soft` for a row inside a list), and keep prose to a 58ch measure on the plate and 60ch in the reader.",
       "Do put provenance next to the data: the run id, the provider and the file path as edge codes, and the simulated-run note on the face of every plotted number.",
       "Do keep panel labels in the journal convention — `(a)` and `(b)`, set inline with the heading they belong to.",
       "Do use prussian tint as the fill under prussian text (a metric chip, a curriculum band) rather than inventing a new surface colour.",
       "Do give a chart a floor width and let it scroll sideways inside its own frame.",
-      "Do write the edge code that names a data object in mono, uppercase, tracked, tertiary ink."
+      "Do write the edge code that names a data object in mono, uppercase, tracked, tertiary ink.",
+      "Do render a reader surface from the repository's own file — the lesson body, the quiz and the curriculum are read, never restated — so the page cannot drift from the source.",
+      "Do put the facts a reader needs before the first word in a reference strip above the title, and keep every label on it a measurement."
     ],
     "donts": [
       "Don't introduce a second accent hue, a gradient, a tinted overlay, or any fill other than the ground, the deep ground, the prussian tint or a prussian hatch.",
       "Don't add a shadow, a glow, a lifted card, a rounded corner, or a soft border to separate anything.",
-      "Don't put a kicker, an eyebrow or a decorative label above a heading. The edge code is for data objects and captions, never as a preamble to a title.",
-      "Don't number sections decoratively. The two numeric indexes that exist are list positions (the measurement ordinal) and curriculum phase ids — both carry information the reader needs.",
-      "Don't build an icon system out of glyphs or emoji. The one arrow in the system is a typographic `→` set in the mono face, meaning direction; anything else must be authored SVG.",
+      "Don't put a kicker, an eyebrow or a decorative label above a heading. A strip above a title is allowed only when its labels carry data — a phase, a reading time, a concept, a file path; the moment one of them stops carrying data it is an eyebrow, and an eyebrow is a defect.",
+      "Don't number sections decoratively. The numeric indexes that exist are list positions (the measurement ordinal, the phase ids, the question ordinals) and every one of them carries information the reader needs.",
+      "Don't build an icon system out of glyphs or emoji. The typographic characters the system uses are the arrow `→` and the disclosure's `+`/`-`, both set in the mono face, both meaning something a reader needs; anything else must be authored SVG.",
       "Don't squeeze a chart to fit, and don't stack competing numbers on one surface — one reading at a time, with the selected one in ink.",
-      "Don't let a simulator number stand in for a model measurement, on the page or in a caption."
+      "Don't let a simulator number stand in for a model measurement, on the page or in a caption.",
+      "Don't show an answer before the reader has attempted it, and don't put the key, the correct option or the explanation anywhere a reader can read it without opening the disclosure."
     ]
   }
 }

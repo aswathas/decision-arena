@@ -1,0 +1,31 @@
+---
+/** The page foot. One line of identity, one line of where the code lives. */
+---
+
+<footer class="foot">
+  <p class="foot__left num">
+    Decision Arena &middot; apache-2.0 &middot; built for engineers who want
+    the number, not the brochure
+  </p>
+  <p class="foot__right num">github.com/aswathas/decision-arena</p>
+</footer>
+
+<style>
+  .foot {
+    border-top: 1px solid var(--color-rule);
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 1.4rem clamp(1rem, 4vw, 3rem) 2.4rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 2rem;
+    justify-content: space-between;
+  }
+
+  .foot p {
+    margin: 0;
+    font-size: var(--text-caption);
+    color: var(--color-ink-45);
+    max-width: 58ch;
+  }
+</style>

@@ -1,41 +1,152 @@
-"""Quick accessibility sanity check on the built landing page.
+"""Quick accessibility sanity check on the built site.
 
 Not a full audit - a smoke test for the things that break a static build:
-duplicate ids, a missing h1, images without alt text, and unlabelled SVGs.
+duplicate ids, a missing h1, images without alt text, unlabelled SVGs, and
+pages that drift from the shared chrome.
+
+Every built page is checked, not just the landing page: the course reader
+adds 47 more, and a broken one of those is just as broken as a broken landing
+page. The landing page keeps its own summary, because that is the page a
+reader lands on.
+
+Usage:
+    python tools/check_site_a11y.py
 """
 from __future__ import annotations
 
 import collections
 import os
 import re
+import sys
 
-PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-                    "site", "dist", "index.html")
+DIST = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                     "site", "dist")
+
+ID_RE = re.compile(r'id="([^"]+)"')
+IMG_NO_ALT_RE = re.compile(r"<img(?![^>]*alt=)")
+SVG_NO_LABEL_RE = re.compile(r"<svg(?![^>]*(aria-labelledby|aria-label))")
+HREF_RE = re.compile(r'href="(/[^"#?]*)"')
+ANCHOR_RE = re.compile(r'href="#([^"]+)"')
+
+
+def built_pages() -> list[str]:
+    """Every built HTML page, relative to dist/."""
+    pages = []
+    for root, _dirs, files in os.walk(DIST):
+        for name in files:
+            if name.endswith(".html"):
+                full = os.path.join(root, name)
+                pages.append(os.path.relpath(full, DIST).replace("\\", "/"))
+    return sorted(pages)
+
+
+def check(path: str) -> list[str]:
+    """Return the problems on one page. An empty list means it passed."""
+    with open(path, "r", encoding="utf-8") as f:
+        html = f.read()
+
+    problems: list[str] = []
+
+    ids = ID_RE.findall(html)
+    dupes = [k for k, v in collections.Counter(ids).items() if v > 1]
+    if dupes:
+        problems.append("duplicate ids: %s" % ", ".join(dupes))
+
+    if html.count("<h1") != 1:
+        problems.append("expected exactly one h1, found %d" % html.count("<h1"))
+
+    if IMG_NO_ALT_RE.search(html):
+        problems.append("an image has no alt attribute")
+
+    if SVG_NO_LABEL_RE.search(html):
+        problems.append("an svg has no label")
+
+    if "Skip to content" not in html:
+        problems.append("the skip link is missing")
+
+    if not re.search(r'<html lang="[^"]+"', html):
+        problems.append("the html element has no lang")
+
+    if 'name="description"' not in html:
+        problems.append("the meta description is missing")
+
+    # An in-page link that lands on nothing is a dead end. The lesson rail
+    # depends on the rendered heading ids, so this check is what proves the
+    # rail's anchors and the markdown's ids agree.
+    anchors = set(ANCHOR_RE.findall(html))
+    if anchors:
+        ids = set(ID_RE.findall(html))
+        for anchor in sorted(anchors):
+            if anchor not in ids:
+                problems.append("an in-page link points at #%s, which is not on the page" % anchor)
+
+    return problems
+
+
+def resolves(target: str) -> bool:
+    """Does an internal href point at something the build actually produced?
+
+    A link with no extension is a page (`/course/` -> `course/index.html`);
+    a link with an extension is an asset (`/fonts/fonts.css`).
+    """
+    path = target.lstrip("/")
+    if not path:
+        return True
+    if os.path.splitext(path)[1]:
+        return os.path.isfile(os.path.join(DIST, path.replace("/", os.sep)))
+    if path.endswith("/"):
+        return os.path.isfile(os.path.join(DIST, path.replace("/", os.sep), "index.html"))
+    return os.path.isfile(os.path.join(DIST, path.replace("/", os.sep)))
+
+
+def internal_links() -> dict[str, set[str]]:
+    """Every internal link target on every page."""
+    links: dict[str, set[str]] = {}
+    for page in built_pages():
+        full = os.path.join(DIST, page)
+        with open(full, "r", encoding="utf-8") as f:
+            html = f.read()
+        links[page] = set(HREF_RE.findall(html))
+    return links
 
 
 def main() -> int:
-    with open(PATH, "r", encoding="utf-8") as f:
-        html = f.read()
+    if not os.path.isdir(DIST):
+        print("FAIL: no build at %s - run `cd site && npm run build`" % DIST)
+        return 1
 
-    ids = re.findall(r'id="([^"]+)"', html)
-    dupes = [k for k, v in collections.Counter(ids).items() if v > 1]
-    img_no_alt = re.findall(r"<img(?![^>]*alt=)", html)
-    svg_no_label = re.findall(r"<svg(?![^>]*(aria-labelledby|aria-label))", html)
+    pages = built_pages()
+    if not pages:
+        print("FAIL: no HTML pages in %s" % DIST)
+        return 1
 
-    print("duplicate ids      :", dupes or "none")
-    print("h1 count           :", html.count("<h1"))
-    print("h2 count           :", html.count("<h2"))
-    print("svg role=img       :", html.count('role="img"'))
-    print("svg without a label:", len(svg_no_label))
-    print("img without alt    :", len(img_no_alt))
-    print("buttons            :", html.count("<button"))
-    print("aria-pressed       :", html.count("aria-pressed"))
-    print("skip link present  :", "Skip to content" in html)
-    lang = re.search(r'<html lang="([^"]+)"', html)
-    print("html lang          :", lang.group(1) if lang else "MISSING")
-    print("meta description   :", 'name="description"' in html)
+    problems = 0
+    for page in pages:
+        found = check(os.path.join(DIST, page))
+        if found:
+            problems += 1
+            print("FAIL %s" % page)
+            for p in found:
+                print("       - %s" % p)
+
+    # A link to something that was never built is a dead end for the reader.
+    for page, targets in internal_links().items():
+        for target in sorted(targets):
+            if target.startswith("/_astro"):
+                continue
+            if not resolves(target):
+                problems += 1
+                print("FAIL %s links to %s, which was not built" % (page, target))
+
+    print()
+    print("pages checked       :", len(pages))
+    print("pages with problems :", problems)
+    if problems:
+        print("\n%d problem(s) found." % problems)
+        return 1
+    print("\nOK: every built page passes the smoke check.")
     return 0
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    sys.exit(main())

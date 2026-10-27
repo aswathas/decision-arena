@@ -36,7 +36,8 @@ from ever reaching a learner.
 
 The website lives in [`site/`](site/README.md) - Astro and Tailwind, static
 output, no server runtime. It is the public front door to both the harness and
-the course:
+the course: a landing page, a course index, and one page per lesson, rendered
+from the lesson files in `course/` rather than copied from them.
 
 ```bash
 cd site && npm install && npm run build

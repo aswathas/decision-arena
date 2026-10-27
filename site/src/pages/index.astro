@@ -2,6 +2,8 @@
 import Base from '../layouts/Base.astro';
 import FieldPlot from '../components/FieldPlot.astro';
 import CourseColumn from '../components/CourseColumn.astro';
+import Nav from '../components/Nav.astro';
+import Foot from '../components/Foot.astro';
 import curriculum from '../../../course/curriculum.json';
 import {
   RAW_CALLS_FILE,
@@ -80,21 +82,7 @@ const MEASUREMENTS = [
   title="Decision Arena - learn to judge a decision model on your own workload"
   description="A neutral harness that runs the same battery against TypeSafe Jev, Cloudflare Clef and local Laya, and a 46-lesson course that teaches you to read its numbers and publish what you find."
 >
-  <header class="nav">
-    <div class="nav__inner">
-      <a href="/" class="nav__mark" aria-label="Decision Arena, home">
-        <span class="nav__mark-name">Decision Arena</span>
-        <span class="nav__mark-sub">the neutral harness</span>
-      </a>
-      <nav class="nav__links" aria-label="Primary">
-        <a href="#measures">What it measures</a>
-        <a href="#run">Run it</a>
-        <a href="#evidence">Evidence</a>
-        <a href="#course">The course</a>
-        <a href={REPO} rel="noreferrer">GitHub</a>
-      </nav>
-    </div>
-  </header>
+  <Nav />
 
   <main id="main">
     <!-- ============================================================ first viewport -->
@@ -154,7 +142,7 @@ const MEASUREMENTS = [
             published.
           </p>
           <div class="panel__action">
-            <a class="action" href="#start">
+            <a class="action" href="/lessons/L00/">
               Start lesson one
               <span class="action__arrow" aria-hidden="true">&rarr;</span>
             </a>
@@ -324,7 +312,8 @@ const MEASUREMENTS = [
         <p class="section__lede">
           Ten phases, {curriculum.total_lessons} lessons, {curriculum.total_lessons} quizzes.
           Every lesson teaches one concept, hands you one small exercise to
-          write, and ends with one artifact you can point at.
+          write, and ends with one artifact you can point at. <a href="/course/">Read the whole
+          course in the browser</a>, or clone it and let the tutor walk you through.
         </p>
       </div>
 
@@ -386,7 +375,7 @@ const MEASUREMENTS = [
             Clone and start
             <span class="action__arrow" aria-hidden="true">&rarr;</span>
           </a>
-          <a class="start__alt" href={`${REPO}#decision-arena-academy`}>
+          <a class="start__alt" href="/course/">
             Read the course first
           </a>
         </div>
@@ -431,77 +420,10 @@ const MEASUREMENTS = [
     </section>
   </main>
 
-  <footer class="foot">
-    <p class="foot__left num">
-      Decision Arena &middot; apache-2.0 &middot; built for engineers who want
-      the number, not the brochure
-    </p>
-    <p class="foot__right num">github.com/aswathas/decision-arena</p>
-  </footer>
+  <Foot />
 </Base>
 
 <style>
-  /* ------------------------------------------------------------ navigation */
-  .nav {
-    border-bottom: 1px solid var(--color-rule);
-    position: sticky;
-    top: 0;
-    background: color-mix(in srgb, var(--color-ground) 92%, transparent);
-    backdrop-filter: blur(6px);
-    z-index: 20;
-  }
-
-  .nav__inner {
-    max-width: 1440px;
-    margin: 0 auto;
-    padding: 0.85rem clamp(1rem, 4vw, 3rem);
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1.5rem;
-  }
-
-  .nav__mark {
-    display: flex;
-    align-items: baseline;
-    gap: 0.7rem;
-    text-decoration: none;
-  }
-
-  .nav__mark-name {
-    font-weight: 600;
-    letter-spacing: -0.01em;
-  }
-
-  .nav__mark-sub {
-    font-family: var(--font-mono);
-    font-size: var(--text-micro);
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-    color: var(--color-ink-45);
-  }
-
-  .nav__links {
-    display: flex;
-    gap: 1.6rem;
-    font-family: var(--font-mono);
-    font-size: var(--text-micro);
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-  }
-
-  .nav__links a {
-    text-decoration: none;
-    color: var(--color-ink-70);
-    padding-bottom: 2px;
-    border-bottom: 1px solid transparent;
-  }
-
-  .nav__links a:hover {
-    color: var(--color-ink);
-    border-bottom-color: var(--color-prussian);
-  }
-
   /* ------------------------------------------------------------------ plate */
   .plate {
     max-width: 1440px;
@@ -957,25 +879,6 @@ const MEASUREMENTS = [
     font-size: var(--text-caption);
   }
 
-  /* ------------------------------------------------------------------ foot */
-  .foot {
-    border-top: 1px solid var(--color-rule);
-    max-width: 1440px;
-    margin: 0 auto;
-    padding: 1.4rem clamp(1rem, 4vw, 3rem) 2.4rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem 2rem;
-    justify-content: space-between;
-  }
-
-  .foot p {
-    margin: 0;
-    font-size: var(--text-caption);
-    color: var(--color-ink-45);
-    max-width: 58ch;
-  }
-
   /* ------------------------------------------------------------ responsive */
   @media (max-width: 1080px) {
     .plate__frame {
@@ -993,20 +896,6 @@ const MEASUREMENTS = [
   }
 
   @media (max-width: 720px) {
-    .nav__inner {
-      flex-wrap: wrap;
-      gap: 0.6rem 1.5rem;
-    }
-
-    .nav__links {
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .nav__mark-sub {
-      display: none;
-    }
-
     .measure {
       grid-template-columns: 2.4rem minmax(0, 1fr);
     }

@@ -74,8 +74,10 @@ tools/              check_links.py (vault link gate), sync_brief.py
                     hooks/ (session_start.py, stop.py)
 docs/               architecture-graph.md (graphify AST graph), decision-log.md
 runs/               committed evidence: jsonl + meta.json + .md report
-site/               the public site (Astro + Tailwind, static; DESIGN.md is its
-                    design system - read it before touching site/src)
+site/               the public site (Astro + Tailwind, static; 48 pages - the
+                    landing page, the course index and one page per lesson;
+                    DESIGN.md is its design system - read it before touching
+                    site/src)
 laya-lab/           local Laya experiments (separate venv, torch)
 ```
 
