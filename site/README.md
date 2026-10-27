@@ -14,7 +14,9 @@ npm run preview  # serve the build
 
 The site describes the repository, so its source is versioned with the thing
 it describes. `src/data/friction.ts` holds the numbers the hero chart plots,
-copied from the committed run file `runs/20261025-005353-friction-mock.json`;
+copied from the committed run `runs/20261027-212313-friction-mock.json`, whose
+raw calls are committed beside it as `runs/20261027-212313-friction-mock.jsonl`
+and whose metadata is `runs/20261027-212313-friction-mock.meta.json`;
 `src/pages/index.astro` reads `course/curriculum.json` for the phase list, so
 the curriculum on the page cannot drift from the course in the repo.
 

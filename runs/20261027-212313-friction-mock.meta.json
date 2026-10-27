@@ -1,0 +1,18 @@
+{
+  "run_id": "20261027-212313-friction-mock",
+  "provider": "mock",
+  "price_per_mtok": 0.042,
+  "cases": 3,
+  "formats": [
+    "prose",
+    "flat",
+    "nested"
+  ],
+  "battery_hash": "a4aa2a62ac88",
+  "started_at": "2026-10-27T21:23:13",
+  "finished_at": "2026-10-27T21:23:13",
+  "duration_s": 0.0,
+  "cost_usd": 4.687e-05,
+  "spend_cap_usd": null,
+  "uuid": "11ed264f-42fa-4721-8993-62a3fc8281e3"
+}

@@ -153,10 +153,19 @@ def run_format_friction(provider: Provider, cases: list[dict], formats=("prose",
     """Measure how much a probability moves when only the SHAPE of the state changes.
 
     Requires no labels. This is the cheapest experiment in the field.
+
+    The raw calls are persisted, exactly as run_battery persists them: every
+    provider response, the state that produced it, the format it was sent in,
+    and the usage behind it. The derived report is written alongside. A number
+    without its raw calls behind it is marketing, and that rule holds for the
+    friction experiment too.
     """
     os.makedirs(out_dir, exist_ok=True)
     run_id = f"{time.strftime('%Y%m%d-%H%M%S')}-friction-{provider.name.replace(':', '-')}"
+    started = time.time()
     rows = []
+    records: list[dict] = []
+    cost = 0.0
     for case in cases:
         variants = case.get("variants") or {}
         if not variants:
@@ -165,8 +174,32 @@ def run_format_friction(provider: Provider, cases: list[dict], formats=("prose",
         for fmt in formats:
             state = FORMAT_BUILDERS[fmt](variants)
             t0 = time.perf_counter()
-            answers = provider.decide(state, case["questions"])
+            error = None
+            answers: dict = {}
+            try:
+                answers = provider.decide(state, case["questions"])
+            except Exception as exc:  # keep the run alive, record the failure
+                error = f"{type(exc).__name__}: {exc}"
             dt = time.perf_counter() - t0
+
+            usage = getattr(provider, "_last_usage", {}) or {}
+            call_cost = provider.estimate_cost(usage)
+            cost += call_cost
+
+            records.append({
+                "run_id": run_id,
+                "case_id": case.get("id"),
+                "group": case.get("group"),
+                "case_class": case.get("class"),
+                "format": fmt,
+                "ts": time.time(),
+                "latency_s": round(dt, 4),
+                "usage": usage,
+                "cost_usd": round(call_cost, 8),
+                "error": error,
+                "state": state,
+                "answers": answers,
+            })
             per_format[fmt] = {"answers": answers, "latency_s": round(dt, 4)}
         for qid in case["questions"]:
             vals = {}
@@ -197,6 +230,27 @@ def run_format_friction(provider: Provider, cases: list[dict], formats=("prose",
         "flips_at_0.5": sum(1 for r in rows if r["flips_at_0.5"]),
         "rows": rows,
     }
+    finished = time.time()
+    meta = {
+        "run_id": run_id,
+        "provider": provider.name,
+        "price_per_mtok": provider.price_per_mtok,
+        "cases": report["cases"],
+        "formats": list(formats),
+        "battery_hash": battery_hash(cases),
+        "started_at": time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime(started)),
+        "finished_at": time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime(finished)),
+        "duration_s": round(finished - started, 2),
+        "cost_usd": round(cost, 8),
+        "spend_cap_usd": None,
+        "uuid": str(uuid.uuid4()),
+    }
+    report["meta"] = meta
+    with open(os.path.join(out_dir, f"{run_id}.jsonl"), "w", encoding="utf-8") as f:
+        for r in records:
+            f.write(json.dumps(r, default=str) + "\n")
+    with open(os.path.join(out_dir, f"{run_id}.meta.json"), "w", encoding="utf-8") as f:
+        json.dump(meta, f, indent=2)
     with open(os.path.join(out_dir, f"{run_id}.json"), "w", encoding="utf-8") as f:
         json.dump(report, f, indent=2)
     return report

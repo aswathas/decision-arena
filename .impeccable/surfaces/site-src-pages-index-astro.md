@@ -30,19 +30,23 @@ minutes, no credentials. Neither door is subordinate: each panel carries its
 own promise, its own demonstration and its own primary action.
 
 **Proof and content (all real, nothing invented).** The committed run files
-in `runs/` - including a real friction report with mean spread 0.42, max
+in `runs/` - including a real friction run with mean spread 0.42, max
 spread 0.9271 and 4 of 9 questions flipping at 0.5, produced by the offline
 simulator and labelled as such on its face. The 46-lesson course with its
 46 quizzes and a passing course gate. `docs/decision-log.md`. Vendor pricing
 verified against vendor pages on 2026-10-25 (clef $0.24/Mtok, clef-flash
 $0.038/Mtok, jev $0.042/Mtok). The claims ledger's VERIFIED / CLAIM /
-UNCERTAIN / CONFLICT labelling.
+UNCERTAIN / CONFLICT labelling. No live provider has been measured, and the
+page says so in its own words rather than letting a simulator number stand
+in for a model measurement.
 
 **Constraints.** The library is stdlib-only, so the site is plain and
 dependency-light; a reader must be able to reproduce a finding for under
 $1. The mock is never evidence, and the site must never let a reader
 confuse a simulator number with a model measurement. No secret, credential
-or private path may appear - the repository is public. Apache-2.0.
+or private path may appear - the repository is public. Apache-2.0. The site
+makes no third-party runtime request: the two typefaces are self-hosted
+woff2 files under `site/public/fonts/`, vendored by `tools/vendor_fonts.py`.
 
 **Chosen direction.** *The Analysis Chart* - the printed technical plot, the
 lineage from the synoptic analysis chart through the contour map to the
@@ -92,20 +96,26 @@ them to trust it.
 
 **FIRST VIEWPORT.** One figure plate, hairline-framed, filling the width.
 Above it a title block: the offer in one sentence, and one line naming the
-two doors. Inside the plate, two panels divided by a single hairline
-rule, in the journal convention. Panel (a), the wider, is the
-format-friction field for one real ticket - three serialisations, a
-hairline threshold rule across the field, readings in tabular monospace,
-an edge-code caption naming the run file, and a printed note that the run
-is simulated. Panel (b), the narrower, is the curriculum plotted as a
-stratigraphic column: ten bands, one per phase, band thickness equal to
-its lesson count, labelled with the phase title, ending in the capstone
-band that publishes a finding. Each panel carries its own label - (a)
-measure, (b) learn - its own one-sentence promise and its own primary
-action, set in the same ink-on-paper button style, so the two doors are
-equal. A shared caption rule beneath the plate names the run file for
-panel (a) and the course gate for panel (b). No card row, no split hero,
-no eyebrow label above the heading.
+two doors. Between the title block and the frame sits the shared caption
+strip - a title strip, not a footer - carrying the two edge codes: (a) the
+run id, the provider, and the three raw-evidence files in `runs/`; (b) the
+lesson and quiz counts and the passing course gate. Inside the plate, two
+panels divided by a single hairline rule, in the journal convention.
+Panel (a), the wider, is the format-friction field for one real ticket -
+three serialisations, a hairline threshold rule across the field, readings
+in tabular monospace, and a printed note that the run is simulated; on a
+narrow screen the plot keeps its width and scrolls sideways inside its own
+frame instead of shrinking into illegibility. Panel (b), the narrower, is
+the curriculum plotted as a stratigraphic column: ten bands, one per phase,
+band thickness equal to its lesson count, labelled with the phase title,
+ending in the capstone band that publishes a finding. In each panel the
+order is fixed and the same: the panel label - (a) measure, (b) learn -
+then the one-sentence promise, then the primary action and its command,
+then the demonstration. The actions sit above the demonstrations, so both
+doors are actionable and the caption is legible without scrolling at
+1440x900. Both actions are set in the same ink-on-paper button style, so
+the two doors are equal. No card row, no split hero, no eyebrow label above
+the heading.
 
 **FORM.** *The Analysis Chart*. Position 6 on my grounded list of seven
 (evidence grading / formulary, audit ledger, referee's apparatus, shot

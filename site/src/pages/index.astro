@@ -3,10 +3,18 @@ import Base from '../layouts/Base.astro';
 import FieldPlot from '../components/FieldPlot.astro';
 import CourseColumn from '../components/CourseColumn.astro';
 import curriculum from '../../../course/curriculum.json';
+import {
+  RAW_CALLS_FILE,
+  REPORT_FILE,
+  META_FILE,
+  RUN_ID,
+} from '../data/friction';
 
 const REPO = 'https://github.com/aswathas/decision-arena';
-const RAW_RUN = `${REPO}/blob/main/runs/20261025-005353-friction-mock.json`;
-const RAW_META = `${REPO}/blob/main/runs/20261025-005431-mock.meta.json`;
+const RUN_BASE = `${REPO}/blob/main/runs`;
+const RAW_CALLS = `${RUN_BASE}/${RAW_CALLS_FILE.split('/').pop()}`;
+const REPORT = `${RUN_BASE}/${REPORT_FILE.split('/').pop()}`;
+const RUN_META = `${RUN_BASE}/${META_FILE.split('/').pop()}`;
 
 const phases = curriculum.phases.map((p) => ({
   id: p.id,
@@ -102,19 +110,27 @@ const MEASUREMENTS = [
         </p>
       </div>
 
-      <div class="plate__frame">
+      <p class="plate__caption">
+        <span class="plate__caption-item num">
+          (a) run {RUN_ID} &middot; provider mock &middot; raw calls, report and metadata in
+          runs/
+        </span>
+        <span class="plate__caption-item num">
+          (b) {curriculum.total_lessons} lessons &middot; {curriculum.total_lessons} quizzes
+          &middot; the course gate passes &middot; {paths.length} paths
+        </span>
+      </p>
+
+      <figure class="plate__frame">
         <section class="panel panel--a" aria-labelledby="panel-a-title">
           <h2 id="panel-a-title" class="panel__title">
             <span class="panel__tag num">(a)</span>
             Run the same battery against every vendor.
           </h2>
           <p class="panel__body">
-            Measure it yourself. Seven measurements, identical questions, and the raw call
-            log behind every number.
+            Measure it yourself: seven measurements, one battery, the raw calls behind each
+            number.
           </p>
-
-          <FieldPlot />
-
           <div class="panel__action">
             <a class="action" href="#run">
               Run it now
@@ -124,6 +140,8 @@ const MEASUREMENTS = [
               python -m decisionarena run --provider jev --battery routing
             </p>
           </div>
+
+          <FieldPlot />
         </section>
 
         <section class="panel panel--b" aria-labelledby="panel-b-title">
@@ -132,13 +150,9 @@ const MEASUREMENTS = [
             Start from &ldquo;what even is this&rdquo;.
           </h2>
           <p class="panel__body">
-            Learn it properly. Forty-six lessons, ten minutes each, ending in a finding you
-            published. You write the exercise; the tutor teaches, quizzes, and tracks your
-            progress per concept.
+            Learn it properly: forty-six lessons, ten minutes each, ending in a finding you
+            published.
           </p>
-
-          <CourseColumn />
-
           <div class="panel__action">
             <a class="action" href="#start">
               Start lesson one
@@ -146,8 +160,10 @@ const MEASUREMENTS = [
             </a>
             <p class="panel__meta num">python tools/learn_state.py next</p>
           </div>
+
+          <CourseColumn />
         </section>
-      </div>
+      </figure>
     </section>
 
     <!-- ================================================================ measures -->
@@ -244,9 +260,9 @@ const MEASUREMENTS = [
           A number, and the file behind it
         </h2>
         <p class="section__lede">
-          This is a real committed run. Not a screenshot of a number, but a JSONL
-          file, a metadata file, and a report generated from both. If a claim
-          cannot show its raw file, it does not go on the page.
+          This is a real committed run, in three files: the raw calls, the report derived
+          from them, and the metadata needed to reproduce it. If a claim cannot show its
+          raw file, it does not go on the page.
         </p>
       </div>
 
@@ -264,24 +280,37 @@ const MEASUREMENTS = [
             <span class="stat__value num">4 / 9</span>
             <span class="stat__label">questions that change decision at the 0.5 threshold</span>
           </div>
+          <p class="caveat caveat--inline">
+            <strong>These three numbers are simulated.</strong> They come from the
+            offline simulator, so they show the harness working, not a model's behaviour.
+            The plot above carries the same label.
+          </p>
         </div>
 
         <div class="evidence__files">
           <div class="file">
             <p class="edge-code">raw calls</p>
-            <a class="file__name num" href={RAW_RUN}>runs/20261025-005353-friction-mock.json</a>
+            <a class="file__name num" href={RAW_CALLS}>{RAW_CALLS_FILE}</a>
             <p class="file__note">
-              Every provider response, in order, with the input that produced
-              it. The report is derived from this file; never the other way
-              round.
+              One record per provider call: the state that was sent, the serialisation it
+              was sent in, the answers that came back, and the usage behind them. Nine
+              calls in this run.
+            </p>
+          </div>
+          <div class="file">
+            <p class="edge-code">the report derived from them</p>
+            <a class="file__name num" href={REPORT}>{REPORT_FILE}</a>
+            <p class="file__note">
+              The spread and flip figures on this page are computed here, from the raw
+              calls. The report never becomes the source of the claim.
             </p>
           </div>
           <div class="file">
             <p class="edge-code">run metadata</p>
-            <a class="file__name num" href={RAW_META}>runs/20261025-005431-mock.meta.json</a>
+            <a class="file__name num" href={RUN_META}>{META_FILE}</a>
             <p class="file__note">
-              Run id, provider, prices, battery hash, timestamps. What you
-              need to reproduce or dispute the run.
+              Run id, provider, price, battery hash, timestamps, cost. What you need to
+              reproduce the run or dispute it.
             </p>
           </div>
         </div>
@@ -387,12 +416,11 @@ const MEASUREMENTS = [
           this page, including the parts of it that are still simulated.
         </p>
         <p class="close__body close__body--quiet">
-          To be plain about where this stands: no live provider has been
-          measured yet. Every committed number comes from the offline
-          simulator and proves only that the harness works. The pricing on
-          this page was verified against vendor pages on 2026-10-25. The
-          formats the course teaches are the ones the first finding was
-          published in.
+          To be plain about where this stands: no live provider has been measured yet.
+          Every committed number comes from the offline simulator, and it proves only that
+          the harness works. The format-friction result on this page is a measurement of
+          the simulator, not of a model. It is the shape of the finding the course will
+          have you reproduce against a real provider, not the finding itself.
         </p>
         <p class="close__links">
           <a href={REPO}>The repository</a>
@@ -482,20 +510,21 @@ const MEASUREMENTS = [
   }
 
   .plate__titleblock {
-    max-width: 58ch;
-    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+    max-width: 64rem;
+    margin-bottom: clamp(1.25rem, 2.4vw, 2rem);
   }
 
   .plate__title {
     font-size: var(--text-display);
-    margin-bottom: 0.9rem;
+    margin-bottom: 0.7rem;
   }
 
   .plate__sub {
     color: var(--color-ink-70);
     font-size: var(--text-lead);
-    line-height: 1.55;
+    line-height: 1.5;
     margin: 0;
+    max-width: 58ch;
   }
 
   .plate__sub a {
@@ -505,16 +534,33 @@ const MEASUREMENTS = [
 
   /* A figure plate: one hairline frame, two panels, one hairline between. */
   .plate__frame {
+    margin: 0;
     border: 1px solid var(--color-rule);
     display: grid;
     grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
   }
 
+  .plate__caption {
+    margin: 0 0 0.7rem;
+    border-top: 1px solid var(--color-rule);
+    padding-top: 0.6rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem 2.5rem;
+  }
+
+  .plate__caption-item {
+    font-size: var(--text-micro);
+    letter-spacing: 0.04em;
+    color: var(--color-ink-45);
+  }
+
   .panel {
-    padding: clamp(1.25rem, 2.6vw, 2.25rem);
+    padding: clamp(1.1rem, 2.2vw, 1.85rem);
     display: flex;
     flex-direction: column;
-    gap: 1.15rem;
+    gap: 0.85rem;
+    min-width: 0;
   }
 
   .panel--b {
@@ -539,17 +585,14 @@ const MEASUREMENTS = [
     color: var(--color-ink-70);
     font-size: var(--text-caption);
     line-height: 1.55;
-    max-width: 54ch;
+    max-width: 58ch;
   }
 
   .panel__action {
-    margin-top: auto;
-    padding-top: 1.15rem;
-    border-top: 1px solid var(--color-rule-soft);
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.7rem;
+    gap: 0.55rem;
   }
 
   .panel__meta {
@@ -569,7 +612,7 @@ const MEASUREMENTS = [
   }
 
   .section__head {
-    max-width: 62ch;
+    max-width: 58ch;
     margin-bottom: 2.4rem;
   }
 
@@ -658,15 +701,26 @@ const MEASUREMENTS = [
 
   .caveat {
     margin: 0;
-    border-left: 2px solid var(--color-prussian);
+    border-left: 1px solid var(--color-prussian);
     padding: 0.1rem 0 0.1rem 1.1rem;
-    max-width: 60ch;
+    max-width: 58ch;
     color: var(--color-ink-70);
     line-height: 1.55;
   }
 
   .caveat strong {
     color: var(--color-ink);
+  }
+
+  /* The same caveat, inline with a figure: a hairline rule above it instead of
+     a stripe down its side, because a stripe is a decoration the floor refuses
+     and this one does not need it. */
+  .caveat--inline {
+    border-left: 0;
+    border-top: 1px solid var(--color-rule);
+    padding: 0.85rem 0 0;
+    margin-top: 1.1rem;
+    font-size: var(--text-caption);
   }
 
   /* -------------------------------------------------------------- evidence */
@@ -874,7 +928,7 @@ const MEASUREMENTS = [
 
   /* ----------------------------------------------------------------- close */
   .close {
-    max-width: 66ch;
+    max-width: 58ch;
   }
 
   .close__title {
@@ -891,7 +945,7 @@ const MEASUREMENTS = [
   .close__body--quiet {
     color: var(--color-ink-45);
     font-size: var(--text-caption);
-    max-width: 52ch;
+    max-width: 58ch;
   }
 
   .close__links {

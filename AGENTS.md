@@ -69,9 +69,13 @@ tests/              stdlib unittest
 tools/              check_links.py (vault link gate), sync_brief.py
                     course_check.py (course gate), learn_state.py (progress engine)
                     install_skills.py (install skills into a host)
+                    vendor_fonts.py (self-host the site's typefaces)
+                    check_site_a11y.py (site accessibility smoke test)
                     hooks/ (session_start.py, stop.py)
 docs/               architecture-graph.md (graphify AST graph), decision-log.md
 runs/               committed evidence: jsonl + meta.json + .md report
+site/               the public site (Astro + Tailwind, static; DESIGN.md is its
+                    design system - read it before touching site/src)
 laya-lab/           local Laya experiments (separate venv, torch)
 ```
 
@@ -93,6 +97,12 @@ python tools/learn_state.py status          # progress report
 python tools/learn_state.py review          # what to go back to
 python tools/learn_state.py feedback        # the closing feedback note
 python tools/install_skills.py              # install the skills into .claude/skills/
+
+# The public site (site/)
+python tools/check_site_a11y.py             # accessibility smoke test on the built page
+cd site && npm run build                   # static build into site/dist
+node scripts/capture.mjs                   # recapture .impeccable/review/*.png
+node scripts/measure.mjs                   # measure the first viewport
 ```
 
 ## The knowledge map (graphify)

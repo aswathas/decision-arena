@@ -16,12 +16,13 @@ import {
 
 const PLOT_LEFT = 84;
 const PLOT_RIGHT = 900;
-const PLOT_TOP = 96;
-const PLOT_BOTTOM = 500;
-const PLOT_WIDTH = PLOT_RIGHT - PLOT_LEFT;
+const PLOT_TOP = 70;
+const PLOT_BOTTOM = 312;
 const PLOT_HEIGHT = PLOT_BOTTOM - PLOT_TOP;
+const VIEW_WIDTH = 940;
+const VIEW_HEIGHT = 400;
 
-const SLOT = PLOT_WIDTH / FRICTION_ROWS.length;
+const SLOT = (PLOT_RIGHT - PLOT_LEFT) / FRICTION_ROWS.length;
 const yOf = (p: number) => PLOT_BOTTOM - p * PLOT_HEIGHT;
 const xOf = (i: number) => PLOT_LEFT + SLOT * (i + 0.5);
 
@@ -29,7 +30,6 @@ const INK = '#0b1218';
 const PRUSSIAN = '#0f3d6e';
 const GRAPHITE = '#8a97a1';
 const RULE = '#cfd9e0';
-const RULE_SOFT = '#e6edf1';
 
 const projections: Projection[] = ['prose', 'flat', 'nested'];
 
@@ -57,6 +57,20 @@ const featuredIndex = FRICTION_ROWS.findIndex(
   (r) => r.caseId === FEATURED_CASE && r.question === FEATURED_QUESTION,
 );
 
+/**
+ * Where the callout sits relative to its marker.
+ * Above the marker in the upper band, below it in the middle, and back above
+ * it near the floor, where a callout below would land on the axis labels.
+ */
+function annotationOffset(markerY: number): number {
+  if (markerY <= PLOT_TOP + PLOT_HEIGHT * 0.4) return -46;
+  if (markerY > PLOT_BOTTOM - 60) return -46;
+  return 46;
+}
+
+const featuredY = yOf(FRICTION_ROWS[featuredIndex].values.prose);
+const featuredDy = annotationOffset(featuredY);
+
 const caseGroups = [
   { label: 'fmt-001-refund', start: 0, count: 3 },
   { label: 'fmt-002-outage', start: 3, count: 3 },
@@ -69,8 +83,8 @@ const caseGroups = [
     <div>
       <p class="edge-code">The one chart no vendor will publish for you</p>
       <p class="field__caption">
-        The same three support tickets, asked the same nine questions, in three
-        serialisations. Nothing about the ticket changed - only its shape.
+        The same three tickets, asked the same nine questions, in three serialisations.
+        Nothing about the ticket changed, only its shape.
       </p>
     </div>
     <div class="field__toggle" role="group" aria-label="Choose the serialisation to read">
@@ -91,9 +105,9 @@ const caseGroups = [
 
   <figure class="field__figure">
     <svg
-      viewBox="0 0 940 596"
-      width="940"
-      height="596"
+      viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`}
+      width={VIEW_WIDTH}
+      height={VIEW_HEIGHT}
       class="field__svg"
       role="img"
       aria-labelledby="field-title field-desc"
@@ -129,7 +143,8 @@ const caseGroups = [
             x2={PLOT_RIGHT}
             y1={yOf(p)}
             y2={yOf(p)}
-            stroke={p === 0.5 ? RULE : RULE_SOFT}
+            stroke={p === 0.5 ? RULE : undefined}
+            class={p === 0.5 ? undefined : 'field__grid-soft'}
             stroke-width="1"
           />
         ))
@@ -230,21 +245,23 @@ const caseGroups = [
       )}
 
       {/* the annotation - one reading at a time, pointing at the featured
-          station on the selected series */}
+          station on the selected series. It sits above the marker in the upper
+          band and below it in the middle, and back above it near the floor,
+          so the callout never lands on the axis labels. */}
       <g data-annotation>
         <line
           data-annotation-leader
           x1={xOf(featuredIndex)}
-          y1={yOf(FRICTION_ROWS[featuredIndex].values.prose)}
+          y1={featuredY}
           x2={xOf(featuredIndex) + 86}
-          y2={yOf(FRICTION_ROWS[featuredIndex].values.prose) - 54}
+          y2={featuredY + featuredDy}
           stroke={INK}
           stroke-width="1"
         />
         <circle
           data-annotation-dot
           cx={xOf(featuredIndex)}
-          cy={yOf(FRICTION_ROWS[featuredIndex].values.prose)}
+          cy={featuredY}
           r="5.5"
           fill="none"
           stroke={INK}
@@ -253,7 +270,7 @@ const caseGroups = [
         <text
           data-annotation-value
           x={xOf(featuredIndex) + 92}
-          y={yOf(FRICTION_ROWS[featuredIndex].values.prose) - 58}
+          y={featuredY + featuredDy + (featuredDy < 0 ? -6 : 12)}
           class="field__annot-value"
         >
           {FRICTION_ROWS[featuredIndex].values.prose.toFixed(2)}
@@ -261,7 +278,7 @@ const caseGroups = [
         <text
           data-annotation-label
           x={xOf(featuredIndex) + 92}
-          y={yOf(FRICTION_ROWS[featuredIndex].values.prose) - 42}
+          y={featuredY + featuredDy + (featuredDy < 0 ? 10 : 28)}
           class="field__annot-label"
         >
           {FEATURED_QUESTION} in prose
@@ -270,14 +287,14 @@ const caseGroups = [
 
       {/* x axis - station labels */}
       {FRICTION_ROWS.map((r, i) => (
-        <text x={xOf(i)} y={PLOT_BOTTOM + 26} text-anchor="middle" class="field__station">
+        <text x={xOf(i)} y={PLOT_BOTTOM + 22} text-anchor="middle" class="field__station">
           {r.question}
         </text>
       ))}
       {caseGroups.map((g) => (
         <text
           x={PLOT_LEFT + SLOT * (g.start + g.count / 2)}
-          y={PLOT_BOTTOM + 52}
+          y={PLOT_BOTTOM + 40}
           text-anchor="middle"
           class="field__case"
         >
@@ -285,6 +302,8 @@ const caseGroups = [
         </text>
       ))}
     </svg>
+
+    <p class="field__scrollhint">Scroll the chart sideways &rarr;</p>
 
     <figcaption class="field__foot">
       <p class="edge-code">run {RUN_ID} &middot; provider {RUN_PROVIDER}</p>
@@ -345,7 +364,7 @@ const caseGroups = [
 
   .field__caption {
     margin: 0.45rem 0 0;
-    max-width: 46ch;
+    max-width: 58ch;
     color: var(--color-ink-70);
     font-size: var(--text-caption);
     line-height: 1.5;
@@ -358,6 +377,35 @@ const caseGroups = [
 
   .field__figure {
     margin: 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    /* A flex item's default min-width is auto, which would let the figure
+       grow to the SVG's floor width and push the whole page sideways. */
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  /* The plot keeps a floor width and scrolls sideways on a narrow screen.
+     Squeezing nine stations and their labels into 390px would render the type
+     at about four pixels: unreadable, and unreadable is the same as absent. */
+  .field__scrollhint {
+    display: none;
+    margin: 0.5rem 0 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--color-ink-45);
+  }
+
+  @media (max-width: 760px) {
+    .field__svg {
+      min-width: 680px;
+    }
+
+    .field__scrollhint {
+      display: block;
+    }
   }
 
   .field__svg {
@@ -365,6 +413,13 @@ const caseGroups = [
     width: 100%;
     height: auto;
     background: var(--color-ground);
+  }
+
+  /* The soft gridlines take the token, not a local constant, so the plot and
+     the page's rules are the same ink. A CSS declaration outranks an SVG
+     presentation attribute, so this is what the browser paints. */
+  .field__svg .field__grid-soft {
+    stroke: var(--color-rule-soft);
   }
 
   .field__axis {
@@ -433,7 +488,7 @@ const caseGroups = [
 
   .field__sim {
     margin: 0;
-    max-width: 62ch;
+    max-width: 58ch;
     font-size: var(--text-caption);
     line-height: 1.5;
     color: var(--color-ink-70);
@@ -543,11 +598,19 @@ const caseGroups = [
     FEATURED_QUESTION,
   } from '../data/friction';
 
-  const PLOT_TOP = 96;
-  const PLOT_BOTTOM = 500;
-  const PLOT_WIDTH = 816;
-  const SLOT = PLOT_WIDTH / FRICTION_ROWS.length;
-  const yOf = (p: number) => PLOT_BOTTOM - p * (PLOT_BOTTOM - PLOT_TOP);
+  const PLOT_TOP = 70;
+  const PLOT_BOTTOM = 312;
+  const PLOT_LEFT = 84;
+  const PLOT_RIGHT = 900;
+  const PLOT_HEIGHT = PLOT_BOTTOM - PLOT_TOP;
+  const SLOT = (PLOT_RIGHT - PLOT_LEFT) / FRICTION_ROWS.length;
+  const yOf = (p: number) => PLOT_BOTTOM - p * PLOT_HEIGHT;
+
+  function annotationOffset(markerY: number): number {
+    if (markerY <= PLOT_TOP + PLOT_HEIGHT * 0.4) return -46;
+    if (markerY > PLOT_BOTTOM - 60) return -46;
+    return 46;
+  }
 
   const featuredIndex = FRICTION_ROWS.findIndex(
     (r) => r.caseId === FEATURED_CASE && r.question === FEATURED_QUESTION,
@@ -588,7 +651,9 @@ const caseGroups = [
 
       const value = FRICTION_ROWS[featuredIndex].values[key as 'prose' | 'flat' | 'nested'];
       const markerY = yOf(value);
-      const markerX = PLOT_WIDTH / FRICTION_ROWS.length * (featuredIndex + 0.5) + 84;
+      const markerX = PLOT_LEFT + SLOT * (featuredIndex + 0.5);
+      const dy = annotationOffset(markerY);
+      const above = dy < 0;
 
       if (dot) {
         dot.setAttribute('cy', String(markerY));
@@ -597,18 +662,18 @@ const caseGroups = [
       if (leader) {
         leader.setAttribute('y1', String(markerY));
         leader.setAttribute('x1', String(markerX));
-        leader.setAttribute('y2', String(markerY - 54));
+        leader.setAttribute('y2', String(markerY + dy));
         leader.setAttribute('x2', String(markerX + 86));
       }
       if (valueText) {
         valueText.textContent = value.toFixed(2);
         valueText.setAttribute('x', String(markerX + 92));
-        valueText.setAttribute('y', String(markerY - 58));
+        valueText.setAttribute('y', String(markerY + dy + (above ? -6 : 12)));
       }
       if (labelText) {
         labelText.textContent = `${FEATURED_QUESTION} in ${key}`;
         labelText.setAttribute('x', String(markerX + 92));
-        labelText.setAttribute('y', String(markerY - 42));
+        labelText.setAttribute('y', String(markerY + dy + (above ? 10 : 28)));
       }
       if (note) {
         note.textContent = PROJECTION_NOTES[key as 'prose' | 'flat' | 'nested'];

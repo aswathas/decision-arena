@@ -85,6 +85,18 @@ verified_facts:
     claim: "graphify query answers codebase questions from the graph: 'where is the swap safety metric computed' returns action_change_rate() at decisionarena/metrics.py:136 and cmd_swap() at decisionarena/cli.py:89."
     evidence: "docs/architecture-graph.md"
     verified_on: 2026-10-25
+  - id: friction-raw-evidence
+    claim: "The friction command now persists its raw calls and run metadata, so every friction number on the site has a committed raw file behind it: 9 calls, mean spread 0.42, max spread 0.9271, 4 of 9 questions flipping at 0.5."
+    evidence: "runs/20261027-212313-friction-mock.jsonl, runs/20261027-212313-friction-mock.meta.json"
+    verified_on: 2026-10-27
+  - id: public-site
+    claim: "The public site builds from site/ (Astro 7 + Tailwind 4, static) and ships as a single page: one figure plate with the measure and learn doors, the friction field, and the evidence links. The Impeccable detector reports 0 findings at 1440x900 and 390x844, and the a11y smoke check passes."
+    evidence: "site/src/pages/index.astro, site/README.md, tools/check_site_a11y.py"
+    verified_on: 2026-10-27
+  - id: site-no-third-party-runtime
+    claim: "The site makes no third-party runtime request: both typefaces are self-hosted woff2 files vendored from the upstream releases by tools/vendor_fonts.py."
+    evidence: "tools/vendor_fonts.py, site/public/fonts/fonts.css"
+    verified_on: 2026-10-27
 
 in_progress:
   - id: laya-local
@@ -96,6 +108,9 @@ in_progress:
   - id: academy-vault-bridge
     what: "Mirror the Academy build log into the Obsidian vault (Learning/Course - Decision Models/Build Log.md) without duplicating the source of truth."
     state: "not started; the repo's learning/build_log.md is authoritative for now"
+  - id: site-deployment
+    what: "Publish site/dist to a public URL so the repository's front door is a real page."
+    state: "built and verified locally; awaiting the user's explicit go-ahead for a public deployment"
 
 next_actions:
   - "Day 1 of the Academy: `python tools/learn_state.py init --learner aswath --path beginner`, then `/learn` for L00."
@@ -141,6 +156,9 @@ commands_that_work:
   - "python tools/learn_state.py review"
   - "python tools/learn_state.py feedback"
   - "python tools/install_skills.py --target claude-project"
+  - "python tools/check_site_a11y.py"
+  - "python tools/vendor_fonts.py"
+  - "cd site && npm run build && node scripts/capture.mjs && node scripts/measure.mjs"
   - "python tools/check_links.py --vault \"C:\\Users\\aswat\\Aswaths Obsidian Den\\Aswaths Mountain Den\""
   - "uv venv --python 3.12 && uv pip install laya \"laya[serve]\""
 
@@ -153,22 +171,28 @@ do_not_touch:
 
 ## Summary
 
-**What exists.** Two things, both real. (1) A working, dependency-free harness
+**What exists.** Three things, all real. (1) A working, dependency-free harness
 that can already exercise the full pipeline offline: providers (mock, Jev,
 Clef, OpenAI-compatible), three batteries (routing / injection / format),
 metrics, a Markdown report writer, and a swap-safety comparator. (2)
 **Decision Arena Academy** - a self-contained beginner course in `course/`
 (46 lessons, 46 quizzes, 10 phases), with three skills (`skills/`), a
 per-concept mastery engine (`tools/learn_state.py`), a course gate
-(`tools/course_check.py`) and session hooks. 29/29 unit tests pass.
+(`tools/course_check.py`) and session hooks. 29/29 unit tests pass. (3) A
+public landing page in `site/` - one figure plate carrying two equal doors,
+the friction field plotted from the committed run, and every number linked to
+its raw file.
 
 **What is real.** Nothing measured yet from a live provider - every committed
 number so far comes from the mock and proves only that the harness works. The
-pricing and capability facts in the vault were verified against vendor pages
-and third-party benchmarks on 2026-10-25, and are marked with their source.
-The Academy itself is verified only as *material*: the gate proves the lessons
-are well-formed, not that they teach well. That is what the learner's own
-progress file is for.
+friction run behind the site's headline numbers is committed as raw calls
+(`runs/20261027-212313-friction-mock.jsonl`) plus its report and metadata, and
+the site says on its face that this is a measurement of the simulator and not
+of a model. The pricing and capability facts in the vault were verified against
+vendor pages and third-party benchmarks on 2026-10-25, and are marked with their
+source. The Academy itself is verified only as *material*: the gate proves the
+lessons are well-formed, not that they teach well. That is what the learner's
+own progress file is for.
 
 **What is next.** Aswath runs the Academy himself, starting at L00, and his
 first learner artifacts land in `docs/notes/` and `exercises/`. The first

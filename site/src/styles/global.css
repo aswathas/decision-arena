@@ -24,7 +24,7 @@
   --text-caption: 0.8125rem;
   --text-body: 1rem;
   --text-lead: 1.1875rem;
-  --text-display: clamp(2.1rem, 1.15rem + 3.1vw, 3.65rem);
+  --text-display: clamp(2.05rem, 1.1rem + 2.6vw, 3.25rem);
   --text-section: clamp(1.5rem, 1.05rem + 1.5vw, 2.15rem);
 }
 

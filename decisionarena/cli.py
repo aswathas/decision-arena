@@ -83,6 +83,7 @@ def cmd_friction(args):
     with open(out_md, "w", encoding="utf-8") as f:
         f.write(text)
     print(f"report written to {out_md}")
+    print(f"raw evidence: {os.path.join(args.out_dir, rep['run_id'] + '.jsonl')}")
     return 0
 
 
