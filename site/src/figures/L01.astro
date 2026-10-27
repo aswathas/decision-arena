@@ -1,0 +1,134 @@
+---
+/* L01 - three question types, three answer shapes, one measurement path.
+   One writer: the figures workstream E. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L01.jpg`}
+      alt="A line drawing of a clinic reception counter with three trays on it: one tray holding a single blank slip, one holding four blank folders, and one holding a small four-rung ladder with a round marker on the second rung."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L01-fig-title L01-fig-desc"
+    >
+      <title id="L01-fig-title">Three question types, three answer shapes, one pair out</title>
+      <desc id="L01-fig-desc">
+        Three panels side by side. The first, labelled noul, holds a horizontal scale from zero to one
+        with a marker at 0.9 and a dashed threshold at 0.5. The second, labelled choice, holds four
+        option boxes - billing, technical, other and sales - with billing filled in and the rest
+        outlined, showing four unordered options and one chosen label. The third, labelled score,
+        holds a ladder of four ordered rungs numbered 3, 2, 1 and 0, from Critical down to No impact,
+        with a marker on rung 1. Three lines run down from the panels and meet at one box reading
+        one pair, probability and outcome, which is what Brier and ECE are computed from.
+      </desc>
+      <defs>
+        <marker id="L01-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-ink-45)" />
+        </marker>
+      </defs>
+
+      <!-- panel 1: noul -->
+      <rect x="24" y="48" width="190" height="184" fill="none" stroke="var(--color-rule-soft)" stroke-width="1" />
+      <text x="36" y="72" class="fig-head">noul</text>
+      <line x1="44" y1="120" x2="184" y2="120" stroke="var(--color-rule)" stroke-width="1" />
+      <text x="40" y="140" class="fig-num">0</text>
+      <text x="180" y="140" class="fig-num">1</text>
+      <line x1="114" y1="100" x2="114" y2="140" stroke="var(--color-prussian)" stroke-width="1" stroke-dasharray="4 3" />
+      <text x="114" y="94" class="fig-num fig-num--prussian" text-anchor="middle">0.5</text>
+      <circle cx="170" cy="120" r="4.5" fill="var(--color-ink)" />
+      <text x="170" y="110" class="fig-num" text-anchor="middle">0.9</text>
+      <text x="36" y="176" class="fig-text">one number</text>
+      <text x="36" y="190" class="fig-text">0.9 means 90% yes</text>
+      <text x="36" y="204" class="fig-text">the threshold 0.5</text>
+      <text x="36" y="218" class="fig-text">is a policy</text>
+
+      <!-- panel 2: choice -->
+      <rect x="224" y="48" width="190" height="184" fill="none" stroke="var(--color-rule-soft)" stroke-width="1" />
+      <text x="236" y="72" class="fig-head">choice</text>
+      <rect x="236" y="88" width="80" height="28" fill="var(--color-prussian-tint)" stroke="var(--color-ink)" stroke-width="1" />
+      <text x="246" y="106" class="fig-text fig-text--ink">billing</text>
+      <rect x="326" y="88" width="80" height="28" fill="none" stroke="var(--color-rule)" stroke-width="1" />
+      <text x="336" y="106" class="fig-text">technical</text>
+      <rect x="236" y="124" width="80" height="28" fill="none" stroke="var(--color-rule)" stroke-width="1" />
+      <text x="246" y="142" class="fig-text">sales</text>
+      <rect x="326" y="124" width="80" height="28" fill="none" stroke="var(--color-rule)" stroke-width="1" />
+      <text x="336" y="142" class="fig-text">other</text>
+      <text x="236" y="176" class="fig-text">one label of four</text>
+      <text x="236" y="190" class="fig-text">unordered, so wrong is</text>
+      <text x="236" y="204" class="fig-text">wrong, and a probability</text>
+      <text x="236" y="218" class="fig-text">for every option</text>
+
+      <!-- panel 3: score -->
+      <rect x="424" y="48" width="190" height="184" fill="none" stroke="var(--color-rule-soft)" stroke-width="1" />
+      <text x="436" y="72" class="fig-head">score</text>
+      <line x1="452" y1="88" x2="452" y2="168" stroke="var(--color-rule)" stroke-width="1" />
+      <line x1="452" y1="92" x2="520" y2="92" stroke="var(--color-rule)" stroke-width="1" />
+      <line x1="452" y1="116" x2="520" y2="116" stroke="var(--color-rule)" stroke-width="1" />
+      <line x1="452" y1="140" x2="520" y2="140" stroke="var(--color-rule)" stroke-width="1" />
+      <line x1="452" y1="164" x2="520" y2="164" stroke="var(--color-rule)" stroke-width="1" />
+      <text x="444" y="96" class="fig-num" text-anchor="end">3</text>
+      <text x="444" y="120" class="fig-num" text-anchor="end">2</text>
+      <text x="444" y="144" class="fig-num" text-anchor="end">1</text>
+      <text x="444" y="168" class="fig-num" text-anchor="end">0</text>
+      <text x="528" y="96" class="fig-text">Critical</text>
+      <text x="528" y="120" class="fig-text">Major</text>
+      <text x="528" y="144" class="fig-text">Minor</text>
+      <text x="528" y="168" class="fig-text">No impact</text>
+      <circle cx="486" cy="140" r="4.5" fill="var(--color-prussian)" />
+      <text x="436" y="192" class="fig-text">one index into an</text>
+      <text x="436" y="206" class="fig-text">ordered list of four</text>
+      <text x="436" y="220" class="fig-text">the gold is index 1</text>
+
+      <!-- the one measurement path -->
+      <path class="m-draw" style="--m-length: 200; --m-duration: 1.1s;" d="M 119 236 C 119 256, 200 248, 246 268" fill="none" stroke="var(--color-ink-45)" stroke-width="1" marker-end="url(#L01-arrow)" />
+      <path class="m-draw" style="--m-length: 40; --m-duration: 1.1s; --m-delay: 0.25s;" d="M 319 236 L 319 268" fill="none" stroke="var(--color-ink-45)" stroke-width="1" marker-end="url(#L01-arrow)" />
+      <path class="m-draw" style="--m-length: 200; --m-duration: 1.1s; --m-delay: 0.5s;" d="M 519 236 C 519 256, 438 248, 392 268" fill="none" stroke="var(--color-ink-45)" stroke-width="1" marker-end="url(#L01-arrow)" />
+      <rect x="180" y="272" width="280" height="52" fill="none" stroke="var(--color-ink)" stroke-width="1" />
+      <text x="196" y="294" class="fig-text fig-text--ink">one pair: probability, outcome</text>
+      <text x="196" y="312" class="fig-text">what Brier and ECE are computed from</text>
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L01</span>
+    <span class="fig__caption-text">A noul, a choice and a score look nothing alike on the wire, but each one ends as the same pair - a probability and an outcome - and that pair is what the metrics read.</span>
+  </figcaption>
+</figure>
+
+<style>
+  .fig__svg {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fig-head {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    fill: var(--color-ink);
+  }
+
+  .fig-text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--color-ink-70);
+  }
+
+  .fig-text--ink {
+    fill: var(--color-ink);
+  }
+
+  .fig-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--color-ink-70);
+  }
+
+  .fig-num--prussian {
+    fill: var(--color-prussian);
+  }
+</style>

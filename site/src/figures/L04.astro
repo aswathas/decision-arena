@@ -1,0 +1,165 @@
+---
+/* L04 - probability and confidence are two different claims, and the
+   overconfidence gap is measurable. One writer: the figures workstream E. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L04.jpg`}
+      alt="A line drawing of two open notebooks lying side by side on a desk, the left page filled with a column of tick marks that a hand with a pen is adding to, the right page holding one line of writing that a finger points at."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L04-fig-title L04-fig-desc"
+    >
+      <title id="L04-fig-title">Two numbers, two claims, and the gap between them</title>
+      <desc id="L04-fig-desc">
+        On the left, two horizontal scales from zero to one. The upper one is labelled probability,
+        about the world, and carries a marker at 0.3, which sits below a dashed threshold line at
+        0.6. The lower one is labelled confidence, about the model, and carries a marker at 0.9,
+        which sits above the same threshold, so a rule that reads confidence acts on a case the
+        probability would not. On the right, a bar chart of how often the model was right out of one
+        hundred. The first bar is labelled claimed 0.9 and seventy of one hundred right: a dashed
+        line marks the claimed level and a bracket marks the gap of 0.2 between the claim and the
+        reality. The second bar is labelled claimed 0.6 and sixty of one hundred right, and its
+        solid bar meets its dashed claimed line exactly. A note says the expected calibration error
+        is 0.0 when perfect and bigger when worse.
+      </desc>
+
+      <!-- the two numbers -->
+      <text x="24" y="30" class="fig-head">one answer, two claims</text>
+
+      <text x="24" y="72" class="fig-text">probability</text>
+      <text x="24" y="88" class="fig-text fig-text--dim">the world</text>
+      <line x1="120" y1="80" x2="400" y2="80" stroke="var(--color-rule)" stroke-width="1" />
+      <circle cx="204" cy="80" r="5" fill="var(--color-ink)" />
+      <text x="204" y="66" class="fig-num" text-anchor="middle">0.3</text>
+
+      <text x="24" y="120" class="fig-text">confidence</text>
+      <text x="24" y="136" class="fig-text fig-text--dim">the model</text>
+      <line x1="120" y1="128" x2="400" y2="128" stroke="var(--color-rule)" stroke-width="1" />
+      <g class="fig-travel" style="--m-travel: 252px; --m-duration: 1.2s;">
+        <circle cx="372" cy="128" r="5" fill="var(--color-prussian)" />
+      </g>
+      <text class="m-fade fig-num fig-num--prussian" style="--m-duration: 0.6s; --m-delay: 1.2s;" x="372" y="112" text-anchor="middle">0.9</text>
+
+      <!-- the one threshold, drawn once across both scales -->
+      <line x1="288" y1="56" x2="288" y2="136" stroke="var(--color-prussian)" stroke-width="1" stroke-dasharray="5 4" />
+      <text x="296" y="64" class="fig-num fig-num--prussian">threshold 0.6</text>
+      <line x1="120" y1="144" x2="120" y2="150" stroke="var(--color-rule)" stroke-width="1" />
+      <line x1="400" y1="144" x2="400" y2="150" stroke="var(--color-rule)" stroke-width="1" />
+      <text x="120" y="164" class="fig-num">0</text>
+      <text x="400" y="164" class="fig-num" text-anchor="end">1</text>
+
+      <!-- what the wrong notebook costs -->
+      <rect x="24" y="182" width="392" height="132" fill="none" stroke="var(--color-rule-soft)" stroke-width="1" />
+      <text x="38" y="204" class="fig-text fig-text--ink">the rule reads the probability</text>
+      <text x="38" y="226" class="fig-text fig-text--dim">read the probability and a 0.3 case stays</text>
+      <text x="38" y="242" class="fig-text fig-text--dim">below the bar: the system gets cautious</text>
+      <text x="38" y="262" class="fig-text fig-text--dim">read the confidence and the 0.9 crosses</text>
+      <text x="38" y="278" class="fig-text fig-text--dim">any bar: the system acts hardest exactly</text>
+      <text x="38" y="294" class="fig-text fig-text--dim">when it should have stayed quiet</text>
+
+      <!-- the overconfidence gap -->
+      <text x="440" y="30" class="fig-head">how often it was right</text>
+      <line x1="456" y1="248" x2="616" y2="248" stroke="var(--color-rule)" stroke-width="1" />
+      <line x1="456" y1="60" x2="456" y2="248" stroke="var(--color-rule)" stroke-width="1" />
+      <text x="450" y="252" class="fig-num" text-anchor="end">0</text>
+      <text x="450" y="64" class="fig-num" text-anchor="end">100</text>
+
+      <rect x="474" y="116.4" width="46" height="131.6" fill="var(--color-prussian)" />
+      <line x1="468" y1="78.8" x2="526" y2="78.8" stroke="var(--color-ink-45)" stroke-width="1" stroke-dasharray="4 3" />
+      <text x="497" y="72" class="fig-num" text-anchor="middle">0.9</text>
+      <line x1="530" y1="78.8" x2="530" y2="116.4" stroke="var(--color-ink)" stroke-width="1" />
+      <line x1="525" y1="78.8" x2="535" y2="78.8" stroke="var(--color-ink)" stroke-width="1" />
+      <line x1="525" y1="116.4" x2="535" y2="116.4" stroke="var(--color-ink)" stroke-width="1" />
+      <text x="538" y="101" class="fig-num fig-num--ink">0.2</text>
+      <text x="497" y="262" class="fig-text" text-anchor="middle">70 of 100</text>
+      <text x="497" y="276" class="fig-text fig-text--dim" text-anchor="middle">right</text>
+
+      <rect x="548" y="135.2" width="46" height="112.8" fill="var(--color-prussian-tint)" />
+      <line x1="542" y1="135.2" x2="600" y2="135.2" stroke="var(--color-ink-45)" stroke-width="1" stroke-dasharray="4 3" />
+      <text x="571" y="128" class="fig-num" text-anchor="middle">0.6</text>
+      <text x="571" y="262" class="fig-text" text-anchor="middle">60 of 100</text>
+      <text x="571" y="276" class="fig-text fig-text--dim" text-anchor="middle">right</text>
+
+      <text x="440" y="292" class="fig-text fig-text--dim">dashed = what it claimed,</text>
+      <text x="440" y="305" class="fig-text fig-text--dim">solid = how often right</text>
+      <text x="440" y="320" class="fig-text fig-text--dim">ECE 0.0 is perfect,</text>
+      <text x="440" y="333" class="fig-text fig-text--dim">bigger is worse</text>
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L04</span>
+    <span class="fig__caption-text">The probability claims a rate in the world and the confidence claims a feeling in the model, so thresholding on the wrong one turns a shaky 0.3 answer into an action the world never justified.</span>
+  </figcaption>
+</figure>
+
+<style>
+  .fig__svg {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fig-head {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    fill: var(--color-ink);
+  }
+
+  .fig-text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--color-ink-70);
+  }
+
+  .fig-text--ink {
+    fill: var(--color-ink);
+  }
+
+  .fig-text--dim {
+    fill: var(--color-ink-45);
+  }
+
+  .fig-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    fill: var(--color-ink-70);
+  }
+
+  .fig-num--ink {
+    fill: var(--color-ink);
+  }
+
+  .fig-num--prussian {
+    fill: var(--color-prussian);
+  }
+
+  /* the one idea of motion: the confidence marker slides across its own scale
+     and ends up on the far side of the threshold the probability never reached */
+  @keyframes l04-travel {
+    from {
+      transform: translateX(calc(var(--m-travel, 252px) * -1));
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  .fig-travel {
+    animation: l04-travel var(--m-duration, 1.2s) ease-out both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fig-travel {
+      animation: none !important;
+      transform: none;
+    }
+  }
+</style>
