@@ -54,6 +54,25 @@ point.** `laya-serve` exposes `POST /v1/systemone` - the same request and
 response shape as TypeSafe Jev. So the harness's adapter does not need to
 learn a new language. It only needs to be pointed at a different address.
 
+## The story
+
+Somebody in a small apartment does the laundry every week. She could carry
+every bundle to the laundromat on the corner: they charge per wash, their
+machine is always hot, and it takes about as long as a cup of coffee. Or she
+could run her own machine at home, where nothing is billed per wash - but she
+had to buy it, she has to feed it water and electricity, and it can only take
+so much at a time. A bundle that does not fit does not get washed slowly; it
+stops, and she runs it again.
+
+That is the shape of running a decision model on your own GPU instead of
+renting one. The hosted service has no machine to buy, but it bills you every
+call. The local model has no per-token price at all - the cost is electricity
+and your GPU time - but the model's stored numbers have to fit in the card
+you own. A 9B model is about 18 GB of file; the 27B one does not fit a 4 GB
+card. The first request after the server starts also has to load those numbers
+into the card, a cold start the README puts at about 40 seconds. Load them
+first, and later decisions land in the 236-276 ms range.
+
 ## The real thing
 
 **What Laya is.** `laya-lab/README.md` describes Laya as the open-source
