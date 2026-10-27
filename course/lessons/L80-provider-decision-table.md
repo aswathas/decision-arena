@@ -73,6 +73,32 @@ Meanwhile a local Laya model has **no per-token price at all**: it costs
 electricity, VRAM and your own attention, which is the cheapest option at scale
 and the most expensive option to operate.
 
+## The story
+
+Two delivery vans sit on the forecourt. One is cheap and slow, one is
+expensive and quick. Each has a brochure, and each brochure says its van is
+best - because it was written by the people who sell the van, and it was
+measured on the vendor's own parcels.
+
+Your parcels are not the vendor's parcels. The brochures decide nothing.
+
+So you build a table: one row per van, one column per thing that could stop
+you choosing it.
+
+Some columns come from the manual - the price per million tokens, whether it
+accepts a picture at all, what keys it needs. One of those is not a
+preference but a wall. If your tickets carry screenshots and a van cannot
+carry screenshots, it is not a candidate, it is out.
+
+Some columns you fill with arithmetic: your own ticket count, times the
+tokens a ticket really takes, times the price, over a million.
+
+And one column nobody can fill for you: what the van did on your parcels, at
+your thresholds, from your building. That column costs a day and a few
+cents.
+
+Then write the decision at the bottom, with the condition attached.
+
 ## The real thing
 
 **Provider selection** is a decision under constraints, and the honest way to

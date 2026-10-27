@@ -53,6 +53,32 @@ which is how the determinism section of the report gets anything to say.
 *would* happen and make **no calls and no files**. If your dry run spends
 money, you have a bug in your CLI, not a convenience.
 
+## The story
+
+Picture a print shop with a big press. A batch of job cards is ready to
+run through, and the owner stands behind you with the meter running.
+
+First you look at the machine. Which presses are wired up, which have paper,
+which have a key in the door. It costs nothing, and it tells you what you can
+print today. A press with no key does not stop politely - it prints an error
+and keeps going, and every card says zero.
+
+Then a proof pull: one card through, printing what it *would* print, costing
+nothing. If the price is wrong, you find out now, not after four hundred
+cards.
+
+Then a limit. The meter is read before every impression, not at the end.
+When the total reaches the cap the press stops and says why, and the cards
+already printed stay on the table. A capped run is a shorter run, not a lost
+one.
+
+You run each card more than once too - one impression cannot tell you
+whether the press is steady or lucky.
+
+At the end: the raw log, one line per impression; the provenance slip, with
+the press, the price and what it cost; and a report typed up from the first
+two. The log is the one you keep.
+
 ## The real thing
 
 **A battery** is a named set of cases. This repo has three: `routing`

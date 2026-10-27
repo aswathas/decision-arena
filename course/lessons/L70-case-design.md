@@ -56,6 +56,36 @@ so that every run uses the same one.
 case is obvious, every model scores 100% and you learn nothing about where
 the edges are.
 
+## The story
+
+Imagine a laboratory bench. Before you switch anything on, you lay out five
+things.
+
+The **state**: the ticket itself, the whole world the model will see.
+Nothing else goes on the bench. If you leave a stray note there, the note is
+part of what you measured.
+
+The **questions**: several, of different kinds - a yes/no judgement, a
+categorical choice, an ordered level. If you ask only one, a model that
+always answers "billing" walks away with a good score and you have learned
+nothing about it.
+
+The **gold**: the right answers, written down. For the choice question that
+means every option, including "other, needs human triage", so a ticket
+belonging to none of them still has a correct answer instead of being forced
+into a wrong bucket.
+
+The **thresholds**: the line where a probability stops being a number and
+starts being an action. These live in the case, not in the code, because they
+are a policy decision.
+
+And the **class**: clear-cut, borderline, spam - the label you slice the
+results by later, so you can see the model that scores 100% on the easy pile
+and 30% on the hard one.
+
+Five cards on a bench. Change any one of them and you have run a different
+experiment.
+
 ## The real thing
 
 Here is the anatomy of a case, using the real fields in

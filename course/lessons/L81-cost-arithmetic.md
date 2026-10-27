@@ -66,6 +66,28 @@ that should make you suspicious. From the committed run
 the last digit. If your own run's numbers do not reproduce from the raw file
 this way, you have a bug - and the raw file is the thing that is right.
 
+## The story
+
+Picture a courier with a heavy parcel. The parcel is the ticket - the
+whole customer message, every time. The courier has no memory. She does not
+remember that she delivered the same parcel to this address yesterday.
+
+So when you ask three questions about one ticket, she walks the whole heavy
+parcel down the street three times. Three times the long document goes on
+the van, and the three little questions ride along each time. The bill is
+three lots of the expensive thing plus one lot of the cheap thing.
+
+Ask all three questions in a single trip and the parcel goes once. The state
+is 28 tokens, the three questions are 133. One call costs 161 tokens; three
+calls cost 216. The same three answers, and you just threw away 55 tokens -
+about a quarter of the call - by making three trips.
+
+Which is why the number to optimise is the cost per ticket, not the price
+per token. One provider charges $0.02 per Mtok but needs four calls to
+answer a ticket. Another charges $0.24 and answers in one.
+
+You are only ever charged for what you send. The answer comes back for free.
+
 ## The real thing
 
 **Cost arithmetic** is three steps, and the repo does exactly these three:

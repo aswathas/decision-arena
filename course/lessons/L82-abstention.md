@@ -85,6 +85,28 @@ escalates everything - accurate, safe, useless. The number to watch is the
 decided automatically. A good threshold policy is a *balance*, and it is
 different for every product. There is no threshold that is right in general.
 
+## The story
+
+Picture a ticket desk with a bar across it. Every support ticket
+arrives and the person at the desk must put it on one side or the other:
+process it, or escalate it to a human. There is no third pile.
+
+Now the model sits behind that desk. It gives you a probability - 0.51, say -
+and the only rule you have written is "act if it is at least 0.5". So 0.51
+becomes a yes. Not because the model was sure, but because a bare threshold
+leaves nowhere else to go.
+
+The fix is a band, not a line. You act at 0.55. You stop acting below 0.45.
+And in between, you keep whatever you were already doing. Now the ticket
+that came back 0.48 once and 0.52 the next time does not flip your desk
+from one side to the other and back.
+
+The band costs you something: the ticket waits longer before it moves.
+
+And the band is not the only door. The routing question in this repo has a
+fourth option, "other - none of the above, needs human triage". Abstention
+can be a first-class answer rather than a failure.
+
 ## The real thing
 
 There are **two** escape hatches, at two different levels, and a real product

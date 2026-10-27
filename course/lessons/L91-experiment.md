@@ -81,6 +81,28 @@ offline friction run gives you a big spread and some flips, and those numbers
 say one thing only: the harness works. They are not a measurement of any
 model. This is the single most common way a good experiment gets wasted.
 
+## The story
+
+Picture a laboratory bench with a sensitive balance. The balance reads
+fine most of the time - but it is not perfect. Tap the bench and the needle
+moves a little. That movement is not a measurement of anything; it is the
+instrument being an instrument.
+
+Now you want to know whether a change of 0.10 in a probability is real. But
+the balance itself wanders by up to about 0.05. So a movement of 0.03 might
+be the effect, or it might be the bench being tapped. So you take the same
+reading again and again, and the spread of those repeats is your noise floor.
+
+That is what repeats buy. One provider's repeats came back byte-identical,
+so for that provider the floor is nothing. Another provider's probabilities jitted by about 0.05, so
+on that one an effect of 0.10 is visible but 0.02 is not.
+
+So before you start, write down which numbers you will compute and what
+result would kill the hypothesis, in a file. Afterwards, check what you
+computed against the file. If they do not match, you have found a bug - and
+you found it before publishing, which is the only time finding it is worth
+anything.
+
 ## The real thing
 
 **Experiment design** for this repo has four decisions, in this order:

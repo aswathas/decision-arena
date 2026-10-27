@@ -73,6 +73,32 @@ cases you ran. "The `noul` probability for `is_urgent` moved 0.9271 ->
 which parts are checkable. Worse, the inference inherits the credibility of
 the measurement without earning it.
 
+## The story
+
+A measurement is a number in a file. A finding is a sentence somebody
+else can disagree with - and that means the sentence has to carry its own
+instructions for checking it.
+
+So the sentence comes first, and it is a single sentence. Not "format
+friction is a serious problem", because "serious" has no number in it.
+Instead: on this battery, with this many cases and this many questions, this
+metric came out at this value, and this many questions changed side.
+
+Next, the evidence, and the evidence is always a file. The run id, the
+battery hash that proves the cases were the same ones, the provider and the
+model version - "the model" is not a subject, and `jev-latest` and
+`jev:jev-1.14.0` are two different subjects.
+
+Then the part that makes it useful to a stranger: how to check it. The
+command, the key it needs, what it costs, and which number to look at when
+it finishes.
+
+Then draw a line between two lists: what you measured, and what you
+inferred. The second list is where you are allowed to be interesting. It
+just has to be labelled.
+
+Then your own limits, and the status word.
+
 ## The real thing
 
 A finding in this repo has six parts. Here is the shape, with the real

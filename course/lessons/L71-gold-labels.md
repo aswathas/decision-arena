@@ -58,6 +58,31 @@ product change means "billing" now includes "usage disputes", and half your
 labels are out of date. Nothing errors. The numbers just quietly become
 meaningless.
 
+## The story
+
+Think of a sorting desk where every letter that arrives gets a tag.
+There are two ways to do it.
+
+The lazy way: you read the letter and decide which pile it *should* have
+gone to. You are careful and you know the product. But you are one person on
+one afternoon, and the people who actually handled these letters were working
+under time pressure with half the information you have now.
+
+The honest way: the queue already knows. The letter went to billing, billing
+fixed it in four hours, the customer did not churn. That is a record of what
+happened, and it is sitting in the system that did the work.
+
+Now the interesting part. You hand the same letters to two people and they
+tag them the same way - except on the borderline ones, where two experienced
+labellers disagree about 30% of the time. That is not sloppiness. It is the
+genuine ambiguity of the task.
+
+So you do not throw it away. You adjudicate it: go back to what the work
+actually justified, and keep the fact that there was a disagreement. If two
+careful people agree on 95% of cases, your benchmark carries about 5% of
+inherent error - and every accuracy number you quote has to be read against
+that floor.
+
 ## The real thing
 
 **An outcome label** is a record of what really happened, not of what

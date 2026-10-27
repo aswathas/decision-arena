@@ -77,6 +77,30 @@ That is a gap with a name. The vendor tables use their own datasets; the
 independent harness used synthetic tickets. A comparison on **your own**
 production-shaped tickets is unpublished, cheap, and checkable.
 
+## The story
+
+Picture a map on a wall. The left-hand side is already covered in pins -
+somebody has been here, and what they found is written in a ledger anyone can
+read. The right-hand side is blank.
+
+The first thing a person does at that wall is plant a pin in the blank part.
+But the pins that matter are the ones in the part that is *slightly* crowded -
+where somebody has measured something, and nobody has checked it on real
+tickets.
+
+So you read the ledger first. Its open questions come with their sources,
+and one of them says, in effect: nobody has run an independent accuracy
+comparison on real-world states rather than synthetic ones.
+
+Then you write the sentence. Not a belief - a claim with a number in it and
+a condition attached: the probability moves by more than this much between
+these two shapes, and at least one ticket changes side.
+
+And then the kill criteria, before you run anything. If the movement is
+smaller than this, drop it. If the effect points the wrong way, drop it. A
+threshold picked after you have seen the number is a threshold picked to
+keep the number.
+
 ## The real thing
 
 **Prior work** is the map of what is already known, and this repo keeps two

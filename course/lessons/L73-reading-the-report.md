@@ -66,6 +66,33 @@ Which one you care about depends on what the probability is *for*: if 0.6
 is your auto-route threshold, calibration is the metric that matters,
 because it is about the number near the threshold.
 
+## The story
+
+A report is a summary of somebody else's reading of a pile of numbers.
+It arrives looking authoritative, with a headline table and percentages that
+line up in neat columns. It is the easiest document in the repo to over-read.
+
+So read it in a fixed order, like a customs officer.
+
+First the banner. If it says the run was simulated, stop. You have learned
+that the machinery works. You have learned nothing about any model.
+
+Then find the denominator before you find the number. The report says
+"accuracy 80.0%" and you find "scored cases: 5" underneath. Now the 80%
+means four out of five. Another model got three out of five. Those differ by
+one ticket - and one borderline ticket is close to a coin flip. The
+percentage's precision was hiding that.
+
+Then the fingerprint. Two reports from two different batteries were asked
+different questions, so their accuracies are not comparable.
+
+Then the metrics, each read as "over N cases". Accuracy asks whether the top
+answer was right. Calibration asks whether when it says 0.8 it is right 80%
+of the time. If 0.6 is your auto-route line, calibration decides the work.
+
+And the last question is not in the report: what would you do differently if
+the number were three points higher?
+
 ## The real thing
 
 **A report** in this repo is a derived, human-readable view of a run. It

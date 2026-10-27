@@ -73,6 +73,34 @@ exists for exactly this, and its format is fixed: **date · decision · why ·
 what it cost · what would change our mind**. The fourth field is the one
 people skip and the one that makes the log useful.
 
+## The story
+
+A reader on the other side of the world is going to decide whether to
+believe your number. They have no reason to trust that you ran anything at
+all.
+
+So you cannot just send the number. You send a parcel, and inside it there
+are four things.
+
+The **repo** - pure standard library, nothing to install. The **command**:
+one line to type, the name of the key it wants, and what it will cost before
+they spend anything. A check that costs $40 gets the tab closed; a check
+that costs well under a dollar gets re-run.
+
+Then the **raw evidence**. Every call you made, one line per call, with the
+slip beside it saying which model answered, which questions were asked, and
+what it all cost.
+
+And last, the **one finding**: a single sentence somebody else can check,
+with the numbers in it and the condition under which you would withdraw it.
+
+Two small things ride along. A **version** - "latest" is a moving target, so
+pin it or date it. And the **decision log**: the date, the choice, the reason,
+and what would change your mind, written down at the time rather than
+remembered later.
+
+Ship the parcel. Let them open it.
+
 ## The real thing
 
 **Shipping** this repo means four things, and all four are in the repo
