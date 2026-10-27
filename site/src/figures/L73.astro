@@ -1,0 +1,101 @@
+---
+/* L73 - reading a report: the denominator, the banner, and the width of the number. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L73.jpg`}
+      alt="A line drawing of a printed page with a row of five small equal blank cells in a grid, a magnifying glass held over the rightmost cell, and a wide bracket drawn beneath the row spanning all five cells."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L73-fig-title L73-fig-desc"
+    >
+      <title id="L73-fig-title">One number, five cases, and the width that hides inside it</title>
+      <desc id="L73-fig-desc">
+        On the left, a report excerpt with a banner line at the top, then a row reading
+        scored cases 5, then a row reading accuracy 80.0 percent, then a note about the
+        battery hash. Below that, five small cells in a row, four filled and one empty,
+        under a bracket, with the note that one cell is one case. On the right, an
+        accuracy axis from 0 to 100 percent. One model sits at 80 percent and another at
+        60 percent, and a bracket between them is labelled one case. Above the 80
+        percent point a band is drawn out 0.18 either side, labelled the model's own
+        noise.
+      </desc>
+
+      <!-- the report excerpt -->
+      <text x="30" y="34" font-family="var(--font-mono)" font-size="11" letter-spacing="0.09em" fill="var(--color-ink-45)">THE REPORT</text>
+
+      <rect x="30" y="48" width="252" height="30" fill="var(--color-prussian-tint)" stroke="var(--color-prussian)" stroke-width="1" />
+      <text x="42" y="68" font-family="var(--font-mono)" font-size="10" fill="var(--color-prussian)">SIMULATED RUN - read this first</text>
+
+      <rect x="30" y="92" width="252" height="30" fill="var(--color-ground)" stroke="var(--color-rule)" stroke-width="1" />
+      <text x="42" y="112" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-70)">scored cases</text>
+      <text x="270" y="112" text-anchor="end" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink)">5</text>
+
+      <rect x="30" y="132" width="252" height="30" fill="var(--color-ground)" stroke="var(--color-rule)" stroke-width="1" />
+      <text x="42" y="152" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-70)">accuracy</text>
+      <text x="270" y="152" text-anchor="end" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink)">80.0%</text>
+
+      <text x="30" y="190" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">battery hash - two reports, two questions</text>
+
+      <!-- five cells -->
+      <text x="30" y="222" font-family="var(--font-mono)" font-size="10" letter-spacing="0.09em" fill="var(--color-ink-45)">FIVE CASES, ONE CELL EACH</text>
+      <rect x="30" y="232" width="42" height="26" fill="var(--color-ink)" />
+      <rect x="78" y="232" width="42" height="26" fill="var(--color-ink)" />
+      <rect x="126" y="232" width="42" height="26" fill="var(--color-ink)" />
+      <rect x="174" y="232" width="42" height="26" fill="var(--color-ink)" />
+      <rect x="222" y="232" width="42" height="26" fill="none" stroke="var(--color-rule)" stroke-width="1" />
+      <path d="M 30 272 H 264" fill="none" stroke="var(--color-ink-45)" stroke-width="1" />
+      <path d="M 30 272 V 278 M 264 272 V 278" fill="none" stroke="var(--color-ink-45)" stroke-width="1" />
+      <text x="30" y="294" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-70)">one cell = one case</text>
+
+      <!-- the accuracy axis -->
+      <text x="330" y="34" font-family="var(--font-mono)" font-size="11" letter-spacing="0.09em" fill="var(--color-ink-45)">OVER 5 CASES</text>
+
+      <!-- the noise band, 18 points either side of 80% -->
+      <rect x="497" y="112" width="98" height="14" fill="var(--color-prussian-tint)" />
+      <path class="m-draw" style="--m-length: 130; --m-duration: 1.1s;" d="M 497 130 V 108 H 595 V 130" fill="none" stroke="var(--color-prussian)" stroke-width="1" />
+      <text x="546" y="100" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--color-prussian)">the model's own noise: 0.18</text>
+      <line x1="546" y1="132" x2="546" y2="226" stroke="var(--color-rule)" stroke-width="1" stroke-dasharray="3 3" />
+
+      <!-- axis -->
+      <line x1="330" y1="236" x2="600" y2="236" stroke="var(--color-rule)" stroke-width="1" />
+      <line x1="330" y1="230" x2="330" y2="242" stroke="var(--color-rule)" stroke-width="1" />
+      <line x1="600" y1="230" x2="600" y2="242" stroke="var(--color-rule)" stroke-width="1" />
+      <text x="330" y="258" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">0</text>
+      <text x="600" y="258" text-anchor="end" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">100%</text>
+
+      <!-- the two models -->
+      <circle cx="492" cy="236" r="5" fill="var(--color-ink-45)" />
+      <text x="492" y="222" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-70)">60.0%</text>
+      <text x="492" y="276" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">3 of 5</text>
+
+      <circle cx="546" cy="236" r="5" fill="var(--color-ink)" />
+      <text x="546" y="222" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink)">80.0%</text>
+      <text x="546" y="276" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">4 of 5</text>
+
+      <!-- the one case between them -->
+      <path d="M 492 296 H 546" fill="none" stroke="var(--color-ink)" stroke-width="1" />
+      <path d="M 492 296 V 290 M 546 296 V 290" fill="none" stroke="var(--color-ink)" stroke-width="1" />
+      <text x="519" y="312" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink)">one case</text>
+
+      <text x="30" y="326" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">the gap is the size of the noise: not separable</text>
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L73</span>
+    <span class="fig__caption-text">Over five cases a gap of one case is twenty points, about the same as the model's own noise, so 80 percent and 60 percent cannot be told apart.</span>
+  </figcaption>
+</figure>
+
+<style>
+  /* scoped to this figure */
+  .fig__svg {
+    font-variant-numeric: tabular-nums;
+  }
+</style>

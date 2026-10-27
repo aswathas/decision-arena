@@ -1,0 +1,103 @@
+---
+/* L70 - the anatomy of a case: five parts on a bench, and the slice by class. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L70.jpg`}
+      alt="A line drawing of a workbench seen from above with one blank sheet of paper, four small index cards laid out in a row, a round dial gauge beside them, and a hand setting down a fifth card."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L70-fig-title L70-fig-desc"
+    >
+      <title id="L70-fig-title">Five parts of a case, and the same score sliced by class</title>
+      <desc id="L70-fig-desc">
+        On the left, a case drawn as a card with five labelled slots: state, questions,
+        gold, thresholds and class, each with a small mark beside it. On the right, the
+        same run's accuracy sliced by class. On clear-cut cases one model scores 100%
+        and another 60%. On borderline cases the first model scores 30% and the second
+        scores 60%. A third row shows the spam class. The four bars rise into place one
+        after another.
+      </desc>
+
+      <!-- the case -->
+      <text x="30" y="34" font-family="var(--font-mono)" font-size="11" letter-spacing="0.09em" fill="var(--color-ink-45)">THE CASE</text>
+      <rect x="30" y="48" width="230" height="240" fill="var(--color-ground)" stroke="var(--color-rule)" stroke-width="1" />
+
+      <text x="44" y="73" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">state</text>
+      <rect x="176" y="62" width="68" height="13" fill="var(--color-ink)" />
+
+      <text x="44" y="117" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">questions</text>
+      <rect x="176" y="106" width="14" height="14" fill="none" stroke="var(--color-ink-45)" stroke-width="1" />
+      <rect x="196" y="106" width="14" height="14" fill="none" stroke="var(--color-ink-45)" stroke-width="1" />
+      <rect x="216" y="106" width="14" height="14" fill="none" stroke="var(--color-ink-45)" stroke-width="1" />
+
+      <text x="44" y="161" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">gold</text>
+      <rect x="176" y="150" width="54" height="13" fill="var(--color-prussian)" />
+
+      <text x="44" y="205" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">thresholds</text>
+      <line x1="176" y1="200" x2="244" y2="200" stroke="var(--color-ink-45)" stroke-width="1" />
+      <line x1="212" y1="193" x2="212" y2="207" stroke="var(--color-prussian)" stroke-width="1" />
+
+      <text x="44" y="250" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">class</text>
+      <rect x="176" y="238" width="68" height="16" fill="var(--color-prussian-tint)" stroke="var(--color-prussian)" stroke-width="1" />
+
+      <!-- sliced by class -->
+      <text x="300" y="34" font-family="var(--font-mono)" font-size="11" letter-spacing="0.09em" fill="var(--color-ink-45)">SLICED BY CLASS</text>
+
+      <rect x="300" y="46" width="12" height="10" fill="var(--color-ink)" />
+      <text x="318" y="55" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-70)">model A</text>
+      <rect x="392" y="46" width="12" height="10" fill="var(--color-prussian)" />
+      <text x="410" y="55" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-70)">model B</text>
+
+      <text x="300" y="94" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">clear-cut</text>
+      <g class="m-rise" style="--m-rise: 16px; --m-duration: 0.7s; --m-delay: 0.2s;">
+        <rect x="372" y="80" width="210" height="12" fill="var(--color-ink)" />
+        <text x="616" y="90" text-anchor="end" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-70)">100%</text>
+      </g>
+      <g class="m-rise" style="--m-rise: 16px; --m-duration: 0.7s; --m-delay: 0.45s;">
+        <rect x="372" y="96" width="126" height="12" fill="var(--color-prussian)" />
+        <text x="616" y="106" text-anchor="end" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-70)">60%</text>
+      </g>
+
+      <text x="300" y="154" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">borderline</text>
+      <g class="m-rise" style="--m-rise: 16px; --m-duration: 0.7s; --m-delay: 0.7s;">
+        <rect x="372" y="140" width="63" height="12" fill="var(--color-ink)" />
+        <text x="616" y="150" text-anchor="end" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-70)">30%</text>
+      </g>
+      <g class="m-rise" style="--m-rise: 16px; --m-duration: 0.7s; --m-delay: 0.95s;">
+        <rect x="372" y="156" width="126" height="12" fill="var(--color-prussian)" />
+        <text x="616" y="166" text-anchor="end" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-70)">60%</text>
+      </g>
+
+      <text x="300" y="214" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink-70)">spam</text>
+      <text x="300" y="232" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">gold = other</text>
+
+      <!-- one number, many -->
+      <text x="300" y="272" font-family="var(--font-mono)" font-size="10" letter-spacing="0.09em" fill="var(--color-ink-45)">ONE NUMBER</text>
+      <rect x="300" y="280" width="210" height="16" fill="var(--color-ground-deep)" stroke="var(--color-rule)" stroke-width="1" />
+      <text x="416" y="292" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-70)">accuracy</text>
+      <path d="M 510 288 H 552" stroke="var(--color-ink-45)" stroke-width="1" fill="none" />
+      <path d="M 552 288 L 546 285 L 546 291 z" fill="var(--color-ink-45)" />
+      <text x="560" y="292" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-70)">slice</text>
+
+      <text x="30" y="322" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">the class is how you see the easy pile and the hard one are different models</text>
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L70</span>
+    <span class="fig__caption-text">A case is five things - state, questions, gold, thresholds and class - and the class is what turns one score into several.</span>
+  </figcaption>
+</figure>
+
+<style>
+  /* scoped to this figure */
+  .fig__svg {
+    font-variant-numeric: tabular-nums;
+  }
+</style>

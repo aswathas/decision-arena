@@ -1,0 +1,79 @@
+---
+/* L72 - running a battery: check, proof, run, and three files on disk. */
+---
+
+<figure class="fig">
+  <div class="fig__frame">
+    <img
+      class="fig__picture"
+      src={`${import.meta.env.BASE_URL}illustrations/L72.jpg`}
+      alt="A line drawing of a row of small plain envelopes moving along a narrow track into a boxy machine, a round coin meter dial mounted on the side of the machine, and a neat stack of record sheets sliding out of the other side."
+    />
+    <svg
+      class="fig__svg"
+      viewBox="0 0 640 340"
+      role="img"
+      aria-labelledby="L72-fig-title L72-fig-desc"
+    >
+      <title id="L72-fig-title">The order of a run, and the meter that stops it</title>
+      <desc id="L72-fig-desc">
+        Four stages run left to right along the top: a providers check that costs
+        nothing, a dry run that prints what would happen and calls nothing, the real
+        run with three repeats, and then three files on disk - a raw jsonl of one line
+        per call, a meta json of provenance, and a derived report. Below, a horizontal
+        spend meter fills from the left towards a cap line marked $0.25. The meter
+        stops at the cap and the run is marked aborted with the records so far kept.
+      </desc>
+
+      <!-- the order of the run -->
+      <rect x="30" y="52" width="132" height="56" fill="var(--color-ground)" stroke="var(--color-rule)" stroke-width="1" />
+        <text x="42" y="74" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink)">providers</text>
+        <text x="42" y="92" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">no calls, no cost</text>
+
+        <rect x="192" y="52" width="132" height="56" fill="var(--color-ground)" stroke="var(--color-rule)" stroke-width="1" />
+        <text x="204" y="74" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink)">dry run</text>
+        <text x="204" y="92" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">prints, calls nothing</text>
+
+        <rect x="354" y="52" width="132" height="56" fill="var(--color-ground)" stroke="var(--color-rule)" stroke-width="1" />
+        <text x="366" y="74" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink)">run</text>
+        <text x="366" y="92" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">repeats 3</text>
+
+        <path d="M 162 80 H 188" fill="none" stroke="var(--color-ink-45)" stroke-width="1" />
+        <path d="M 324 80 H 350" fill="none" stroke="var(--color-ink-45)" stroke-width="1" />
+        <path d="M 486 80 H 512" fill="none" stroke="var(--color-ink-45)" stroke-width="1" />
+
+        <!-- three files on disk -->
+        <rect x="516" y="40" width="104" height="26" fill="var(--color-ground-deep)" stroke="var(--color-rule)" stroke-width="1" />
+        <text x="528" y="57" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink)">run.jsonl</text>
+        <rect x="516" y="72" width="104" height="26" fill="var(--color-ground-deep)" stroke="var(--color-rule)" stroke-width="1" />
+        <text x="528" y="89" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink)">run.meta.json</text>
+        <rect x="516" y="104" width="104" height="26" fill="var(--color-ground)" stroke="var(--color-rule)" stroke-width="1" />
+        <text x="528" y="121" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-70)">run.md</text>
+        <text x="516" y="146" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">raw, provenance, report</text>
+        <!-- the spend cap -->
+        <text x="30" y="196" font-family="var(--font-mono)" font-size="11" letter-spacing="0.09em" fill="var(--color-ink-45)">THE METER, READ BEFORE EVERY CALL</text>
+
+        <line x1="30" y1="240" x2="500" y2="240" stroke="var(--color-rule)" stroke-width="1" />
+        <rect x="30" y="224" width="470" height="9" fill="var(--color-ground-deep)" />
+        <line class="m-draw" style="--m-length: 470; --m-duration: 1.6s;" x1="30" y1="228" x2="500" y2="228" stroke="var(--color-prussian)" stroke-width="1" />
+        <line x1="500" y1="220" x2="500" y2="238" stroke="var(--color-ink)" stroke-width="1" />
+        <text x="500" y="266" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="var(--color-ink)">cap $0.25</text>
+
+        <text x="30" y="288" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-70)">reached: aborted, with a reason</text>
+        <text x="500" y="288" text-anchor="end" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">the records collected so far are still written</text>
+
+        <text x="30" y="322" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-45)">the report is the friendly one; the raw log is the one you keep</text>
+    </svg>
+  </div>
+  <figcaption class="fig__caption">
+    <span class="edge-code">figure L72</span>
+    <span class="fig__caption-text">A run is checked, proved, then paid for - and the spend cap is read before every call, so a capped run stops with its reason and its records intact.</span>
+  </figcaption>
+</figure>
+
+<style>
+  /* scoped to this figure */
+  .fig__svg {
+    font-variant-numeric: tabular-nums;
+  }
+</style>
